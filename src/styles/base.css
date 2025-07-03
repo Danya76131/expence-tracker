@@ -1,0 +1,24 @@
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%; /* Prevent font scaling on iOS */
+  font-size: 100%; /* Base font size: 16px */
+}
+
+body {
+  font-family: var(--font-family-main);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.29;
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  letter-spacing: -0.02em;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+}

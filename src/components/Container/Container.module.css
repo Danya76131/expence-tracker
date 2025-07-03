@@ -1,0 +1,27 @@
+/* Mobile-first: basic width */
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tablet ≥ 768px */
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+/* Desktop ≥ 1440px */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
