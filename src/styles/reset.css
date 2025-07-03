@@ -1,0 +1,85 @@
+/* Box sizing reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  font-family: "Inter", sans-serif;
+}
+/* Remove default margin and padding */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove default list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Remove default link styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Make buttons and inputs inherit font */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Remove border from form elements */
+button,
+input {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/* Remove button background and cursor style */
+button {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+/* Set default font and background */
+body {
+  background-color: #fff;
+  color: #000;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Images max width */
+img,
+picture {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+/* Tables reset */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
