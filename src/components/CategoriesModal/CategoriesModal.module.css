@@ -10,7 +10,7 @@
   border: 1px solid rgba(250, 250, 250, 0.1);
   border-radius: 30px;
   width: 335px;
-  height: 400px;
+
   background: #171719;
   padding: 40px 20px;
   position: relative;
@@ -187,7 +187,7 @@
 @media screen and (min-width: 768px) {
   .wrapper {
     width: 500px;
-    height: 461px;
+
     padding: 40px 40px;
   }
 
@@ -231,5 +231,28 @@
     font-size: 16px;
     letter-spacing: -0.02em;
     color: #0ef387;
+  }
+
+  .categoryInput {
+    border: 1px solid rgba(250, 250, 250, 0.2);
+    border-radius: 12px;
+    padding: 12px 140px 12px 18px;
+    width: 419px;
+    height: 48px;
+  }
+
+  .categoryInput::placeholder {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.5;
+    color: rgba(250, 250, 250, 0.4);
+  }
+
+  .buttonAdd {
+    padding: 14px 44px;
+    width: 119px;
+    height: 47px;
+    top: 32.8px;
+    right: 0px;
   }
 }

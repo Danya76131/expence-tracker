@@ -3,8 +3,8 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import Icon from "../UI/Icon/Icon";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCategory } from "../../redux/categories/selectors";
+import { useDispatch } from "react-redux";
+// import { selectCategory } from "../../redux/categories/selectors";
 import toast from "react-hot-toast";
 import {
   addCategory,
@@ -52,7 +52,7 @@ const CategoriesModal = () => {
         })
         .catch((error) => toast.error(`Error editing category: ${error}`));
     } else {
-      dispatch(addCategory({ type, categoryName }))
+      setCategories(addCategory({ type, categoryName }))
         .unwrap()
         .then(() => {
           toast.success("New Category added successfully");
@@ -214,7 +214,7 @@ const CategoriesModal = () => {
             <button
               type="submit"
               className={styles.buttonAdd}
-              disabled={categoryName.length === 0}
+              // disabled={categoryName.length === 0}
             >
               {isEditMode ? "Edit" : "Add"}
             </button>
