@@ -24,7 +24,14 @@ import icon from "../../../assets/icons/sprite.svg";
  * "log-out", "user-avatar", "search", "trash", "user"
  */
 
-const Icon = ({ name = "logo", className, size = 16, fill, stroke }) => {
+const Icon = ({
+  name = "logo",
+  className,
+  size = 16,
+  fill = "currentColor",
+  stroke = "currentColor",
+  ...rest
+}) => {
   return (
     <svg
       className=""
@@ -33,6 +40,7 @@ const Icon = ({ name = "logo", className, size = 16, fill, stroke }) => {
       stroke={stroke}
       width={size}
       height={size}
+      {...rest}
     >
       <use href={`${icon}#${name}`} />
     </svg>
