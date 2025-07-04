@@ -1,4 +1,4 @@
-import icon from "../../assets/icons/sprite.svg";
+import icon from "../../../assets/icons/sprite.svg";
 /**
  * Icon component — a universal SVG icon renderer.
  *
@@ -27,7 +27,7 @@ import icon from "../../assets/icons/sprite.svg";
 const Icon = ({ name = "logo", className, size = 16, fill, stroke }) => {
   return (
     <svg
-      classNam
+      className=""
       e={className}
       fill={fill}
       stroke={stroke}
