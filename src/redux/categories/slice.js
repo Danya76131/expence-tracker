@@ -10,7 +10,7 @@ const initialState = {
   selectedIndex: null,
 };
 
-const categorySlice = createSlice({
+const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   extraReducers: (builder) => {
@@ -18,4 +18,4 @@ const categorySlice = createSlice({
   },
 });
 
-export const categoryReducer = categorySlice.reducer;
+export const categoriesReducer = categoriesSlice.reducer;

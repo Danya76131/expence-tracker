@@ -13,7 +13,7 @@
 
 /* For Modal EditCategories, HistoryTransactions */
 .scrollB::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
   height: 8px;
 }
 .scrollB::-webkit-scrollbar-track {
