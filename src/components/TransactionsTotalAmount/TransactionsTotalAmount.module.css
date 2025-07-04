@@ -1,0 +1,44 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 23px 33px;
+  /* background-color: #1c1c1c; */
+  background: #171719;
+  border-radius: 20px;
+  color: white;
+  width: 303px;
+  height: 121px;
+}
+
+.iconWrapper {
+  background-color: #00ff84;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 16px;
+  color: rgba(250, 250, 250, 0.5);
+  margin: 0;
+}
+
+.amount {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 24px;
+  color: #fafafa;
+  margin: 0;
+}
+.wrapper {
+  display: flex;
+  gap: 24px;
+  margin: 40px 0;
+}
