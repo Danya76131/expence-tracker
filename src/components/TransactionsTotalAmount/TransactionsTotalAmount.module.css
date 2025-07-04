@@ -6,7 +6,7 @@
   background: #171719;
   border-radius: 20px;
   color: white;
-  max-width: 335px;
+  max-width: auto;
   max-height: 81px;
 }
 
@@ -42,4 +42,43 @@
   gap: 12px;
   margin-top: 19px;
   margin-bottom: 40px;
+}
+
+/* Tablet ≥ 768px */
+@media (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    max-width: auto;
+    gap: 24px;
+    margin: 40px 0;
+  }
+  .card {
+    gap: 22px;
+    padding: 33px 23px;
+    border-radius: 30px;
+    width: 340px;
+    max-height: 121px;
+  }
+  .iconWrapper {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+  }
+  .label {
+    font-size: 16px;
+  }
+  .amount {
+    font-size: 24px;
+  }
+}
+/* Desktop ≥ 1440px */
+@media (min-width: 1440px) {
+  .wrapper {
+    max-width: 630px;
+  }
+  .card {
+    gap: 24px;
+    width: 303px;
+    margin: 0;
+  }
 }

@@ -14,6 +14,13 @@ const MOCK_DATA = [
 
 export const TransactionsChart = ({ data = MOCK_DATA }) => {
   const total = data.reduce((acc, item) => acc + item.value, 0);
+  const [ready, setReady] = React.useState(false);
+
+  React.useEffect(() => {
+    const timeout = setTimeout(() => setReady(true), 100); // задержка, чтобы DOM обновился
+    return () => clearTimeout(timeout);
+  }, []);
+  if (!ready) return null;
 
   return (
     <div className={styles["expenses-chart"]}>

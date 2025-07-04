@@ -58,6 +58,8 @@
   position: relative;
   margin-bottom: 42px;
   min-width: 0;
+  pointer-events: none;
+  user-select: none;
 }
 
 .centerTotal {
@@ -71,4 +73,33 @@
   color: #fafafa;
   max-width: 292px;
   text-align: center;
+}
+
+/* Tablet ≥ 768px */
+@media (min-width: 768px) {
+  .title {
+    margin-bottom: 37px;
+    font-size: 16px;
+  }
+  .expenses-chart {
+    padding: 40px 60px 60px 40px;
+  }
+  .chart-and-list {
+    flex-direction: row;
+  }
+  .chart-wrapper {
+    margin: 0;
+    max-width: 292px;
+  }
+  .category-list {
+    width: 189px;
+  }
+}
+
+/* Desktop ≥ 1440px */
+@media (min-width: 1440px) {
+  .expenses-chart {
+    width: 630px;
+    padding: 40px 40px 60px 40px;
+  }
 }
