@@ -32,7 +32,7 @@
   transition: color var(--btn-transition);
 }
 .dark:hover,
-.darkfocus {
+.dark:focus {
   color: var(--color-text-secondary);
 }
 
