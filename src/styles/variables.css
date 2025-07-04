@@ -4,7 +4,7 @@
   --color-bg-secondary: #171719; /* forms, sections */
   --color-bg-tertiary: #29292b; /* secondary buttons */
   --color-bg-button-dark: #0c0d0d; /* tertiary buttons */
-  --color-bg-backdrop: rgba(250, 250, 250, 0.4); /* modal backdrop */
+  --color-bg-backdrop: rgba(12, 13, 13, 0.6); /* modal backdrop */
 
   /* 🟢 Accents */
   --color-accent-primary: #0ef387; /* main accent color */
