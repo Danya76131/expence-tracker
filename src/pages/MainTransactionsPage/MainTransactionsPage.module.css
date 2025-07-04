@@ -1,15 +1,16 @@
 .mainTitle {
   font-family: var(--font-family);
   font-weight: 400;
-  font-size: 38px;
+  font-size: 32px;
   letter-spacing: -0.02em;
   color: #fafafa;
   margin-bottom: 13px;
 }
+
 .mainText {
   font-family: var(--font-family);
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: -0.02em;
   color: rgba(250, 250, 250, 0.4);
 }
