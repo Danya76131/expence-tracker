@@ -151,47 +151,44 @@ const CategoriesModal = () => {
                 onClick={() => handleItemClick(index)}
               >
                 <p>{item.categoryName}</p>
-                {categoryId === index && (
-                  <span className={styles.icons}>
-                    <span className={styles.check}>
-                      <Icon
-                        name="check"
-                        size={14}
-                        fill="transparent"
-                        stroke="#0ef387"
-                      />
-                    </span>
-                    <button
-                      className={styles.editBtn}
-                      onClick={() =>
-                        handleEditCategory(item.id, item.categoryName)
-                      }
-                    >
-                      {" "}
-                      <Icon
-                        name="edit"
-                        className={styles.icons}
-                        size={16}
-                        fill="transparent"
-                        stroke="#0ef387"
-                      />
-                    </button>
-                    <button
-                      className={styles.deleteBtn}
-                      onClick={() => handleDeleteCategory(item.id, type)}
-                      disabled={isButtonDisabled}
-                    >
-                      {" "}
-                      <Icon
-                        name="trash"
-                        className={styles.icons}
-                        size={16}
-                        fill="transparent"
-                        stroke="#0ef387"
-                      />
-                    </button>
+
+                <span className={styles.icons}>
+                  <span className={styles.check}>
+                    <Icon
+                      name="check"
+                      size={14}
+                      fill="transparent"
+                      stroke="#0ef387"
+                    />
                   </span>
-                )}
+                  <button
+                    className={styles.editBtn}
+                    onClick={() =>
+                      handleEditCategory(item.id, item.categoryName)
+                    }
+                  >
+                    {" "}
+                    <Icon
+                      name="edit"
+                      size={16}
+                      fill="transparent"
+                      stroke="#0ef387"
+                    />
+                  </button>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => handleDeleteCategory(item.id, type)}
+                    disabled={isButtonDisabled}
+                  >
+                    {" "}
+                    <Icon
+                      name="trash"
+                      size={16}
+                      fill="transparent"
+                      stroke="#0ef387"
+                    />
+                  </button>
+                </span>
               </li>
             ))
           )}
