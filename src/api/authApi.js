@@ -9,3 +9,4 @@ export const setAuthHeader = (token) => {
 export const clearAuthHeader = () => {
   api.defaults.headers.common.Authorization = "";
 };
+export default api;
