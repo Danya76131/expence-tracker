@@ -17,16 +17,16 @@ const CategoriesModal = () => {
 
   const type = "incomes";
 
-  const categories = useSelector(selectCategory);
+  // const categories = useSelector(selectCategory);
 
-  // const [categories, setCategories] = useState([
-  //   { id: 1, categoryName: "Cinema" },
-  //   { id: 2, categoryName: "Music" },
-  //   { id: 3, categoryName: "Sports" },
-  //   { id: 4, categoryName: "Education" },
-  //   { id: 5, categoryName: "Movie" },
-  //   { id: 6, categoryName: "Cafe" },
-  // ]);
+  const [categories, setCategories] = useState([
+    { id: 1, categoryName: "Cinema" },
+    { id: 2, categoryName: "Music" },
+    { id: 3, categoryName: "Sports" },
+    { id: 4, categoryName: "Education" },
+    { id: 5, categoryName: "Movie" },
+    { id: 6, categoryName: "Cafe" },
+  ]);
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
@@ -151,37 +151,47 @@ const CategoriesModal = () => {
                 onClick={() => handleItemClick(index)}
               >
                 <p>{item.categoryName}</p>
-                <span>
-                  <button
-                    className={styles.removeBtn}
-                    onClick={() =>
-                      handleEditCategory(item.id, item.categoryName)
-                    }
-                  >
-                    {" "}
-                    <Icon
-                      name="edit"
-                      className={styles.icons}
-                      size={16}
-                      fill="transparent"
-                      stroke="#0ef387"
-                    />
-                  </button>
-                  <button
-                    className={styles.deleteBtn}
-                    onClick={() => handleDeleteCategory(item.id, type)}
-                    disabled={isButtonDisabled}
-                  >
-                    {" "}
-                    <Icon
-                      name="trash"
-                      className={styles.icons}
-                      size={16}
-                      fill="transparent"
-                      stroke="#0ef387"
-                    />
-                  </button>
-                </span>
+                {categoryId === index && (
+                  <span className={styles.icons}>
+                    <span className={styles.check}>
+                      <Icon
+                        name="check"
+                        size={14}
+                        fill="transparent"
+                        stroke="#0ef387"
+                      />
+                    </span>
+                    <button
+                      className={styles.editBtn}
+                      onClick={() =>
+                        handleEditCategory(item.id, item.categoryName)
+                      }
+                    >
+                      {" "}
+                      <Icon
+                        name="edit"
+                        className={styles.icons}
+                        size={16}
+                        fill="transparent"
+                        stroke="#0ef387"
+                      />
+                    </button>
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => handleDeleteCategory(item.id, type)}
+                      disabled={isButtonDisabled}
+                    >
+                      {" "}
+                      <Icon
+                        name="trash"
+                        className={styles.icons}
+                        size={16}
+                        fill="transparent"
+                        stroke="#0ef387"
+                      />
+                    </button>
+                  </span>
+                )}
               </li>
             ))
           )}

@@ -28,14 +28,6 @@
 .categoryListItem {
 }
 
-.removeBtn {
-  color: #fafafa;
-}
-
-.deleteBtn {
-  color: #fafafa;
-}
-
 .buttonClose {
   color: #fafafa;
   position: absolute;
@@ -132,4 +124,31 @@
   font-size: 18px;
   line-height: 1.28571;
   color: rgba(250, 250, 250, 0.4);
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.check {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editBtn {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteBtn {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
