@@ -34,8 +34,7 @@ const Icon = ({
 }) => {
   return (
     <svg
-      classNam
-      e={className}
+      className={className}
       fill={fill}
       stroke={stroke}
       width={size}
