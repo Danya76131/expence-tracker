@@ -1,0 +1,54 @@
+.regPage {
+    padding: 106px 20px 169px 20px;
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: #0c0d0d;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .regPage {
+        padding: 171px 184px 262px 185px;
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .regPage {
+        padding: 41px 121px 100px 121px;
+        min-width: 1440px;
+        display: flex;
+        align-items: center;
+        gap: 54px;
+
+    }
+}
+
+
+.title {
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: #fafafa;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 767px) {
+    .title {
+        font-size: 56px;
+    }
+}
+
+.aboutApp {
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: rgba(250, 250, 250, 0.4);
+    margin-bottom: 35px;
+}
+
+@media (min-width: 767px) {
+    .aboutApp {
+        margin-bottom: 37px;
+    }
+}

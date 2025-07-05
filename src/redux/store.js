@@ -17,10 +17,10 @@ import { transactionsReducer } from "./transactions/slice";
 import { userReducer } from "./user/slice";
 
 const persistConfig = {
-  key: "token",
+  key: "auth",
   version: 1,
   storage,
-  whitelist: ["token"],
+  whitelist: ["token", "refreshToken", "sid"],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
