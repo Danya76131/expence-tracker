@@ -1,0 +1,36 @@
+.inputWrapperSum {
+  position: relative;
+  width: 100%;
+}
+
+.sumInput {
+  background-color: transparent;
+  color: white;
+  padding: 12px 16px;
+  padding-right: 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(250, 250, 250, 0.2);
+  width: 100%;
+  font-size: 14px;
+}
+
+.sumInput:focus {
+  border: 1px solid #0ef387;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.sumInputSuffix {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.28;
+  color: rgba(250, 250, 250, 0.4);
+}
+
+.nameInputOther {
+  margin-bottom: 8px;
+}

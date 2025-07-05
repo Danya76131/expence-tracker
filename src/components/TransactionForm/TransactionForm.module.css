@@ -1,0 +1,66 @@
+.formikWrapper {
+  background-color: #171719;
+  padding: 28px 20px;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 375px;
+}
+
+.formikForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dateTimeGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.submitButton {
+  background-color: #0ef387;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: #0c0d0d;
+  font-family: var(--font-family);
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  border-radius: 40px;
+  padding: 14px 44px;
+  max-width: 115px;
+}
+
+.submitButton:hover {
+  background-color: #0ebb69;
+}
+
+.ErrorMessage {
+  color: #ff5c5c;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+@media screen and (min-width: 768px) {
+  .formikWrapper {
+    max-width: 704px;
+    min-width: 704px;
+    padding: 40px 108px;
+  }
+
+  .submitButton {
+    max-width: 120px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .formikWrapper {
+    max-width: 566px;
+    min-width: 566px;
+    padding: 40px;
+  }
+}
