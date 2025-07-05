@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -6,6 +6,8 @@ import RestrictedRoute from "./routes/RestrictedRoute";
 import { ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
+
+
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -18,8 +20,8 @@ const TransactionsHistoryPage = lazy(() =>
 );
 
 const App = () => {
+  // для анімашки
   const location = useLocation();
-
   return (
     <>
       <ToastContainer position="top-right"
@@ -27,9 +29,7 @@ const App = () => {
             hideProgressBar={true}
             newestOnTop
             closeOnClick
-            pauseOnFocusLoss={false}
-          />
-
+            pauseOnFocusLoss={false} />
       <Suspense fallback={null}>
         <AnimatePresence mode="wait" initial={false}>
           <SharedLayout>

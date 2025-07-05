@@ -1,22 +1,25 @@
-// import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AuthForm from '../../components/AuthForm/AuthForm';
 import css from './LoginPage.module.css';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../../redux/auth/operations';
-import { selectAuthError } from '../../redux/auth/selectors';
+import { login } from '../../redux/auth/operations';  
+import { selectAuthError, selectIsLoggedIn } from '../../redux/auth/selectors';
 import BgImageWrapper from '../../components/BgImageWrapper/BgImageWrapper';
-// import {selectAuthLoading} from '../redux/auth/selectors';
-// імпорт для лоадера
-
-
+import { useNavigate } from 'react-router-dom';
+// import {selectAuthLoading} from '../redux/auth/selectors'; // для лоадера
 
 function LoginPage() {
   const dispatch = useDispatch();
   const error = useSelector(selectAuthError);
-  // const isLoading = useSelector(state => state.auth.isLoading);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
 
-  
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/transactions/incomes');
+    }
+  }, [isLoggedIn, navigate]);
 
   const fields = [
     { name: 'email', type: 'email', placeholder: 'Email' },
@@ -39,7 +42,7 @@ function LoginPage() {
 
   const onSubmitAction = async (values) => {
     try {
-      await dispatch(login(values)).unwrap();
+      await dispatch(login(values)).unwrap();  
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -55,26 +58,26 @@ function LoginPage() {
   return (
     <div className="login-wrapper">
       <div className={css.loginPage}>
-          <div className={css.leftSide}>
-        <BgImageWrapper desktopOnly />
-          </div>
-          <div className={css.rightSide}>
+        <div className={css.leftSide}>
+          <BgImageWrapper desktopOnly />
+        </div>
+        <div className={css.rightSide}>
           <h2 className={css.title}>Sign In</h2>
           <p className={css.aboutApp}>
-          Welcome back to effortless expense tracking! Your financial dashboard awaits.</p>
+            Welcome back to effortless expense tracking! Your financial dashboard awaits.
+          </p>
           {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-      <AuthForm
-        fields={fields}
-        submitText="Sign In"
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmitAction={onSubmitAction}
-        navigationData={navigationData}
-        formVariant="login"
-        
-      />
-     </div> 
-    </div>
+          <AuthForm
+            fields={fields}
+            submitText="Sign In"
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmitAction={onSubmitAction}
+            navigationData={navigationData}
+            formVariant="login"
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,102 +1,12 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { login, register, refreshUser } from './operations';
 
 axios.defaults.baseURL = 'https://expense-tracker.b.goit.study/api/';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
-const transformToJSON = (data) => JSON.stringify(data);
-
-export const signUp = createAsyncThunk(
-  'auth/signUp',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/auth/register', credentials, {
-        transformRequest: [transformToJSON]
-      });
-      
-      if (!response.data) {
-        throw new Error('No data received');
-      }
-      if (!response.data.user || !response.data.accessToken) {
-        throw new Error('Invalid server response structure');
-      }
-      
-      return response.data;
-    } catch (err) {
-      return rejectWithValue({
-        message: err.response?.data?.message || err.message,
-        status: err.response?.status
-      });
-    }
-  }
-);
-
-export const signIn = createAsyncThunk(
-  'auth/signIn',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/auth/login', credentials, {
-        transformRequest: [transformToJSON]
-      });
-      
-      // Проверка структуры ответа
-      const { user, accessToken, refreshToken, sid } = response.data;
-      if (!user || !accessToken || !refreshToken || !sid) {
-        throw new Error('Invalid response structure');
-      }
-      
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      return response.data;
-    } catch (err) {
-      return rejectWithValue({
-        message: err.response?.data?.message || err.message,
-        status: err.response?.status
-      });
-    }
-  }
-);
-
-export const refresh = createAsyncThunk(
-  'auth/refresh',
-  async (_, thunkAPI) => {
-    try {
-      const state = thunkAPI.getState();
-      const sid = state.auth.sid;
-      const refreshToken = state.auth.refreshToken;
-
-      if (!sid || !refreshToken) {
-        return thunkAPI.rejectWithValue({
-          message: 'No refresh token or sid',
-          status: 401
-        });
-      }
-
-      const response = await axios.post(
-        '/auth/refresh',
-        { sid },
-        {
-          headers: {
-            Authorization: `Bearer ${refreshToken}`,
-          },
-          transformRequest: [transformToJSON]
-        }
-      );
-
-      const { accessToken, refreshToken: newRefreshToken, sid: newSid } = response.data;
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-      return { accessToken, refreshToken: newRefreshToken, sid: newSid };
-    } catch (err) {
-      return thunkAPI.rejectWithValue({
-        message: err.response?.data?.message || 'Refresh failed',
-        status: err.response?.status
-      });
-    }
-  }
-);
-
 const initialState = {
-  user: { name: null, email: null, _id: null },
+  user: { name: null, email: null },
   accessToken: null,
   refreshToken: null,
   sid: null,
@@ -121,15 +31,16 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.error = null;
       delete axios.defaults.headers.common.Authorization;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(signUp.pending, (state) => {
+    
+      .addCase(register.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(signUp.fulfilled, (state, action) => {
+      .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
@@ -138,18 +49,16 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         axios.defaults.headers.common.Authorization = `Bearer ${action.payload.accessToken}`;
       })
-      .addCase(signUp.rejected, (state, action) => {
+      .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = {
-          message: action.payload.message,
-          isEmailError: action.payload.status === 409
-        };
+        state.error = action.payload || { message: 'Registration failed' };
       })
-      .addCase(signIn.pending, (state) => {
+     
+      .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(signIn.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
@@ -158,27 +67,25 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         axios.defaults.headers.common.Authorization = `Bearer ${action.payload.accessToken}`;
       })
-      .addCase(signIn.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = {
-          message: action.payload.message,
-          isCredentialsError: action.payload.status === 403
-        };
+        state.error = action.payload || { message: 'Login failed' };
       })
-      .addCase(refresh.pending, (state) => {
+  
+      .addCase(refreshUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(refresh.fulfilled, (state, action) => {
+      .addCase(refreshUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
         state.sid = action.payload.sid;
         state.isLoggedIn = true;
       })
-      .addCase(refresh.rejected, (state, action) => {
+      .addCase(refreshUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        state.error = action.payload || { message: 'Refresh failed' };
         state.isLoggedIn = false;
         state.user = { name: null, email: null, _id: null };
         state.accessToken = null;
@@ -190,7 +97,4 @@ const authSlice = createSlice({
 });
 
 export const { resetError, logout } = authSlice.actions;
-
-
-
 export const authReducer = authSlice.reducer;

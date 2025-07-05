@@ -4,8 +4,13 @@ import { selectIsLoggedIn } from "../redux/auth/selectors";
 
 
 const RestrictedRoute = ({ children }) => {
+    
+
+
     const isLoggedIn = useSelector(selectIsLoggedIn);
-    return !isLoggedIn ? children : <Navigate to="/main-transactions" replace />;
+    // console.log('RestrictedRoute - isLoggedIn:', isLoggedIn);
+    return !isLoggedIn ? children : <Navigate to="/transactions/incomes" replace />;
+
 };
 
 export default RestrictedRoute;
