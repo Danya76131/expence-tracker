@@ -1,7 +1,12 @@
+import TransactionsHistoryNav from "../TransactionsHistoryNav/TransactionsHistoryNav";
 import styles from "./Header.module.css";
 
 const Header = () => {
-  return <div className={styles.wrapper}>Header</div>;
+  return (
+    <header>
+      <TransactionsHistoryNav />
+    </header>
+  );
 };
 
 export default Header;
