@@ -20,6 +20,7 @@ export const addCategory = createAsyncThunk(
       const { data } = await api.post("/categories", category);
       return data;
     } catch (error) {
+      console.log(error.response.data);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

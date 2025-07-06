@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import Icon from "../UI/Icon/Icon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { selectCategory } from "../../redux/categories/selectors";
 import toast from "react-hot-toast";
 import {
@@ -11,22 +11,23 @@ import {
   deleteCategory,
   editCategory,
 } from "../../redux/categories/operations";
+import { selectCategory } from "../../redux/categories/selectors";
 
 const CategoriesModal = () => {
   const dispatch = useDispatch();
 
   const type = "incomes";
 
-  // const categories = useSelector(selectCategory);
+  const categories = useSelector(selectCategory);
 
-  const [categories, setCategories] = useState([
-    { id: 1, categoryName: "Cinema" },
-    { id: 2, categoryName: "Music" },
-    { id: 3, categoryName: "Sports" },
-    { id: 4, categoryName: "Education" },
-    { id: 5, categoryName: "Movie" },
-    { id: 6, categoryName: "Cafe" },
-  ]);
+  // const [categories, setCategories] = useState([
+  //   { id: 1, categoryName: "Cinema" },
+  //   { id: 2, categoryName: "Music" },
+  //   { id: 3, categoryName: "Sports" },
+  //   { id: 4, categoryName: "Education" },
+  //   { id: 5, categoryName: "Movie" },
+  //   { id: 6, categoryName: "Cafe" },
+  // ]);
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
@@ -52,7 +53,7 @@ const CategoriesModal = () => {
         })
         .catch((error) => toast.error(`Error editing category: ${error}`));
     } else {
-      setCategories(addCategory({ type, categoryName }))
+      dispatch(addCategory({ type, categoryName }))
         .unwrap()
         .then(() => {
           toast.success("New Category added successfully");

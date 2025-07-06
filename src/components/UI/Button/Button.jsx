@@ -26,6 +26,7 @@ const Button = ({
   ariaLabel,
   children,
   fullWidth,
+  ...props
 }) => {
   return (
     <button
@@ -38,6 +39,7 @@ const Button = ({
         styles[variant],
         fullWidth && styles.fullWidth
       )}
+      {...props}
     >
       <span className={styles.content} style={{ gap }}>
         {children}

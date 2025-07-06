@@ -5,6 +5,7 @@ import {
   editCategory,
   getCategories,
 } from "./operations";
+import { login, refreshUser } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -65,16 +66,16 @@ const categoriesSlice = createSlice({
           (item) => item._id !== payload.id
         );
       })
-      .addCase(deleteCategory.rejected, handleRejected),
+      .addCase(deleteCategory.rejected, handleRejected)
 
-  // .addCase(logIn.fulfilled, (state, { payload: { user } }) => {
-  //   state.categories.expenses = user.categories?.expenses || [];
-  //   state.categories.incomes = user.categories?.incomes || [];
-  // })
-  // .addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
-  //   state.categories.expenses = payload.categories?.expenses || [];
-  //   state.categories.incomes = payload.categories?.incomes || [];
-  // })
+      .addCase(login.fulfilled, (state, { payload: { user } }) => {
+        state.categories.expenses = user.categories?.expenses || [];
+        state.categories.incomes = user.categories?.incomes || [];
+      })
+      .addCase(refreshUser.fulfilled, (state, { payload }) => {
+        state.categories.expenses = payload.categories?.expenses || [];
+        state.categories.incomes = payload.categories?.incomes || [];
+      }),
   // .addCase(logOut.fulfilled, (state) => {
   //   return initialState;
   // }),

@@ -1,0 +1,39 @@
+.toastWrapper {
+    background: rgba(30, 30, 30, 0.25) !important;
+    backdrop-filter: blur(15px);
+    border-radius: 12px !important;
+    padding: 0 !important;
+    color: #FAFAFA;
+    /* УБРАЛ border и box-shadow отсюда */
+}
+
+.toastWrapperSuccess {
+    box-shadow: 0 8px 24px rgba(14, 243, 135, 0.3) !important;
+    border: 1px solid rgba(14, 243, 135, 0.4) !important;
+}
+
+.toastWrapperError {
+    box-shadow: 0 8px 24px rgba(231, 74, 59, 0.3) !important;
+    border: 1px solid rgba(231, 74, 59, 0.4) !important;
+}
+
+.toastBody {
+    padding: 14px 20px !important;
+    color: #FAFAFA !important;
+    font-weight: 600;
+    font-size: 17px;
+    background: transparent !important;
+}
+
+.toastBase {
+    color: inherit;
+    padding-left: 15px;
+}
+.Toastify__close-button {
+    color: rgba(250, 250, 250, 0.4) !important;
+}
+
+.Toastify__close-button svg {
+    fill: rgba(250, 250, 250, 0.4) !important; 
+}
+

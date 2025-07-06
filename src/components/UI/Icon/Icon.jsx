@@ -1,4 +1,30 @@
 import icon from "../../../assets/icons/sprite.svg";
+
+/**
+ * Компонент Icon — універсальний рендерер SVG-іконок.
+ *
+ * Використовує спрайт з `../../assets/icons/sprite.svg` для відображення іконок за їхнім ID.
+ * Дозволяє налаштовувати розмір, заповнення (fill), обведення (stroke) та додаткові CSS класи.
+ *
+ * Пропси:
+ * - `name` (string, за замовчуванням: "logo") — ID іконки у спрайті (наприклад: "burger-menu", "error", "check" тощо).
+ * - `className` (string, необов’язково) — додаткові CSS класи.
+ * - `size` (number, за замовчуванням: 16) — ширина та висота іконки у пікселях.
+ * - `fill` (string, необов’язково) — колір заповнення SVG.
+ * - `stroke` (string, необов’язково) — колір обведення SVG.
+ *
+ * Приклад використання:
+ * ```jsx
+ * <Icon name="calendar" size={24} fill="#333" />
+ * <Icon name="chevron-down" className="rotate" stroke="#999" />
+ * ```
+ *
+ * Доступні ID іконок:
+ * "logo", "burger-menu", "error", "success", "arrow-down", "arrow-up", "calendar",
+ * "check", "chevron-down", "chevron-up", "clock", "close", "edit", "eye", "eye-off",
+ * "log-out", "user-avatar", "search", "trash", "user"
+ */
+
 /**
  * Icon component — a universal SVG icon renderer.
  *
@@ -34,8 +60,7 @@ const Icon = ({
 }) => {
   return (
     <svg
-      className=""
-      e={className}
+      className={className}
       fill={fill}
       stroke={stroke}
       width={size}
