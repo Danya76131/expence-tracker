@@ -2,19 +2,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: #171719;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 6px 16px;
+  border-radius: 30px;
   user-select: none;
   width: 220px;
+  height: 56px;
 }
 
 .userInfo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .avatar {
@@ -42,8 +43,9 @@
   color: #333;
 }
 
-.arrowIcon {
-  width: 16px;
-  height: 16px;
-  fill: #333;
+.chevronIcon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  margin-right: 16px;
 }

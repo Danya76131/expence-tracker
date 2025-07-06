@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Logo from "../../../Logo/Logo";
 import Button from "../../../UI/Button/Button";
 import UserBarBtn from "../../../UserBarBtn/UserBarBtn";
@@ -7,6 +7,7 @@ import css from "./Authenticated.module.css";
 
 const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const userBarBtnRef = useRef(null);
 
   const toggleUserPanel = () => {
     setIsUserPanelOpen((prev) => !prev);
@@ -35,6 +36,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
       </div>
       <div className={css.userBarBtn}>
         <UserBarBtn
+          ref={userBarBtnRef}
           userData={userData}
           toggleUserPanel={toggleUserPanel}
           isUserPanelOpen={isUserPanelOpen}
@@ -44,6 +46,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
           handleLogout={handleLogout}
           isUserPanelOpen={isUserPanelOpen}
           toggleUserPanel={toggleUserPanel}
+          userBarBtnRef={userBarBtnRef}
         />
       </div>
     </div>
