@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 // import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
-import { Calendar, Clock } from "lucide-react";
+// import { Calendar, Clock } from "lucide-react";
 import s from "./TransactionForm.module.css";
 import { useRef } from "react";
 
@@ -23,8 +23,8 @@ const TransactionSchema = Yup.object().shape({
 
 const initialValues = {
   transactionType: "expense",
-  date: new Date().toISOString().split("T")[0],
-  time: new Date().toTimeString().slice(0, 8),
+  date: "",
+  time: "00:00:00",
   category: null,
   sum: "",
   comment: "",
@@ -105,16 +105,17 @@ const TransactionForm = () => {
                       type="date"
                       name="date"
                       className={s.dateInput}
+                      value="mm/dd/yyyy"
                       // value={values.date}
                       // onChange={(e) => setFieldValue("date", e.target.value)}
                     />
-                    <Calendar
+                    {/* <Calendar
                       className={s.calendar}
                       onClick={() =>
                         dateRef.current?.showPicker?.() ||
                         dateRef.current?.click()
                       }
-                    />
+                    /> */}
                   </div>
                   <ErrorMessage
                     name="date"
@@ -137,13 +138,13 @@ const TransactionForm = () => {
                       // value={values.time}
                       // onChange={(e) => setFieldValue("time", e.target.value)}
                     />
-                    <Clock
+                    {/* <Clock
                       className={s.timeOutline}
                       onClick={() =>
                         timeRef.current?.showPicker?.() ||
                         timeRef.current?.click()
                       }
-                    />
+                    /> */}
                   </div>
                   <ErrorMessage
                     name="time"
