@@ -1,5 +1,6 @@
 import Container from "../../components/Container/Container";
 import Section from "../../components/Section/Section";
+import TransactionForm from "../../components/TransactionForm/TransactionForm";
 import TransactionsChart from "../../components/TransactionsChart/TransactionsChart";
 import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
 import styles from "./MainTransactionsPage.module.css";
@@ -15,6 +16,7 @@ const MainTransactionsPage = () => {
         </p>
         <TransactionsTotalAmount />
         <TransactionsChart />
+        <TransactionForm />
       </Container>
     </Section>
   );
