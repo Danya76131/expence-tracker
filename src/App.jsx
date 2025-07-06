@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -6,8 +6,10 @@ import RestrictedRoute from "./routes/RestrictedRoute";
 import { ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUser } from "./redux/user/operations";
+import { selectAccessToken } from "./redux/auth/selectors";
+import { Toaster } from "react-hot-toast";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -20,16 +22,19 @@ const TransactionsHistoryPage = lazy(() =>
 );
 
 const App = () => {
+  console.log("app mount");
+  const dispatch = useDispatch();
+  const isToken = useSelector(selectAccessToken);
+
+  useEffect(() => {
+    if (isToken) dispatch(getCurrentUser());
+  }, [dispatch, isToken]);
+
   // для анімашки
   const location = useLocation();
   return (
     <>
-      <ToastContainer position="top-right"
-            autoClose={3000}
-            hideProgressBar={true}
-            newestOnTop
-            closeOnClick
-            pauseOnFocusLoss={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <Suspense fallback={null}>
         <AnimatePresence mode="wait" initial={false}>
           <SharedLayout>
