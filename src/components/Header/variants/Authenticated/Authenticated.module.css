@@ -1,24 +1,21 @@
 .wrapper {
   background-color: black;
-  height: 100px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logoText {
-  color: white;
-  font-size: 30px;
-}
-
 .centerButtons {
   color: white;
+  display: flex;
+  gap: 16px;
 }
 
 button {
   color: #fff;
 }
 
-.userBar {
+.userBarBtn {
   color: white;
 }
