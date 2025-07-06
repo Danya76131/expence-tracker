@@ -1,0 +1,46 @@
+.loginPage {
+    max-width: 375px;
+    margin: 0 auto;
+    background-color: var(--color-bg-primary);
+    padding: 106px 20px 187px 20px;
+}
+
+@media (min-width: 768px) {
+    .loginPage {
+        padding: 171px 184px 262px 185px;
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .loginPage {
+        padding: 41px 121px 100px 121px;
+        min-width: 1440px;
+        display: flex;
+        align-items: center;
+        gap: 54px;
+    }
+}
+
+.title {
+    font-weight: 400;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 56px;
+        margin-bottom: 32px;
+    }
+}
+
+.aboutApp {
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: -0.02em;
+    color: var(--color-text-muted);
+    margin-bottom: 36px;
+}

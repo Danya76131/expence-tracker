@@ -18,10 +18,10 @@ import { userReducer } from "./user/slice";
 import { modalReducer } from "./modal/slice";
 
 const persistConfig = {
-  key: "token",
+  key: "auth",
   version: 1,
   storage,
-  whitelist: ["token"],
+  whitelist: ['accessToken', 'refreshToken', 'sid', 'isLoggedIn', 'user'],
 };
 
 const persistedReducer = persistReducer(persistConfig, authReducer);
