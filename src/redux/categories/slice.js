@@ -9,6 +9,7 @@ import { login, refreshUser } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
+  state.error = null;
 };
 
 const handleRejected = (state, action) => {
@@ -30,10 +31,11 @@ const categoriesSlice = createSlice({
   initialState,
   extraReducers: (builder) =>
     builder
-
       .addCase(getCategories.pending, handlePending)
       .addCase(getCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
+
+        console.log("Data Fulfilled", action.payload);
       })
       .addCase(getCategories.rejected, handleRejected)
 
@@ -44,20 +46,44 @@ const categoriesSlice = createSlice({
       .addCase(addCategory.rejected, handleRejected)
 
       .addCase(editCategory.pending, handlePending)
-      .addCase(editCategory.fulfilled, (state, { payload }) => {
-        state.categories.expenses = state.categories?.expenses.map((item) => {
+      .addCase(editCategory.fulfilled, (state, { payload, meta }) => {
+        console.log(meta);
+        state.categories.expenses = state.categories.expenses.map((item) => {
           if (item._id === payload._id) {
             return payload;
           }
           return item;
         });
-        state.categories.incomes = state.categories?.incomes.map((item) => {
-          if (item._id === payload._id) {
-            return payload;
+        const update = (state.categories.incomes = state.categories.incomes.map(
+          (item) => {
+            if (item._id === payload._id) {
+              console.log("Pay", payload);
+              return payload;
+            }
+            console.log("Item", item);
+            return item;
           }
-          return item;
-        });
+        ));
       })
+
+      // .addCase(editCategory.fulfilled, (state, { payload }) => {
+      //   const updateIn = state.categories.incomes.find(
+      //     (cat) => cat._id === payload._id
+      //   );
+      //   if (updateIn) {
+      //     updateIn.categoryName = payload.categoryName;
+      //   }
+
+      //   const updateEx = state.categories.expenses.find(
+      //     (cat) => cat._id === payload._id
+      //   );
+      //   if (updateEx) {
+      //     updateEx.categoryName = payload.categoryName;
+      //   }
+      //   state.isError = false;
+      //   state.isLoading = false;
+      // })
+
       .addCase(editCategory.rejected, handleRejected)
 
       .addCase(deleteCategory.pending, handlePending)
@@ -71,11 +97,11 @@ const categoriesSlice = createSlice({
       .addCase(login.fulfilled, (state, { payload: { user } }) => {
         state.categories.expenses = user.categories?.expenses || [];
         state.categories.incomes = user.categories?.incomes || [];
-      })
-      .addCase(refreshUser.fulfilled, (state, { payload }) => {
-        state.categories.expenses = payload.categories?.expenses || [];
-        state.categories.incomes = payload.categories?.incomes || [];
       }),
+  // .addCase(refreshUser.fulfilled, (state, { payload }) => {
+  //   state.categories.expenses = payload.categories?.expenses || [];
+  //   state.categories.incomes = payload.categories?.incomes || [];
+  // }),
   // .addCase(logOut.fulfilled, (state) => {
   //   return initialState;
   // }),

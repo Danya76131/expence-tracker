@@ -4,30 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import Backdrop from "../UI/Backdrop/Backdrop";
 import Icon from "../UI/Icon/Icon";
 import { useDispatch, useSelector } from "react-redux";
-// import { selectCategory } from "../../redux/categories/selectors";
 import toast from "react-hot-toast";
 import {
   addCategory,
   deleteCategory,
   editCategory,
+  getCategories,
 } from "../../redux/categories/operations";
-import { selectCategory } from "../../redux/categories/selectors";
+import {
+  selectCategoryExpenses,
+  selectCategoryIncomes,
+} from "../../redux/categories/selectors";
+// import { getTransactions } from "../../redux/transactions/operations";
 
 const CategoriesModal = () => {
   const dispatch = useDispatch();
 
   const type = "incomes";
 
-  const categories = useSelector(selectCategory);
+  const categories = useSelector(selectCategoryIncomes);
 
-  // const [categories, setCategories] = useState([
-  //   { id: 1, categoryName: "Cinema" },
-  //   { id: 2, categoryName: "Music" },
-  //   { id: 3, categoryName: "Sports" },
-  //   { id: 4, categoryName: "Education" },
-  //   { id: 5, categoryName: "Movie" },
-  //   { id: 6, categoryName: "Cafe" },
-  // ]);
+  console.log(categories);
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
@@ -35,7 +32,18 @@ const CategoriesModal = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const itemRefs = useRef([]);
 
-  const handleSubmitCategory = (event) => {
+  // const selectedId = useSelector(selectCategoryId(categoryId));
+
+  // console.log("Selected ID", selectedId);
+
+  const handleEditCategory = (id, name) => {
+    setCategoryName(name);
+    console.log(id);
+    setCategoryId(id);
+    setIsEditMode(true);
+  };
+
+  const handleSubmitCategory = async (event) => {
     event.preventDefault();
     if (categoryName.length > 16) {
       toast.error(
@@ -43,27 +51,32 @@ const CategoriesModal = () => {
       );
       return;
     }
+    console.log(categoryId);
 
     if (isEditMode) {
-      dispatch(editCategory({ categoryName, categoryId }))
-        .unwrap()
-        .then(() => {
-          dispatch();
-          setIsEditMode(false);
-        })
-        .catch((error) => toast.error(`Error editing category: ${error}`));
+      try {
+        await dispatch(editCategory({ categoryName, id: categoryId })).unwrap();
+        console.log("edit dispatch");
+      } catch {
+        console.log("Edit dispatch error");
+      }
+
+      // .then(() => {
+      //   dispatch(getTransactions({ type }));
+      //   setIsEditMode(false);
+      // })
+      // .catch((error) => toast.error(`Error editing category: ${error}`));
     } else {
-      dispatch(addCategory({ type, categoryName }))
+      dispatch(addCategory({ type: type, categoryName: categoryName }))
         .unwrap()
         .then(() => {
           toast.success("New Category added successfully");
-
-          itemRefs.current.scrollTo({
-            top: itemRefs.current.scrollHeight,
-            behavior: "smooth",
-          });
+          console.log("success");
         })
-        .catch((error) => toast.error("Error adding category"));
+        .catch((error) => {
+          // console.log("Error", error);
+          toast.error("Error adding category  ");
+        });
     }
     setCategoryName("");
   };
@@ -72,16 +85,9 @@ const CategoriesModal = () => {
     setCategoryName(event.target.value);
   };
 
-  const handleEditCategory = (id, name) => {
-    setCategoryName(name);
-    setCategoryId(id);
-    setIsEditMode(true);
-  };
-
   const handleDeleteCategory = (id, type) => {
     setIsEditMode(false);
     setIsButtonDisabled(true);
-
     dispatch(deleteCategory({ id, type }))
       .unwrap()
       .then(() => toast.success("Category deleted successfully"))
@@ -92,26 +98,30 @@ const CategoriesModal = () => {
   };
 
   useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (!isEditMode) {
       setCategoryName("");
     }
   }, [isEditMode]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (itemRefs.current.every((ref) => ref && !ref.contains(event.target))) {
-        setCategoryId(null);
-        setIsEditMode(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (itemRefs.current.every((ref) => ref && !ref.contains(event.target))) {
+  //       setCategoryId(null);
+  //       setIsEditMode(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => document.removeEventListener("mousedown", handleClickOutside);
+  // }, []);
 
-  const handleItemClick = (index) => {
-    setCategoryId(index === categoryId ? null : index);
-  };
+  // const handleItemClick = (index) => {
+  //   setCategoryId(index === categoryId ? null : index);
+  // };
 
   return (
     <Backdrop>
@@ -141,18 +151,19 @@ const CategoriesModal = () => {
               </p>
             </li>
           ) : (
-            categories.map((item, index) => (
+            categories?.map((item) => (
               <li
-                key={item.id}
-                ref={(el) => (itemRefs.current[index] = el)}
+                key={item._id}
+                ref={(el) => (itemRefs.current[item._id] = el)}
                 className={clsx(
                   styles.categoryListItem,
-                  categoryId === index && styles.isActive
+                  categoryId === item._id && styles.isActive
                 )}
-                onClick={() => handleItemClick(index)}
+                onClick={() =>
+                  setCategoryId(categoryId === item._id ? null : item._id)
+                }
               >
                 <p>{item.categoryName}</p>
-
                 <span className={styles.icons}>
                   <span className={styles.check}>
                     <Icon
@@ -164,9 +175,10 @@ const CategoriesModal = () => {
                   </span>
                   <button
                     className={styles.editBtn}
-                    onClick={() =>
-                      handleEditCategory(item.id, item.categoryName)
-                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditCategory(item._id, item.categoryName);
+                    }}
                   >
                     {" "}
                     <Icon
@@ -178,7 +190,7 @@ const CategoriesModal = () => {
                   </button>
                   <button
                     className={styles.deleteBtn}
-                    onClick={() => handleDeleteCategory(item.id, type)}
+                    onClick={() => handleDeleteCategory(item._id, type)}
                     disabled={isButtonDisabled}
                   >
                     {" "}
