@@ -14,7 +14,7 @@ import {
   getTransactions,
 } from "../../redux/transactions/operations";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
-import TransactionForm from "../../components/TransactionForm/TransactionForm";
+// import TransactionForm from "../../components/TransactionForm/TransactionForm";
 // import { useParams } from "react-router-dom";
 
 const TransactionsHistoryPage = () => {
