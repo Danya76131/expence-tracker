@@ -1,0 +1,60 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(18, 20, 23, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.panel {
+  background-color: #00ff83;
+  height: 100%;
+  width: 100%;
+  max-width: 375px;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .panel {
+    max-width: 50vw;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  font-size: 28px;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+  gap: 40px;
+}
+
+.menuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

@@ -1,63 +1,52 @@
-import React, { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
+import UserBarBtn from "../UserBarBtn/UserBarBtn";
 import css from "./UserPanel.module.css";
-import Icon from "../UI/Icon/Icon";
+import Backdrop from "../UI/Backdrop/Backdrop";
 
 const UserPanel = ({
   openUserSetsModal,
   handleLogout,
   isUserPanelOpen,
   toggleUserPanel,
-  userBarBtnRef, // реф на кнопку
+  userBarBtnRef,
+  userData,
+  insideBurger = false,
 }) => {
-  const panelRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (e) => {
       if (
-        panelRef.current &&
-        !panelRef.current.contains(event.target) &&
-        userBarBtnRef.current &&
-        !userBarBtnRef.current.contains(event.target)
+        isUserPanelOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        userBarBtnRef &&
+        !userBarBtnRef.contains(e.target)
       ) {
-        // Клік поза панеллю і поза кнопкою - закриваємо панель
         toggleUserPanel();
       }
     };
 
-    if (isUserPanelOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef]);
 
   return (
-    <div
-      ref={panelRef}
-      className={`${css.wrapper} ${
-        isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed
-      }`}
-    >
-      <button onClick={openUserSetsModal} className={css.button} type="button">
-        <Icon
-          name="user"
-          size={16}
-          stroke="currentColor"
-          className={css.icon}
-        />
-        <span>Profile settings</span>
-      </button>
-      <button onClick={handleLogout} className={css.button} type="button">
-        <Icon
-          name="log-out"
-          size={16}
-          stroke="currentColor"
-          className={css.icon}
-        />
-        <span>Log out</span>
-      </button>
+    <div className={insideBurger ? css.burgerWrapper : css.panelWrapper}>
+      <UserBarBtn
+        toggleUserPanel={toggleUserPanel}
+        isUserPanelOpen={isUserPanelOpen}
+        userBarBtnRef={userBarBtnRef}
+        userData={userData}
+      />
+      {isUserPanelOpen && (
+        <div ref={dropdownRef}>
+          <Backdrop
+            openUserSetsModal={openUserSetsModal}
+            handleLogout={handleLogout}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,17 +1,30 @@
-.wrapper {
-  background-color: black;
-  height: 90px;
+/* Authenticated.module.css */
+
+.header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 100px;
+  justify-content: space-between;
+  padding: 16px;
 }
 
-.centerButtons {
-  display: flex;
-  gap: 16px;
+/* За замовчуванням — мобілка та планшет */
+.tabletMobileOnly {
+  display: block;
 }
 
-.userBarBtn {
-  color: white;
+.desktopOnly {
+  display: none;
+}
+
+/* На десктопі (≥1440px) */
+@media screen and (min-width: 1440px) {
+  .tabletMobileOnly {
+    display: none;
+  }
+
+  .desktopOnly {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
 }
