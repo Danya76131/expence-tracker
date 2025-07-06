@@ -214,7 +214,7 @@ const CategoriesModal = () => {
             <button
               type="submit"
               className={styles.buttonAdd}
-              // disabled={categoryName.length === 0}
+              disabled={categoryName.length === 0}
             >
               {isEditMode ? "Edit" : "Add"}
             </button>

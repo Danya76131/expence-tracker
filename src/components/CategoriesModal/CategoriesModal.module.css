@@ -60,8 +60,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: margin-left 0.1s ease-in, margin-right 0.1s ease-in,
-    padding-left 0.1s ease-in, padding-right 0.1s ease-in;
 }
 
 .categoryInput {
@@ -205,7 +203,9 @@
 
   .categoryListItem {
     font-size: 16px;
-    transition: font-size 0.1s ease-in;
+    transition: margin-left 0.1s ease-in, margin-right 0.1s ease-in,
+      padding-left 0.1s ease-in, padding-right 0.1s ease-in,
+      font-size 0.1s ease-in;
   }
 
   .categoryListItem.isActive,
