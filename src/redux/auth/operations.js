@@ -1,36 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+
 import { selectRefreshToken, selectSid } from "./selectors";
-import {
-  showSuccessToast,
-  showErrorToast,
-} from "../../components/CustomToast/CustomToast.jsx";
-import { setAuthHeader } from "../../api/authApi.js";
 
-axios.defaults.baseURL = "https://expense-tracker.b.goit.study/api/";
-axios.defaults.headers.common["Content-Type"] = "application/json";
+import api, { setAuthHeader } from "../../api/authApi.js";
 
-const transformToJSON = (data) => {
-  try {
-    return JSON.stringify(data);
-  } catch (error) {
-    console.error("JSON transformation error:", error);
-    throw new Error("Invalid data format");
-  }
-};
-
-// Рег
 export const register = createAsyncThunk(
   "auth/register",
-  async (credentials, thunkAPI) => {
+  async (credentials, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.post("/auth/register", credentials, {
-        transformRequest: [transformToJSON],
-      });
-
-      showSuccessToast("Registration successful!");
-
-      return response.data;
+      await api.post("/auth/register", credentials);
+      await dispatch(
+        login({
+          password: credentials.password,
+          email: credentials.email,
+        })
+      );
     } catch (error) {
       console.error(
         "Registration error:",
@@ -49,9 +33,7 @@ export const register = createAsyncThunk(
         errorMessage = error.message;
       }
 
-      showErrorToast(errorMessage);
-
-      return thunkAPI.rejectWithValue(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -60,9 +42,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      const response = await axios.post("/auth/login", credentials, {
-        transformRequest: [transformToJSON],
-      });
+      const response = await api.post("/auth/login", credentials);
 
       const { user, accessToken, refreshToken, sid } = response.data;
 
@@ -70,10 +50,7 @@ export const login = createAsyncThunk(
         throw new Error("Invalid server response structure");
       }
 
-      // axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       setAuthHeader(accessToken);
-
-      showSuccessToast(`Welcome back, ${user.name || user.email}!`);
 
       return response.data;
     } catch (error) {
@@ -89,8 +66,6 @@ export const login = createAsyncThunk(
         }
       }
 
-      showErrorToast(errorMessage);
-
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }
@@ -104,20 +79,14 @@ export const refreshUser = createAsyncThunk(
     const sid = selectSid(state);
 
     if (!refreshToken || !sid) {
-      showErrorToast("Session expired. Please login again.");
+      // showErrorToast("Session expired. Please login again.");
       return thunkAPI.rejectWithValue("Missing refresh token or session ID");
     }
 
     try {
-      axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`;
-
-      const response = await axios.post(
-        "/auth/refresh",
-        { sid },
-        {
-          transformRequest: [transformToJSON],
-        }
-      );
+      // axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`;
+      setAuthHeader(refreshToken);
+      const response = await api.post("/auth/refresh", { sid });
 
       const {
         accessToken,
@@ -125,15 +94,14 @@ export const refreshUser = createAsyncThunk(
         sid: newSid,
       } = response.data;
 
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
+      setAuthHeader(accessToken);
       return { accessToken, refreshToken: newRefreshToken, sid: newSid };
     } catch (error) {
       console.error("Refresh error:", error.response?.data || error.message);
 
       const errorMessage =
         error.response?.data?.message || "Session refresh failed";
-      showErrorToast(errorMessage);
+      // showErrorToast(errorMessage);
 
       return thunkAPI.rejectWithValue(errorMessage);
     }
