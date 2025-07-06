@@ -1,33 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// import axios from "axios";
+
 import { selectRefreshToken, selectSid } from "./selectors";
-// import {
-//   showSuccessToast,
-//   showErrorToast,
-// } from "../../components/CustomToast/CustomToast.jsx";
+
 import api, { setAuthHeader } from "../../api/authApi.js";
 
-// axios.defaults.baseURL = "https://expense-tracker.b.goit.study/api/";
-// axios.defaults.headers.common["Content-Type"] = "application/json";
-
-// const transformToJSON = (data) => {
-//   try {
-//     return JSON.stringify(data);
-//   } catch (error) {
-//     console.error("JSON transformation error:", error);
-//     throw new Error("Invalid data format");
-//   }
-// };
-
-// Рег
 export const register = createAsyncThunk(
   "auth/register",
-  async (credentials, thunkAPI) => {
+  async (credentials, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.post("/auth/register", credentials);
-      // showSuccessToast("Registration successful!");
-
-      return response.data;
+      await api.post("/auth/register", credentials);
+      await dispatch(
+        login({
+          password: credentials.password,
+          email: credentials.email,
+        })
+      );
     } catch (error) {
       console.error(
         "Registration error:",
@@ -46,9 +33,7 @@ export const register = createAsyncThunk(
         errorMessage = error.message;
       }
 
-      // showErrorToast(errorMessage);
-
-      return thunkAPI.rejectWithValue(errorMessage);
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -65,10 +50,7 @@ export const login = createAsyncThunk(
         throw new Error("Invalid server response structure");
       }
 
-      // axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      setAuthHeader(accessToken); // додали
-
-      // showSuccessToast(`Welcome back, ${user.name || user.email}!`);
+      setAuthHeader(accessToken);
 
       return response.data;
     } catch (error) {
@@ -83,8 +65,6 @@ export const login = createAsyncThunk(
           errorMessage = data.message || "Invalid input data";
         }
       }
-
-      // showErrorToast(errorMessage);
 
       return thunkAPI.rejectWithValue(errorMessage);
     }
@@ -106,7 +86,6 @@ export const refreshUser = createAsyncThunk(
     try {
       // axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`;
       setAuthHeader(refreshToken);
-
       const response = await api.post("/auth/refresh", { sid });
 
       const {
@@ -115,9 +94,7 @@ export const refreshUser = createAsyncThunk(
         sid: newSid,
       } = response.data;
 
-      // axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       setAuthHeader(accessToken);
-
       return { accessToken, refreshToken: newRefreshToken, sid: newSid };
     } catch (error) {
       console.error("Refresh error:", error.response?.data || error.message);
