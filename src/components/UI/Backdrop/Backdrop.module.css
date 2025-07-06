@@ -10,3 +10,26 @@
   align-items: center;
   justify-content: center;
 }
+
+.modalContent {
+  position: relative;
+  z-index: 1001;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1002;
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 768px) {
+  .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
