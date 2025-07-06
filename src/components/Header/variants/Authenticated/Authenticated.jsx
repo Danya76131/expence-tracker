@@ -4,6 +4,7 @@ import Button from "../../../UI/Button/Button";
 import UserBarBtn from "../../../UserBarBtn/UserBarBtn";
 import UserPanel from "../../../UserPanel/UserPanel";
 import css from "./Authenticated.module.css";
+import TransactionsHistoryNav from "../../../TransactionsHistoryNav/TransactionsHistoryNav";
 
 const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
@@ -30,10 +31,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   return (
     <div className={css.wrapper} style={{ position: "relative" }}>
       <Logo />
-      <div className={css.centerButtons}>
-        <Button>All Expense</Button>
-        <Button>All Income</Button>
-      </div>
+      <TransactionsHistoryNav />
       <div className={css.userBarBtn}>
         <UserBarBtn
           ref={userBarBtnRef}
