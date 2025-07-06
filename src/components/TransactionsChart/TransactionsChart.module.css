@@ -1,3 +1,18 @@
+.responsiveWrapper {
+  width: fit-content;
+  height: 142px;
+}
+
+.chart-wrapper {
+  height: 155px;
+  position: relative;
+  margin-bottom: 42px;
+  min-width: 0;
+  pointer-events: none;
+  user-select: none;
+  /* border: 1px solid green; */
+}
+
 .expenses-chart {
   background-color: #1a1a1a;
   border-radius: 24px;
@@ -53,13 +68,6 @@
   font-size: 16px;
   font-weight: 700;
   color: white;
-}
-.chart-wrapper {
-  position: relative;
-  margin-bottom: 42px;
-  min-width: 0;
-  pointer-events: none;
-  user-select: none;
 }
 
 .centerTotal {

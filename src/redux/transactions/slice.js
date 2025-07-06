@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteTransaction, getTransactions } from "./operations";
+import {
+  addTransaction,
+  deleteTransaction,
+  getTransactions,
+  updateTransactions,
+} from "./operations";
 
 const transactionsSlice = createSlice({
   name: "transactions",
@@ -8,6 +13,8 @@ const transactionsSlice = createSlice({
     expenses: [],
     loading: false,
     error: false,
+    incomesTotal: null,
+    expensesTotal: null,
   },
   extraReducers: (builder) =>
     builder
@@ -43,6 +50,37 @@ const transactionsSlice = createSlice({
         );
       })
       .addCase(deleteTransaction.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(addTransaction.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(addTransaction.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = false;
+        if (payload.transaction.type === "incomes") {
+          state.incomes.push(payload.transaction);
+          state.incomesTotal = payload.total;
+        } else {
+          state.expenses.push(payload.transaction);
+          state.expensesTotal = payload.total;
+        }
+      })
+      .addCase(addTransaction.rejected, (state) => {
+        state.loading = false;
+        state.error = true;
+      })
+      .addCase(updateTransactions.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updateTransactions.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = false;
+      })
+      .addCase(updateTransactions.rejected, (state) => {
         state.loading = false;
         state.error = true;
       }),
