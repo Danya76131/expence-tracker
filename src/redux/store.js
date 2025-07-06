@@ -15,6 +15,7 @@ import { categoriesReducer } from "./categories/slice";
 import { filterReducer } from "./filter/slice";
 import { transactionsReducer } from "./transactions/slice";
 import { userReducer } from "./user/slice";
+import { modalReducer } from "./modal/slice";
 
 const persistConfig = {
   key: "token",
@@ -32,6 +33,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     transactions: transactionsReducer,
     filter: filterReducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
