@@ -15,12 +15,18 @@ function WelcomePage() {
     return (
         <AnimatedPage>
         <div className={css.pageStyle}>
-            <div className={css.infoWrapp}>
+                <div className={css.infoWrapp}>
+                    <div className={css.topContent}>
             <h2 className={css.miniTitle}>Expense log</h2>
             <h1 className={css.mainTitle}>Manage Your <span className={css.mainTitleSpan}>Finances</span> Masterfully!</h1>
             <p className={css.aboutApp}>ExpenseTracker effortlessly empowers you to take control of your finances! With intuitive features, it simplifies the process of tracking and managing expenses, allowing for a stress-free mastery over your financial world.</p>
-                <AuthNav />
-               <AllUsersTab /> 
+                      <div className={css.nav}>
+                        <AuthNav />
+                        </div>
+                    </div>
+                  <div className={css.bottomContent}>
+                    <AllUsersTab /> 
+                    </div>  
             </div>
             
             <BgImageWrapper />

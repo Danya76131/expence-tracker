@@ -1,16 +1,14 @@
 import AuthForm from "../../components/AuthForm/AuthForm"
 import css from './RegisterPage.module.css';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { register } from '../../redux/auth/operations';
 import BgImageWrapper from '../../components/BgImageWrapper/BgImageWrapper';
-import { selectAuthError } from '../../redux/auth/selectors';
 // import {selectAuthLoading} from '../redux/auth/selectors';
 // імпорт для лоадера
 
 function RegisterPage() {
   const dispatch = useDispatch();
-  const error = useSelector(selectAuthError);
   // const isLoading = useSelector(state => state.auth.isLoading);
 
   const fields = [
@@ -82,7 +80,6 @@ function RegisterPage() {
         <p className={css.aboutApp}>
           Step into a world of hassle-free expense management! Your journey towards financial mastery begins here.
         </p>
-        {error && <div style={{ color: '#E74A3B', marginBottom: '10px' }}>{error}</div>}
         <AuthForm
           fields={fields}
           submitText="Sign Up"

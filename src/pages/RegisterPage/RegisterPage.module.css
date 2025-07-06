@@ -1,10 +1,25 @@
+
+
+@media (max-width: 374px) {
+    .regPage {
+        width: 100%;
+        min-width: 320px;
+        margin: 0 auto;
+        padding: 106px 0px 169px 0px;
+        background-color: #0c0d0d;
+        
+        
+    }
+}
+
+@media (min-width: 375px) {
 .regPage {
     padding: 106px 20px 169px 20px;
     max-width: 375px;
     margin: 0 auto;
     background-color: #0c0d0d;
-    margin: 0 auto;
-}
+    
+}}
 
 @media (min-width: 768px) {
     .regPage {

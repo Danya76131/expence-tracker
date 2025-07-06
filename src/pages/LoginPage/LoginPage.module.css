@@ -1,9 +1,21 @@
+@media (max-width: 374px) {
+    .loginPage {
+        width: 100%;
+        min-width: 320px;
+        margin: 0 auto;
+        padding: 106px 0px 169px 0px;
+        background-color: #0c0d0d;
+
+}
+}
+
+@media (min-width: 375px) { 
 .loginPage {
     max-width: 375px;
     margin: 0 auto;
     background-color: var(--color-bg-primary);
     padding: 106px 20px 187px 20px;
-}
+}}
 
 @media (min-width: 768px) {
     .loginPage {

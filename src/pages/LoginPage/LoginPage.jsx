@@ -4,14 +4,13 @@ import css from './LoginPage.module.css';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/auth/operations';  
-import { selectAuthError, selectIsLoggedIn } from '../../redux/auth/selectors';
+import { selectIsLoggedIn } from '../../redux/auth/selectors';
 import BgImageWrapper from '../../components/BgImageWrapper/BgImageWrapper';
 import { useNavigate } from 'react-router-dom';
 // import {selectAuthLoading} from '../redux/auth/selectors'; // для лоадера
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const error = useSelector(selectAuthError);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
 
@@ -66,7 +65,7 @@ function LoginPage() {
           <p className={css.aboutApp}>
             Welcome back to effortless expense tracking! Your financial dashboard awaits.
           </p>
-          {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
+ 
           <AuthForm
             fields={fields}
             submitText="Sign In"

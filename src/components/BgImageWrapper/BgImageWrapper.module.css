@@ -1,14 +1,25 @@
 .bgImageWrapper {
     display: block;
-    width: 100%;
+    /* width: 100%; */
+    min-width: 320px;
     position: relative;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     background-image: url('../../assets/images/homepage-mobile@1x.jpg');
     border-radius: 20px;
+    margin: 0 auto;
 
 }
+
+@media (max-width: 374px) {
+    .bgImageWrapper {
+        width: 320px;
+        height: auto;
+        aspect-ratio: 335/381;
+        margin: 0 auto;
+       
+    } }
 
 @media (max-width: 767px) {
     .bgImageWrapper {
