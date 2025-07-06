@@ -34,13 +34,13 @@ const UserPanel = ({
         <svg className={css.icon}>
           <use href="#user" />
         </svg>
-        <span>Налаштування профілю</span>
+        <span>Profile settings</span>
       </button>
       <button onClick={handleLogout} className={css.button} type="button">
         <svg className={css.icon}>
           <use href="#log-out" />
         </svg>
-        <span>Вийти</span>
+        <span>Log out</span>
       </button>
     </div>
   );

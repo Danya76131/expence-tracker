@@ -1,7 +1,7 @@
 .wrapper {
   background-color: black;
-  height: 80px;
+  height: 90px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }

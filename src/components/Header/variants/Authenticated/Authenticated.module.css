@@ -1,19 +1,14 @@
 .wrapper {
   background-color: black;
-  height: 80px;
+  height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .centerButtons {
-  color: white;
   display: flex;
   gap: 16px;
-}
-
-button {
-  color: #fff;
 }
 
 .userBarBtn {

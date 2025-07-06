@@ -13,7 +13,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   };
 
   const openUserSetsModal = () => {
-    alert("Відкриваємо модалку налаштувань профілю");
+    alert("Тут буде модалка ))");
   };
 
   const handleLogout = () => {
@@ -31,7 +31,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
       <Logo />
       <div className={css.centerButtons}>
         <Button>All Expense</Button>
-        <Button variant="secondary">All Income</Button>
+        <Button>All Income</Button>
       </div>
       <div className={css.userBarBtn}>
         <UserBarBtn
