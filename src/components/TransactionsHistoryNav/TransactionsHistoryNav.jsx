@@ -3,9 +3,9 @@ import css from "./TransactionsHistoryNav.module.css";
 
 const TransactionsHistoryNav = () => {
   return (
-    <div className={css.centerButtons}>
-      <Button>All Expense</Button>
-      <Button>All Income</Button>
+    <div className={css.сenterButtons}>
+      <Button variant="transparent">All Expense</Button>
+      <Button variant="transparent">All Income</Button>
     </div>
   );
 };

@@ -1,15 +1,15 @@
 .wrapper {
+  width: 197px;
+  height: 46px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  background-color: #171719;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #171719;
   border: none;
   cursor: pointer;
-  padding: 6px 16px;
-  border-radius: 30px;
   user-select: none;
-  width: 220px;
-  height: 56px;
 }
 
 .userInfo {
@@ -19,33 +19,64 @@
 }
 
 .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
   object-fit: cover;
 }
 
 .initial {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #4a90e2;
-  color: white;
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
+  background-color: #0ef387;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .userName {
-  font-size: 16px;
-  color: #333;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.4);
 }
 
 .chevronIcon {
   width: 20px;
   height: 20px;
   fill: none;
-  margin-right: 16px;
+}
+
+/* Планшет і вище (від 768px) */
+@media screen and (min-width: 768px) {
+  .wrapper {
+    width: 220px;
+    height: 56px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .initial {
+    width: 44px;
+    height: 44px;
+  }
+
+  .userName {
+    font-size: 16px;
+  }
+}
+
+/* Десктоп (від 1440px) */
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    width: 220px;
+    height: 56px;
+    margin-right: 98px;
+  }
 }

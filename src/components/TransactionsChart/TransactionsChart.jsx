@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import styles from "./TransactionsChart.module.css";
 
@@ -14,13 +14,20 @@ const MOCK_DATA = [
 
 export const TransactionsChart = ({ data = MOCK_DATA }) => {
   const total = data.reduce((acc, item) => acc + item.value, 0);
-  const [ready, setReady] = React.useState(false);
 
-  React.useEffect(() => {
-    const timeout = setTimeout(() => setReady(true), 100); // задержка, чтобы DOM обновился
-    return () => clearTimeout(timeout);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 375);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 375);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
-  if (!ready) return null;
+
+  const innerRadius = isMobile ? 70 : 95;
+  const outerRadius = isMobile ? 121 : 146;
 
   return (
     <div className={styles["expenses-chart"]}>
@@ -29,7 +36,11 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
       <div className={styles["chart-and-list"]}>
         <div className={styles["chart-wrapper"]}>
           <div className={styles.centerTotal}>{"100"}%</div>
-          <ResponsiveContainer width="100%" height={152}>
+          <ResponsiveContainer
+            className={styles.responsiveWrapper}
+            width="100%"
+            height="100%"
+          >
             <PieChart>
               <Pie
                 className={styles.rechartsWrapper}
@@ -39,8 +50,8 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
                 cy="100%"
                 startAngle={180}
                 endAngle={0}
-                innerRadius={95}
-                outerRadius={146}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
                 paddingAngle={-8}
                 border-radius={10}
                 cornerRadius={10}

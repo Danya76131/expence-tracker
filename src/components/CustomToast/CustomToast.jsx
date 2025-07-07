@@ -1,28 +1,10 @@
-import { toast } from 'react-toastify';
-import styles from './CustomToast.module.css';
+import styles from "./CustomToast.module.css";
 
-const showSuccessToast = (msg) => {
-  toast(
-    <span className={styles.toastBase}>{msg}</span>,
-    {
-      className: `${styles.toastWrapper} ${styles.toastWrapperSuccess}`,
-      bodyClassName: styles.toastBody,
-      hideProgressBar: true,
-      
-    }
-  );
+const ShowSuccessToast = ({ msg }) => {
+  return <div className={styles.toastWrapperSuccess}> {msg}</div>;
+};
+const ShowErrorToast = ({ msg }) => {
+  return <div className={styles.toastWrapperError}> {msg}</div>;
 };
 
-const showErrorToast = (msg) => {
-  toast(
-    <span className={styles.toastBase}>{msg}</span>,
-    {
-      className: `${styles.toastWrapper} ${styles.toastWrapperError}`,
-      bodyClassName: styles.toastBody,
-      hideProgressBar: true,
-      
-    }
-  );
-};
-
-export { showSuccessToast, showErrorToast };
+export { ShowSuccessToast, ShowErrorToast };

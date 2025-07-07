@@ -22,6 +22,9 @@
 }
 
 @media screen and (min-width: 768px) {
+  .wrapper {
+    height: 90px;
+  }
   .navDesktop {
     display: none;
   }
@@ -32,10 +35,6 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .wrapper {
-    padding: 0 100px;
-  }
-
   .navDesktop {
     display: flex;
     align-items: center;

@@ -3,6 +3,7 @@ import css from "./BurgerMenu.module.css";
 import TransactionsHistoryNav from "../TransactionsHistoryNav/TransactionsHistoryNav";
 import UserBarBtn from "../UserBarBtn/UserBarBtn";
 import UserPanel from "../UserPanel/UserPanel";
+import Icon from "../UI/Icon/Icon";
 
 const BurgerMenu = ({
   isOpen,
@@ -21,7 +22,6 @@ const BurgerMenu = ({
         onClose();
       }
     };
-
     document.addEventListener("keydown", handleEsc);
     return () => {
       document.removeEventListener("keydown", handleEsc);
@@ -30,12 +30,23 @@ const BurgerMenu = ({
 
   if (!isOpen) return null;
 
+  const handleCloseByClick = () => {
+    onClose();
+  };
+
   return (
     <>
       <div className={css.backdrop} onClick={onClose} />
       <nav className={css.menu}>
-        <TransactionsHistoryNav />
-        <div className={css.userBarBtn}>
+        <button
+          className={css.closeBtn}
+          onClick={handleCloseByClick}
+          aria-label="Close menu"
+        >
+          <Icon name="close" className={css.closeIcon} />
+        </button>
+
+        <div className={css.userBarBtn} onClick={handleCloseByClick}>
           <UserBarBtn
             ref={userBarBtnRef}
             userData={{ firstName, lastName }}
@@ -50,6 +61,10 @@ const BurgerMenu = ({
             userBarBtnRef={userBarBtnRef}
             isBurger={true}
           />
+        </div>
+
+        <div onClick={handleCloseByClick}>
+          <TransactionsHistoryNav />
         </div>
       </nav>
     </>
