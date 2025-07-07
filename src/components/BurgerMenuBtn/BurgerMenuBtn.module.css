@@ -3,7 +3,6 @@
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  color: var(--text-color, #000);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,6 +10,19 @@
 }
 
 .burger {
+  width: 36px;
+  height: 36px;
   stroke-width: 3px;
-  stroke: #fafafa;
+  stroke: var(--color-text-primary);
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    margin-right: 32px;
+  }
+
+  .burger {
+    width: 44px;
+    height: 44px;
+  }
 }
