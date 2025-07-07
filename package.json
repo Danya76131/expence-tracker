@@ -33,6 +33,7 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "toast": "^0.5.4",
+    "vite-plugin-svgr": "^4.3.0",
     "yup": "^1.6.1"
   },
   "devDependencies": {
