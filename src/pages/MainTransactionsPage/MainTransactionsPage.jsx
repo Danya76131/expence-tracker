@@ -1,4 +1,3 @@
-import CategoriesModal from "../../components/CategoriesModal/CategoriesModal";
 import Container from "../../components/Container/Container";
 import Section from "../../components/Section/Section";
 import TransactionsChart from "../../components/TransactionsChart/TransactionsChart";
@@ -14,7 +13,7 @@ const MainTransactionsPage = () => {
           Capture and organize every penny spent with ease! A clear view of your
           financial habits at your fingertips.
         </p>
-        <CategoriesModal />
+
         <TransactionsTotalAmount />
         <TransactionsChart />
       </Container>
