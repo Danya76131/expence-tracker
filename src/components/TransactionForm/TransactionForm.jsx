@@ -101,9 +101,10 @@ const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
     <div className={s.formikWrapper}>
       <Formik
         initialValues={
-          editedData === null
-            ? initialValues
-            : { ...editedData, category: editedData.category._id }
+          initialValues
+          // editedData === null
+          //   ? initialValues
+          //   : { ...editedData, category: editedData.category._id }
         }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}
