@@ -1,30 +1,43 @@
-/* Authenticated.module.css */
-
-.header {
+.wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  align-items: center;
+  height: 64px;
+  background-color: #0c0d0d;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
 }
 
-/* За замовчуванням — мобілка та планшет */
-.tabletMobileOnly {
-  display: block;
-}
-
-.desktopOnly {
+.navDesktop {
   display: none;
 }
 
-/* На десктопі (≥1440px) */
-@media screen and (min-width: 1440px) {
-  .tabletMobileOnly {
+.navMobile {
+  display: flex;
+  align-items: center;
+}
+
+.userBarBtn {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .navDesktop {
     display: none;
   }
 
-  .desktopOnly {
+  .navMobile {
     display: flex;
-    gap: 24px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    padding: 0 100px;
+  }
+
+  .navDesktop {
+    display: flex;
     align-items: center;
   }
 }
