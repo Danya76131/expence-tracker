@@ -19,6 +19,7 @@
   padding: 28px 20px;
   color: #aaa;
   width: 100%;
+  margin-top: 40px;
 }
 
 .title {
@@ -109,5 +110,6 @@
   .expenses-chart {
     width: 630px;
     padding: 40px 40px 60px 40px;
+    margin-top: 0;
   }
 }

@@ -9,14 +9,24 @@ const MainTransactionsPage = () => {
   return (
     <Section>
       <Container>
-        <h2 className={styles.mainTitle}>Expense Log</h2>
-        <p className={styles.mainText}>
-          Capture and organize every penny spent with ease! A clear view of your
-          financial habits at your fingertips.
-        </p>
-        <TransactionsTotalAmount />
-        <TransactionsChart />
-        <TransactionForm />
+        <div className={styles.mainWrapper}>
+          <div className={styles.textWrapper}>
+            <h2 className={styles.mainTitle}>Expense Log</h2>
+            <p className={styles.mainText}>
+              Capture and organize every penny spent with ease! A clear view of
+              your financial habits at your fingertips.
+            </p>
+          </div>
+          <div className={styles.total}>
+            <TransactionsTotalAmount />
+          </div>
+          <div className={styles.form}>
+            <TransactionForm />
+          </div>
+          <div className={styles.chart}>
+            <TransactionsChart />
+          </div>
+        </div>
       </Container>
     </Section>
   );
