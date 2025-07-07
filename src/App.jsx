@@ -3,13 +3,14 @@ import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import RestrictedRoute from "./routes/RestrictedRoute";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "./redux/user/operations";
 import { selectAccessToken } from "./redux/auth/selectors";
 import { Toaster } from "react-hot-toast";
+import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -72,7 +73,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
-              <Route path="*" element={<Navigate to="/" />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </SharedLayout>
         </AnimatePresence>
