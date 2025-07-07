@@ -15,6 +15,7 @@ import {
   selectCategoryExpenses,
   selectCategoryIncomes,
 } from "../../redux/categories/selectors";
+import { closeModal } from "../../redux/modal/slice";
 // import { getTransactions } from "../../redux/transactions/operations";
 
 const CategoriesModal = () => {
@@ -41,6 +42,10 @@ const CategoriesModal = () => {
     console.log(id);
     setCategoryId(id);
     setIsEditMode(true);
+  };
+
+  const handleCheck = (e) => {
+    dispatch(closeModal());
   };
 
   const handleSubmitCategory = async (event) => {
@@ -169,14 +174,19 @@ const CategoriesModal = () => {
               >
                 <p>{item.categoryName}</p>
                 <span className={styles.icons}>
-                  <span className={styles.check}>
+                  <button
+                    onClick={() => {
+                      handleCheck(item);
+                    }}
+                    className={styles.check}
+                  >
                     <Icon
                       name="check"
                       size={14}
                       fill="transparent"
                       stroke="#0ef387"
                     />
-                  </span>
+                  </button>
                   <button
                     className={styles.editBtn}
                     onClick={(e) => {
