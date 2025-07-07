@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px, auto;
 }
 
 .logoIcon {
   width: 27px;
   height: 16px;
+  margin-left: 24px;
 }
 
 .logoText {
