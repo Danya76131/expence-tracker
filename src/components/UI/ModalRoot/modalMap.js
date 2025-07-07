@@ -18,6 +18,8 @@
  * - Не додавай функції або обгортки — лише компоненти
  */
 
+import CategoriesModal from "../../CategoriesModal/CategoriesModal";
+
 /**
  * modalMap — maps modalType string keys to corresponding React components.
  *
@@ -38,8 +40,7 @@
  */
 
 const modalMap = {
-  // ModalContentOne,
-  // ModalContentTwo,
+  CategoriesModal,
   // add other modals
 };
 
