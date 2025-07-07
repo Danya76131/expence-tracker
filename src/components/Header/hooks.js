@@ -5,7 +5,7 @@ export const useAuth = () => {
 
   return {
     isAuthenticated,
-    user: isAuthenticated ? { firstName: "Alex", lastName: "Browly" } : null,
+    user: isAuthenticated ? { firstName: "Alex", lastName: "Rybachok" } : null,
     logOut: () => setIsAuthenticated(false),
   };
 };

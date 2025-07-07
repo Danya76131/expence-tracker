@@ -1,6 +1,6 @@
 .wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   height: 64px;
   background-color: #0c0d0d;
