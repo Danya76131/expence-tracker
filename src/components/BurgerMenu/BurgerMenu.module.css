@@ -1,60 +1,45 @@
-.overlay {
+/* Mobile first (до 768px) */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.menu {
   position: fixed;
   top: 0;
   right: 0;
-  width: 100vw;
+  width: 100vw; /* мобілка і маленькі планшети - повна ширина */
   height: 100vh;
-  background-color: rgba(18, 20, 23, 0.8);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  justify-content: flex-end;
-}
+  background-color: var(--bg-color, #fff);
+  padding: 1.5rem;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
 
-.open {
-  transform: translateX(0);
-}
-
-.panel {
-  background-color: #00ff83;
-  height: 100%;
-  width: 100%;
-  max-width: 375px;
-  padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  position: relative;
+  gap: 2rem;
 }
 
-@media (min-width: 768px) {
-  .panel {
-    max-width: 50vw;
+/* Планшет і вище (від 768px) — ширина 50% */
+@media screen and (min-width: 768px) {
+  .menu {
+    width: 50vw; /* 50% ширини екрану */
   }
 }
 
-.closeBtn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: transparent;
-  font-size: 28px;
-  border: none;
-  cursor: pointer;
-  color: #000;
-}
+/* Десктоп (від 1440px) — ховаємо меню */
+@media screen and (min-width: 1440px) {
+  .menu {
+    display: none;
+  }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 60px;
-  gap: 40px;
-}
-
-.menuButtons {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  .backdrop {
+    display: none;
+  }
 }

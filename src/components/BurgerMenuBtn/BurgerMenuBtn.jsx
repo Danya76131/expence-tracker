@@ -3,13 +3,13 @@ import css from "./BurgerMenuBtn.module.css";
 
 const BurgerMenuBtn = ({ onClick }) => {
   return (
-    <button className={css.wrapper} onClick={onClick} type="button">
-      <Icon
-        name="burger-menu"
-        size={30}
-        fill="currentColor"
-        className={css.burger}
-      />
+    <button
+      className={css.wrapper}
+      type="button"
+      aria-label="Open menu"
+      onClick={onClick}
+    >
+      <Icon name="burger-menu" size={36} className={css.burger} />
     </button>
   );
 };

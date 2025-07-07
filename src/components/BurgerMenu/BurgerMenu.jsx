@@ -1,54 +1,58 @@
 import { useEffect } from "react";
 import css from "./BurgerMenu.module.css";
+import TransactionsHistoryNav from "../TransactionsHistoryNav/TransactionsHistoryNav";
+import UserBarBtn from "../UserBarBtn/UserBarBtn";
 import UserPanel from "../UserPanel/UserPanel";
-import Button from "../UI/Button/Button";
 
 const BurgerMenu = ({
   isOpen,
   onClose,
-  userData,
-  onLogout,
-  onOpenSettings,
+  firstName,
+  lastName,
+  toggleUserPanel,
+  isUserPanelOpen,
+  openUserSetsModal,
+  handleLogout,
+  userBarBtnRef,
 }) => {
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
+    const handleEsc = (e) => {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
 
   return (
-    <div className={`${css.overlay} ${isOpen ? css.open : ""}`}>
-      <div className={css.panel}>
-        <button
-          className={css.closeBtn}
-          onClick={onClose}
-          aria-label="Close menu"
-        >
-          ✕
-        </button>
-
-        <div className={css.content}>
-          <UserPanel
-            userBarBtnRef={null}
-            isUserPanelOpen={true}
-            toggleUserPanel={onClose}
-            handleLogout={onLogout}
-            openUserSetsModal={onOpenSettings}
-            insideBurger={true}
-            userData={userData}
+    <>
+      <div className={css.backdrop} onClick={onClose} />
+      <nav className={css.menu}>
+        <TransactionsHistoryNav />
+        <div className={css.userBarBtn}>
+          <UserBarBtn
+            ref={userBarBtnRef}
+            userData={{ firstName, lastName }}
+            toggleUserPanel={toggleUserPanel}
+            isUserPanelOpen={isUserPanelOpen}
           />
-
-          <div className={css.menuButtons}>
-            <Button variant="primary">All Expense</Button>
-            <Button variant="secondary">All Income</Button>
-          </div>
+          <UserPanel
+            openUserSetsModal={openUserSetsModal}
+            handleLogout={handleLogout}
+            isUserPanelOpen={isUserPanelOpen}
+            toggleUserPanel={toggleUserPanel}
+            userBarBtnRef={userBarBtnRef}
+            isBurger={true}
+          />
         </div>
-      </div>
-    </div>
+      </nav>
+    </>
   );
 };
 

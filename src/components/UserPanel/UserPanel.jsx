@@ -9,13 +9,14 @@ const UserPanel = ({
   isUserPanelOpen,
   toggleUserPanel,
   userBarBtnRef,
-  userData,
-  insideBurger = false,
+  isBurger = false,
 }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    if (isBurger) return; // для бургер-меню не закриваємо при кліку поза
+
+    const handleClickOutside = (event) => {
       if (
         isUserPanelOpen &&
         dropdownRef.current &&
@@ -27,26 +28,39 @@ const UserPanel = ({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef]);
+    if (isUserPanelOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef, isBurger]);
+
+  const panelClassName = isBurger
+    ? css.mobileWrapper
+    : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
 
   return (
-    <div className={insideBurger ? css.burgerWrapper : css.panelWrapper}>
-      <UserBarBtn
-        toggleUserPanel={toggleUserPanel}
-        isUserPanelOpen={isUserPanelOpen}
-        userBarBtnRef={userBarBtnRef}
-        userData={userData}
-      />
-      {isUserPanelOpen && (
-        <div ref={dropdownRef}>
-          <Backdrop
-            openUserSetsModal={openUserSetsModal}
-            handleLogout={handleLogout}
-          />
-        </div>
-      )}
+    <div ref={panelRef} className={panelClassName}>
+      <button onClick={openUserSetsModal} className={css.button} type="button">
+        <Icon
+          name="user"
+          size={16}
+          stroke="currentColor"
+          className={css.icon}
+        />
+        <span>Profile settings</span>
+      </button>
+      <button onClick={handleLogout} className={css.button} type="button">
+        <Icon
+          name="log-out"
+          size={16}
+          stroke="currentColor"
+          className={css.icon}
+        />
+        <span>Log out</span>
+      </button>
     </div>
   );
 };

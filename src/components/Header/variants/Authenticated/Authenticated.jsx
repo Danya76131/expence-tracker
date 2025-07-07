@@ -1,15 +1,20 @@
 import { useState, useRef } from "react";
 import Logo from "../../../Logo/Logo";
-import TransactionsHistoryNav from "../../../TransactionsHistoryNav/TransactionsHistoryNav";
+import UserBarBtn from "../../../UserBarBtn/UserBarBtn";
 import UserPanel from "../../../UserPanel/UserPanel";
+import TransactionsHistoryNav from "../../../TransactionsHistoryNav/TransactionsHistoryNav";
 import BurgerMenuBtn from "../../../BurgerMenuBtn/BurgerMenuBtn";
 import BurgerMenu from "../../../BurgerMenu/BurgerMenu";
+
 import css from "./Authenticated.module.css";
 
 const Authenticated = ({ userData, handleLogout, openUserSetsModal }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
-  const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+
   const userBarBtnRef = useRef(null);
+
+  const userData = { firstName, lastName, avatar };
 
   const toggleUserPanel = () => {
     setIsUserPanelOpen((prev) => !prev);
@@ -19,43 +24,66 @@ const Authenticated = ({ userData, handleLogout, openUserSetsModal }) => {
     setIsBurgerMenuOpen(true);
   };
 
+  const handleLogout = () => {
+    if (logOut) {
+      logOut();
+    } else {
+      alert("Логіка виходу");
+    }
+    setIsUserPanelOpen(false);
+    setIsBurgerOpen(false);
+  };
+
+  const toggleBurgerMenu = () => {
+    if (isUserPanelOpen) setIsUserPanelOpen(false);
+    setIsBurgerOpen((prev) => !prev);
+  };
+
   const closeBurgerMenu = () => {
-    setIsBurgerMenuOpen(false);
+    setIsBurgerOpen(false);
+    setIsUserPanelOpen(false);
   };
 
   return (
-    <>
-      <header className={css.header}>
-        <Logo />
+    <header className={css.wrapper}>
+      <Logo />
 
-        {/* ТІЛЬКИ ДЛЯ ДЕСКТОПУ */}
-        <div className={css.desktopOnly}>
-          <TransactionsHistoryNav />
-          <UserPanel
-            openUserSetsModal={openUserSetsModal}
-            handleLogout={handleLogout}
-            isUserPanelOpen={isUserPanelOpen}
-            toggleUserPanel={toggleUserPanel}
-            userBarBtnRef={userBarBtnRef.current}
-            userData={userData}
-          />
-        </div>
+      {/* Desktop */}
+      <div className={css.navDesktop}>
+        <TransactionsHistoryNav />
+      </div>
+      <div className={css.userBarBtn}>
+        <UserBarBtn
+          ref={userBarBtnRef}
+          userData={userData}
+          toggleUserPanel={toggleUserPanel}
+          isUserPanelOpen={isUserPanelOpen}
+        />
+        <UserPanel
+          openUserSetsModal={openUserSetsModal}
+          handleLogout={handleLogout}
+          isUserPanelOpen={isUserPanelOpen}
+          toggleUserPanel={toggleUserPanel}
+          userBarBtnRef={userBarBtnRef}
+        />
+      </div>
 
-        {/* ТІЛЬКИ ДЛЯ МОБІЛКИ ТА ПЛАНШЕТУ */}
-        <div className={css.tabletMobileOnly}>
-          <BurgerMenuBtn onClick={openBurgerMenu} />
-        </div>
-      </header>
-
-      {/* БУРГЕР МЕНЮ ДЛЯ МОБІЛКИ ТА ПЛАНШЕТУ */}
-      <BurgerMenu
-        isOpen={isBurgerMenuOpen}
-        onClose={closeBurgerMenu}
-        userData={userData}
-        onLogout={handleLogout}
-        onOpenSettings={openUserSetsModal}
-      />
-    </>
+      {/* Mobile / Tablet */}
+      <div className={css.navMobile}>
+        <BurgerMenuBtn onClick={toggleBurgerMenu} />
+        <BurgerMenu
+          isOpen={isBurgerOpen}
+          onClose={closeBurgerMenu}
+          firstName={firstName}
+          lastName={lastName}
+          toggleUserPanel={toggleUserPanel}
+          isUserPanelOpen={isUserPanelOpen}
+          openUserSetsModal={openUserSetsModal}
+          handleLogout={handleLogout}
+          userBarBtnRef={userBarBtnRef}
+        />
+      </div>
+    </header>
   );
 };
 

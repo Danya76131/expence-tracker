@@ -39,5 +39,16 @@
   .navDesktop {
     display: flex;
     align-items: center;
+    gap: 1rem;
+  }
+
+  .userBarBtn {
+    display: flex;
+    color: white;
+    position: relative;
+  }
+
+  .navMobile {
+    display: none;
   }
 }
