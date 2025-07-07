@@ -1,71 +1,96 @@
-// import styles from "./TransactionsHistoryPage.module.css";
-
-// const TransactionsHistoryPage = () => {
-//   return <div className={styles.wrapper}>TransactionsHistoryPage</div>;
-// };
-
-// export default TransactionsHistoryPage;
-
 // Oleksi @mail.com
 // 1234Ol_1234 @
+// brabrabra@gmail.com
 
 import { useEffect, useState } from "react";
-
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTransactionByType } from "../../redux/transactions/selectors";
 import {
-  deleteTransaction,
   getTransactions,
+  deleteTransaction,
+  updateTransactions,
 } from "../../redux/transactions/operations";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
-// import TransactionForm from "../../components/TransactionForm/TransactionForm";
+import TransactionForm from "../../components/TransactionForm/TransactionForm";
+import {
+  ShowErrorToast,
+  ShowSuccessToast,
+} from "../../components/CustomToast/CustomToast";
+import toast from "react-hot-toast";
+// import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 const TransactionsHistoryPage = () => {
-  const { transactionsType } = useParams();
+  const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
 
-  // const [transactions, setTransactions] = useState([]);
+  const transactions = useSelector(selectTransactionByType(transactionsType));
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState({});
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [categoryName, setCategoryName] = useState("");
 
   useEffect(() => {
     try {
       dispatch(getTransactions(transactionsType));
-      // setTransactions(data);
-      // console.log(data);
     } catch (err) {
       console.error(err);
     }
-  }, [transactionsType]);
+  }, [transactionsType, dispatch]);
 
   const handleDelete = async (id) => {
-    try {
-      await deleteTransaction(id);
-      // setTransactions((prev) => prev.filter((tx) => tx.id !== id));
-      toast.success("Транзакцію видалено");
-    } catch (err) {
-      toast.error("Не вдалося видалити транзакцію");
-      console.error(err);
-    }
+    dispatch(deleteTransaction(id))
+      .unwrap()
+      .then(() =>
+        toast.custom(<ShowSuccessToast msg={"Транзакцію видалено !"} />)
+      )
+      .catch(() =>
+        toast.custom(<ShowErrorToast msg={"Не вдалося видалити транзакцію"} />)
+      );
   };
 
   const handleEditClick = (tx) => {
+    console.log("HistoryPage --> handleEditClick: ", tx);
     setSelectedTransaction(tx);
     setIsEditModalOpen(true);
+    setCategoryName(tx.category.categoryName);
   };
+  console.log("HistoryPage --> Edit local state: ", selectedTransaction);
+
+  // const handleFormSubmit = (values) => {
+  //   dispatch(updateTransactions(values))
+  //     .unwrap()
+  //     .then(() => {
+  //       toast.custom(<ShowSuccessToast msg={"Транзакцію оновлено !"} />);
+  //       dispatch(getTransactions(transactionsType)); // оновлення списку
+  //     })
+  //     .catch(() =>
+  //       toast.custom(<ShowErrorToast msg={"Не вдалося оновити транзакцію"} />)
+  //     );
+  // };
 
   return (
     <div>
-      {/* <TransactionsList
+      <TransactionsList
         transactions={transactions}
         type={transactionsType}
         onDelete={handleDelete}
         onEdit={handleEditClick}
-      /> */}
-      {/* {isEditModalOpen && (
-        <TransactionForm selectedTransaction={selectedTransaction} />
-      )} */}
+      />
+      {/* * dispatch(openModal({ modalType: 'MyModal', modalProps: { id: 123, onClose: fn } })) */}
+
+      {isEditModalOpen && (
+        //  onClose={() => setIsEditModalOpen(false)}
+        <TransactionForm
+          editedData={{
+            ...selectedTransaction,
+            category: selectedTransaction.category._id,
+          }}
+          categoryName={categoryName}
+          // onSubmit={handleFormSubmit}
+        />
+      )}
     </div>
   );
 };

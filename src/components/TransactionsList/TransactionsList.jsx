@@ -3,16 +3,9 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { FiSearch } from "react-icons/fi";
 import { BsCalendar2Week } from "react-icons/bs";
 import styles from "./TransactionsList.module.css";
-// import { useSelector } from "react-redux";
-// import {
-//   selectAllExpenses,
-//   selectAllIncomes,
-// } from "../../redux/transactions/selectors";
 
 const TransactionsList = ({ transactions, onDelete, onEdit }) => {
-  // const expensesList = useSelector(selectAllExpenses);
-  // const incomesList = useSelector(selectAllIncomes);
-
+  console.log(transactions);
   return (
     <div className={styles.wrapper}>
       {/* Фільтр */}
@@ -69,7 +62,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
           </tr> */}
             {transactions.map((tx) => (
               <tr key={tx._id}>
-                <td className={styles.cell}>{tx.category}</td>
+                <td className={styles.cell}>{tx.category.categoryName}</td>
                 <td className={styles.cell}>{tx.comment}</td>
                 <td className={styles.cell}>{tx.date}</td>
                 <td className={styles.cell}>{tx.time}</td>

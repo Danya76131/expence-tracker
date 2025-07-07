@@ -73,13 +73,18 @@ const initialValues = {
   comment: "",
 };
 
-const TransactionForm = ({ type }) => {
+const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
+  console.log(
+    "TransactionForm take data from HistoryPage -->",
+    editedData,
+    categoryName,
+    onSubmit
+  );
   const dispatch = useDispatch();
   const [isModalOpen, setModalOpen] = useState(false);
   const dateRef = useRef(null);
   const timeRef = useRef(null);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectCategory, setSelectCategory] = useState(null);
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -95,7 +100,11 @@ const TransactionForm = ({ type }) => {
   return (
     <div className={s.formikWrapper}>
       <Formik
-        initialValues={initialValues}
+        initialValues={
+          editedData === null
+            ? initialValues
+            : { ...editedData, category: editedData.category._id }
+        }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}
       >
@@ -202,7 +211,7 @@ const TransactionForm = ({ type }) => {
               name="categoryInput"
               placeholder="Select category"
               type="text"
-              value={selectCategory || "Select category"}
+              value={categoryName || "Select category"}
               className={s.categoryInput}
               onClick={() => setModalOpen(true)}
             />
