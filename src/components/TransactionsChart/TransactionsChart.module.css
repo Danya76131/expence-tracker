@@ -7,10 +7,10 @@
   height: 155px;
   position: relative;
   margin-bottom: 42px;
-  min-width: 0;
   pointer-events: none;
   user-select: none;
   /* border: 1px solid green; */
+  width: 100%;
 }
 
 .expenses-chart {
