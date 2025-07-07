@@ -1,17 +1,58 @@
 .wrapper {
-  background-color: black;
+  background-color: #0c0d0d;
   height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 100px;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
 }
 
-.centerButtons {
+.navDesktop {
+  display: none;
+}
+
+.navMobile {
   display: flex;
-  gap: 16px;
+  align-items: center;
 }
 
 .userBarBtn {
-  color: white;
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 0 32px;
+  }
+
+  .navDesktop {
+    display: none;
+  }
+
+  .navMobile {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    padding: 0 100px;
+  }
+
+  .navDesktop {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .userBarBtn {
+    display: flex;
+    color: white;
+    position: relative;
+  }
+
+  .navMobile {
+    display: none;
+  }
 }

@@ -1,14 +1,20 @@
 import { useState, useRef } from "react";
 import Logo from "../../../Logo/Logo";
-import Button from "../../../UI/Button/Button";
 import UserBarBtn from "../../../UserBarBtn/UserBarBtn";
 import UserPanel from "../../../UserPanel/UserPanel";
-import css from "./Authenticated.module.css";
 import TransactionsHistoryNav from "../../../TransactionsHistoryNav/TransactionsHistoryNav";
+import BurgerMenuBtn from "../../../BurgerMenuBtn/BurgerMenuBtn";
+import BurgerMenu from "../../../BurgerMenu/BurgerMenu";
+
+import css from "./Authenticated.module.css";
 
 const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+
   const userBarBtnRef = useRef(null);
+
+  const userData = { firstName, lastName, avatar };
 
   const toggleUserPanel = () => {
     setIsUserPanelOpen((prev) => !prev);
@@ -24,14 +30,28 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
     } else {
       alert("Логіка виходу");
     }
+    setIsUserPanelOpen(false);
+    setIsBurgerOpen(false);
   };
 
-  const userData = { firstName, lastName, avatar };
+  const toggleBurgerMenu = () => {
+    if (isUserPanelOpen) setIsUserPanelOpen(false);
+    setIsBurgerOpen((prev) => !prev);
+  };
+
+  const closeBurgerMenu = () => {
+    setIsBurgerOpen(false);
+    setIsUserPanelOpen(false);
+  };
 
   return (
-    <div className={css.wrapper} style={{ position: "relative" }}>
+    <header className={css.wrapper}>
       <Logo />
-      <TransactionsHistoryNav />
+
+      {/* Desktop */}
+      <div className={css.navDesktop}>
+        <TransactionsHistoryNav />
+      </div>
       <div className={css.userBarBtn}>
         <UserBarBtn
           ref={userBarBtnRef}
@@ -47,7 +67,23 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
           userBarBtnRef={userBarBtnRef}
         />
       </div>
-    </div>
+
+      {/* Mobile / Tablet */}
+      <div className={css.navMobile}>
+        <BurgerMenuBtn onClick={toggleBurgerMenu} />
+        <BurgerMenu
+          isOpen={isBurgerOpen}
+          onClose={closeBurgerMenu}
+          firstName={firstName}
+          lastName={lastName}
+          toggleUserPanel={toggleUserPanel}
+          isUserPanelOpen={isUserPanelOpen}
+          openUserSetsModal={openUserSetsModal}
+          handleLogout={handleLogout}
+          userBarBtnRef={userBarBtnRef}
+        />
+      </div>
+    </header>
   );
 };
 

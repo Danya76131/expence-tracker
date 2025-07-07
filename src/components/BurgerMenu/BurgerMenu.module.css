@@ -1,0 +1,45 @@
+/* Mobile first (до 768px) */
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw; /* мобілка і маленькі планшети - повна ширина */
+  height: 100vh;
+  background-color: var(--bg-color, #fff);
+  padding: 1.5rem;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Планшет і вище (від 768px) — ширина 50% */
+@media screen and (min-width: 768px) {
+  .menu {
+    width: 50vw; /* 50% ширини екрану */
+  }
+}
+
+/* Десктоп (від 1440px) — ховаємо меню */
+@media screen and (min-width: 1440px) {
+  .menu {
+    display: none;
+  }
+
+  .backdrop {
+    display: none;
+  }
+}

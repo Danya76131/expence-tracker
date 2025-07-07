@@ -7,11 +7,14 @@ const UserPanel = ({
   handleLogout,
   isUserPanelOpen,
   toggleUserPanel,
-  userBarBtnRef, // реф на кнопку
+  userBarBtnRef,
+  isBurger = false,
 }) => {
   const panelRef = useRef(null);
 
   useEffect(() => {
+    if (isBurger) return; // для бургер-меню не закриваємо при кліку поза
+
     const handleClickOutside = (event) => {
       if (
         panelRef.current &&
@@ -19,7 +22,6 @@ const UserPanel = ({
         userBarBtnRef.current &&
         !userBarBtnRef.current.contains(event.target)
       ) {
-        // Клік поза панеллю і поза кнопкою - закриваємо панель
         toggleUserPanel();
       }
     };
@@ -31,15 +33,14 @@ const UserPanel = ({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef]);
+  }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef, isBurger]);
+
+  const panelClassName = isBurger
+    ? css.mobileWrapper
+    : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
 
   return (
-    <div
-      ref={panelRef}
-      className={`${css.wrapper} ${
-        isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed
-      }`}
-    >
+    <div ref={panelRef} className={panelClassName}>
       <button onClick={openUserSetsModal} className={css.button} type="button">
         <Icon
           name="user"

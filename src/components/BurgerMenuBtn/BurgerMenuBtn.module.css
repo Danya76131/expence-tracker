@@ -1,0 +1,15 @@
+.wrapper {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--text-color, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burger {
+  stroke-width: 3px;
+  stroke: #fafafa;
+}
