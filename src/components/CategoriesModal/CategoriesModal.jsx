@@ -79,7 +79,7 @@ const CategoriesModal = () => {
           toast.success("New Category added successfully");
           console.log("success");
         })
-        .catch((error) => {
+        .catch(() => {
           // console.log("Error", error);
           toast.error("Error adding category  ");
         });
@@ -97,7 +97,7 @@ const CategoriesModal = () => {
     dispatch(deleteCategory({ id, type }))
       .unwrap()
       .then(() => toast.success("Category deleted successfully"))
-      .catch((error) => {
+      .catch(() => {
         toast.error("Cannot delete category with existing transactions");
       })
       .finally(setIsButtonDisabled(false));
