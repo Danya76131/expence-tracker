@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { selectRefreshToken, selectSid } from './selectors';
+// import toast from 'react-hot-toast';
+// import { ShowSuccessToast, ShowErrorToast } from '../../components/CustomToast/';
 
 
 axios.defaults.baseURL = 'https://expense-tracker.b.goit.study/api/';
@@ -23,9 +25,7 @@ export const register = createAsyncThunk(
       const response = await axios.post('/auth/register', credentials, {
         transformRequest: [transformToJSON]
       });
-
-      
-
+      // toast.custom(<ShowSuccessToast msg="Registration successful!" />);
       return response.data;
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message);
@@ -41,8 +41,7 @@ export const register = createAsyncThunk(
       } else if (error.message) {
         errorMessage = error.message;
       }
-
-    
+      // toast.custom(<ShowErrorToast msg={errorMessage} />);
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }
@@ -56,16 +55,12 @@ export const login = createAsyncThunk(
       const response = await axios.post('/auth/login', credentials, {
         transformRequest: [transformToJSON]
       });
-
       const { user, accessToken, refreshToken, sid } = response.data;
-
       if (!user || !accessToken || !refreshToken || !sid) {
         throw new Error('Invalid server response structure');
       }
-
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-
+      // toast.custom(<ShowSuccessToast msg="Login successful!" />);
       return response.data;
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
@@ -79,8 +74,7 @@ export const login = createAsyncThunk(
           errorMessage = data.message || 'Invalid input data';
         }
       }
-
-     
+      // toast.custom(<ShowErrorToast msg={errorMessage} />);
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }
@@ -95,7 +89,7 @@ export const refreshUser = createAsyncThunk(
     const sid = selectSid(state);
 
     if (!refreshToken || !sid) {
-      
+      // toast.custom(<ShowErrorToast msg="Missing refresh token or session ID" />);
       return thunkAPI.rejectWithValue('Missing refresh token or session ID');
     }
 
@@ -109,14 +103,12 @@ export const refreshUser = createAsyncThunk(
       const { accessToken, refreshToken: newRefreshToken, sid: newSid } = response.data;
 
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
+      // toast.custom(<ShowSuccessToast msg="Session refreshed successfully!" />);
       return { accessToken, refreshToken: newRefreshToken, sid: newSid };
     } catch (error) {
       console.error('Refresh error:', error.response?.data || error.message);
-
       const errorMessage = error.response?.data?.message || 'Session refresh failed';
-    
-
+      // toast.custom(<ShowErrorToast msg={errorMessage} />);
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }

@@ -5,6 +5,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import RestrictedRoute from "./routes/RestrictedRoute";
 import AnimatedPage from "../src/components/AnimatedPage/AnimatedPage";
 import { AnimatePresence } from "framer-motion";
+import { Toaster } from 'react-hot-toast';
 
 
 
@@ -66,6 +67,13 @@ const App = () => {
               />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
+            <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
             </AnimatePresence>
         </SharedLayout>
       </Suspense>

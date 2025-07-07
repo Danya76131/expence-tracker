@@ -1,18 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AuthForm from '../../components/AuthForm/AuthForm';
 import css from './LoginPage.module.css';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/auth/operations';  
-import { selectIsLoggedIn } from '../../redux/auth/selectors';
+import { selectIsLoggedIn, selectAuthLoading, selectAuthError, selectUser } from '../../redux/auth/selectors';
 import BgImageWrapper from '../../components/BgImageWrapper/BgImageWrapper';
 import { useNavigate } from 'react-router-dom';
-// import {selectAuthLoading} from '../redux/auth/selectors'; // для лоадера
+import { showSuccessToast, showErrorToast } from '../../components/CustomToast/CustomToast';
+import { resetError } from '../../redux/auth/slice';
+
 
 function LoginPage() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
+  const isLoading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+  const user = useSelector(selectUser);
+
+  const prevLoading = useRef(false);
+
+  useEffect(() => {
+    if (prevLoading.current && !isLoading) {
+      if (error) {
+        showErrorToast(error.message || error);
+      }
+    }
+    prevLoading.current = isLoading;
+  }, [isLoading, error]);
+
+  // чистка помилок
+  useEffect(() => {
+    return () => {
+      dispatch(resetError());
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -32,7 +55,6 @@ function LoginPage() {
       .required('Email is required')
       .email('Please enter a valid email')
       .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email cannot contain spaces'),
-
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters')
@@ -41,7 +63,8 @@ function LoginPage() {
 
   const onSubmitAction = async (values) => {
     try {
-      await dispatch(login(values)).unwrap();  
+      const result = await dispatch(login(values)).unwrap();
+      showSuccessToast(`Welcome back, ${result.user?.name || 'User'}!`);
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -65,7 +88,6 @@ function LoginPage() {
           <p className={css.aboutApp}>
             Welcome back to effortless expense tracking! Your financial dashboard awaits.
           </p>
- 
           <AuthForm
             fields={fields}
             submitText="Sign In"

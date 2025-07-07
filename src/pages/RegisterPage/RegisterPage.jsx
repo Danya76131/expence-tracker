@@ -1,15 +1,40 @@
+import React, { useEffect, useRef } from 'react';
 import AuthForm from "../../components/AuthForm/AuthForm"
 import css from './RegisterPage.module.css';
 import * as Yup from 'yup';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../redux/auth/operations';
 import BgImageWrapper from '../../components/BgImageWrapper/BgImageWrapper';
-// import {selectAuthLoading} from '../redux/auth/selectors';
-// імпорт для лоадера
+import { selectAuthLoading, selectAuthError, selectIsLoggedIn, selectUser } from '../../redux/auth/selectors';
+import { showSuccessToast, showErrorToast } from '../../components/CustomToast/CustomToast';
+import { resetError } from '../../redux/auth/slice';
+
 
 function RegisterPage() {
   const dispatch = useDispatch();
-  // const isLoading = useSelector(state => state.auth.isLoading);
+
+  const isLoading = useSelector(selectAuthLoading);
+  const error = useSelector(selectAuthError);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
+  const prevLoading = useRef(false);
+
+  useEffect(() => {
+    if (prevLoading.current && !isLoading) {
+      if (error) {
+        showErrorToast(error.message || error);
+      }
+    }
+    prevLoading.current = isLoading;
+  }, [isLoading, error]);
+
+  // помилки
+  useEffect(() => {
+    return () => {
+      dispatch(resetError());
+    };
+  }, [dispatch]);
 
   const fields = [
     { name: 'name', type: 'text', placeholder: 'Name' },
@@ -33,7 +58,6 @@ function RegisterPage() {
         'Name cannot start/end with spaces',
         (value) => value && value.trim() === value
       ),
-
     email: Yup.string()
       .required('Email is required')
       .email('Please enter a valid email')
@@ -46,7 +70,6 @@ function RegisterPage() {
         'Cyrillic characters are not allowed in email',
         (value) => value && !/[а-яА-ЯёЁ]/.test(value)
       ),
-
     password: Yup.string()
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters'),
@@ -54,7 +77,8 @@ function RegisterPage() {
 
   const onSubmitAction = async (values) => {
     try {
-      await dispatch(register(values)).unwrap();
+      const result = await dispatch(register(values)).unwrap();
+      showSuccessToast(`Registration successful! Welcome, ${result.user?.name || 'User'}!`);
     } catch (error) {
       console.error('Registration error:', error);
       throw error;
@@ -71,26 +95,26 @@ function RegisterPage() {
 
   return (
     <div className="login-wrapper">
-    <div className={css.regPage}>
-      <div className={css.leftSide}>
-        <BgImageWrapper desktopOnly />
+      <div className={css.regPage}>
+        <div className={css.leftSide}>
+          <BgImageWrapper desktopOnly />
+        </div>
+        <div className={css.rightSide}>
+          <h2 className={css.title}>Sign Up</h2>
+          <p className={css.aboutApp}>
+            Step into a world of hassle-free expense management! Your journey towards financial mastery begins here.
+          </p>
+          <AuthForm
+            fields={fields}
+            submitText="Sign Up"
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmitAction={onSubmitAction}
+            navigationData={navigationData}
+            formVariant="register"
+          />
+        </div>
       </div>
-      <div className={css.rightSide}>
-        <h2 className={css.title}>Sign Up</h2>
-        <p className={css.aboutApp}>
-          Step into a world of hassle-free expense management! Your journey towards financial mastery begins here.
-        </p>
-        <AuthForm
-          fields={fields}
-          submitText="Sign Up"
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmitAction={onSubmitAction}
-          navigationData={navigationData}
-          formVariant="register"
-        />
-      </div>
-    </div>
     </div>
   );
 }
