@@ -11,10 +11,7 @@ import {
   editCategory,
   getCategories,
 } from "../../redux/categories/operations";
-import {
-  selectCategoryExpenses,
-  selectCategoryIncomes,
-} from "../../redux/categories/selectors";
+import { selectCategoryIncomes } from "../../redux/categories/selectors";
 import { closeModal } from "../../redux/modal/slice";
 // import { getTransactions } from "../../redux/transactions/operations";
 
@@ -44,7 +41,7 @@ const CategoriesModal = () => {
     setIsEditMode(true);
   };
 
-  const handleCheck = (e) => {
+  const handleCheck = () => {
     dispatch(closeModal());
   };
 
