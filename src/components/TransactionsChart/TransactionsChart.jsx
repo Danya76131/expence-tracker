@@ -36,7 +36,11 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
       <div className={styles["chart-and-list"]}>
         <div className={styles["chart-wrapper"]}>
           <div className={styles.centerTotal}>{"100"}%</div>
-          <ResponsiveContainer className={styles.responsiveWrapper}>
+          <ResponsiveContainer
+            className={styles.responsiveWrapper}
+            width="100%"
+            height="100%"
+          >
             <PieChart>
               <Pie
                 className={styles.rechartsWrapper}
