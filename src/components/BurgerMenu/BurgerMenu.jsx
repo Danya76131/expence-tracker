@@ -43,7 +43,7 @@ const BurgerMenu = ({
           onClick={handleCloseByClick}
           aria-label="Close menu"
         >
-          <Icon name="close" />
+          <Icon name="close" className={css.closeIcon} />
         </button>
 
         <div className={css.userBarBtn} onClick={handleCloseByClick}>

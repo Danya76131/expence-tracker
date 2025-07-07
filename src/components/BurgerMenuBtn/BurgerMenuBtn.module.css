@@ -9,6 +9,11 @@
   margin-right: 20px;
 }
 
+.wrapper:focus,
+.wrapper:hover {
+  border: 1px solid #ffffff;
+}
+
 .burger {
   width: 36px;
   height: 36px;

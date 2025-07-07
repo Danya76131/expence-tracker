@@ -36,6 +36,11 @@
   fill: #0c0d0d;
 }
 
+.closeIcon {
+  width: 20px;
+  height: 20px;
+}
+
 .userBarBtn {
   display: flex;
   flex-direction: column;
@@ -47,6 +52,16 @@
   .menu {
     width: 50vw;
     padding: 32px;
+  }
+
+  .closeBtn {
+    width: 27px;
+    height: 27px;
+  }
+
+  .closeIcon {
+    width: 27px;
+    height: 27px;
   }
 }
 
