@@ -1,5 +1,5 @@
 import axios from "axios";
-const api = axios.create({
+export const api = axios.create({
   baseURL: "https://expense-tracker.b.goit.study/api/",
 });
 export const setAuthHeader = (token) => {

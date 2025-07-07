@@ -1,0 +1,15 @@
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #444446;
+  border-radius: 12px;
+}
+
+/* For TransactionChart */
+
+/* For Modal EditCategories, HistoryTransactions */
+.scrollB::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollB::-webkit-scrollbar-track {
+  background-color: transparent;
+}
