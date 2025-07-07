@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { selectRefreshToken, selectSid } from './selectors';
-import {showSuccessToast, showErrorToast} from '../../components/CustomToast/CustomToast.jsx';
+
 
 axios.defaults.baseURL = 'https://expense-tracker.b.goit.study/api/';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -15,7 +15,7 @@ const transformToJSON = (data) => {
   }
 };
 
-// Рег
+// Регистрация
 export const register = createAsyncThunk(
   'auth/register',
   async (credentials, thunkAPI) => {
@@ -23,13 +23,13 @@ export const register = createAsyncThunk(
       const response = await axios.post('/auth/register', credentials, {
         transformRequest: [transformToJSON]
       });
+
       
-      showSuccessToast('Registration successful!');
-      
+
       return response.data;
     } catch (error) {
       console.error('Registration error:', error.response?.data || error.message);
-      
+
       let errorMessage = 'Registration failed';
       if (error.response) {
         const { status, data } = error.response;
@@ -41,16 +41,14 @@ export const register = createAsyncThunk(
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
-     
-      showErrorToast(errorMessage);
-      
+
+    
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }
 );
 
-
+// Логін
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials, thunkAPI) => {
@@ -58,7 +56,7 @@ export const login = createAsyncThunk(
       const response = await axios.post('/auth/login', credentials, {
         transformRequest: [transformToJSON]
       });
-      
+
       const { user, accessToken, refreshToken, sid } = response.data;
 
       if (!user || !accessToken || !refreshToken || !sid) {
@@ -66,13 +64,12 @@ export const login = createAsyncThunk(
       }
 
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      
-      showSuccessToast(`Welcome back, ${user.name || user.email}!`);
-      
+
+
       return response.data;
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
-      
+
       let errorMessage = 'Login failed';
       if (error.response) {
         const { status, data } = error.response;
@@ -82,15 +79,14 @@ export const login = createAsyncThunk(
           errorMessage = data.message || 'Invalid input data';
         }
       }
-      
-      showErrorToast(errorMessage);
-      
+
+     
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }
 );
 
-
+// Refresh токена
 export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
@@ -99,13 +95,13 @@ export const refreshUser = createAsyncThunk(
     const sid = selectSid(state);
 
     if (!refreshToken || !sid) {
-      showErrorToast('Session expired. Please login again.');
+      
       return thunkAPI.rejectWithValue('Missing refresh token or session ID');
     }
 
     try {
       axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`;
-      
+
       const response = await axios.post('/auth/refresh', { sid }, {
         transformRequest: [transformToJSON]
       });
@@ -113,14 +109,14 @@ export const refreshUser = createAsyncThunk(
       const { accessToken, refreshToken: newRefreshToken, sid: newSid } = response.data;
 
       axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      
+
       return { accessToken, refreshToken: newRefreshToken, sid: newSid };
     } catch (error) {
       console.error('Refresh error:', error.response?.data || error.message);
-      
+
       const errorMessage = error.response?.data?.message || 'Session refresh failed';
-      showErrorToast(errorMessage);
-      
+    
+
       return thunkAPI.rejectWithValue(errorMessage);
     }
   }

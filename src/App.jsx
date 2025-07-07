@@ -3,9 +3,10 @@ import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import RestrictedRoute from "./routes/RestrictedRoute";
-import { ToastContainer } from "react-toastify";
+import AnimatedPage from "../src/components/AnimatedPage/AnimatedPage";
 import { AnimatePresence } from "framer-motion";
-import "react-toastify/dist/ReactToastify.css";
+
+
 
 
 
@@ -20,26 +21,22 @@ const TransactionsHistoryPage = lazy(() =>
 );
 
 const App = () => {
-  // для анімашки
-  const location = useLocation();
+  const location = useLocation(); {/* для анімації */}
+
   return (
     <>
-      <ToastContainer position="top-right"
-            autoClose={3000}
-            hideProgressBar={true}
-            newestOnTop
-            closeOnClick
-            pauseOnFocusLoss={false} />
       <Suspense fallback={null}>
-        <AnimatePresence mode="wait" initial={false}>
-          <SharedLayout>
+        <SharedLayout>
+        <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
-              <Route path="/" element={<WelcomePage />} />
+              <Route path="/" element={
+                <AnimatedPage><WelcomePage /></AnimatedPage>
+              } />
               <Route
                 path="/register"
                 element={
                   <RestrictedRoute>
-                    <RegisterPage />
+                    <AnimatedPage><RegisterPage /></AnimatedPage>
                   </RestrictedRoute>
                 }
               />
@@ -47,7 +44,7 @@ const App = () => {
                 path="/login"
                 element={
                   <RestrictedRoute>
-                    <LoginPage />
+                    <AnimatedPage><LoginPage /></AnimatedPage>
                   </RestrictedRoute>
                 }
               />
@@ -55,7 +52,7 @@ const App = () => {
                 path="/transactions/:transactionsType"
                 element={
                   <PrivateRoute>
-                    <MainTransactionsPage />
+                    <AnimatedPage><MainTransactionsPage /></AnimatedPage>
                   </PrivateRoute>
                 }
               />
@@ -63,14 +60,14 @@ const App = () => {
                 path="/transactions/history/:transactionsType"
                 element={
                   <PrivateRoute>
-                    <TransactionsHistoryPage />
+                    <AnimatedPage><TransactionsHistoryPage /></AnimatedPage>
                   </PrivateRoute>
                 }
               />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
-          </SharedLayout>
-        </AnimatePresence>
+            </AnimatePresence>
+        </SharedLayout>
       </Suspense>
     </>
   );
