@@ -31,16 +31,18 @@ export const addCategory = createAsyncThunk(
 
 export const editCategory = createAsyncThunk(
   "categories/editCategory",
-  async ({ categoryName, id }, thunkAPI) => {
-    console.log("Edit category", categoryName, id);
+  async ({ categoryName, categoryId, id }, thunkAPI) => {
+    const finalId = categoryId || id;
+    if (!finalId) {
+      return thunkAPI.rejectWithValue("Category ID is required");
+    }
+
     try {
-      const { data } = await api.patch(`/categories/${id}`, {
+      const { data } = await api.patch(`/categories/${finalId}`, {
         categoryName,
       });
-      console.log("Edit category data", data);
       return data;
     } catch (error) {
-      console.log("Edit error", error);
       return thunkAPI.rejectWithValue(error.message);
     }
   }

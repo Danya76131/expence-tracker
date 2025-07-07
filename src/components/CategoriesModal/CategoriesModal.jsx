@@ -55,7 +55,11 @@ const CategoriesModal = () => {
 
     if (isEditMode) {
       try {
-        await dispatch(editCategory({ categoryName, id: categoryId })).unwrap();
+        console.log("Before dispatch payload:", {
+          categoryName,
+          id: categoryId,
+        });
+        await dispatch(editCategory({ categoryName, categoryId })).unwrap();
         console.log("edit dispatch");
       } catch {
         console.log("Edit dispatch error");
@@ -127,7 +131,7 @@ const CategoriesModal = () => {
     <Backdrop>
       <div className={styles.wrapper}>
         <h2 className={styles.title}>Incomes</h2>
-        <button className={styles.buttonClose}>
+        {/* <button className={styles.buttonClose}>
           {" "}
           <Icon
             name="close"
@@ -135,7 +139,7 @@ const CategoriesModal = () => {
             size={20}
             stroke="#fafafa"
           />
-        </button>
+        </button> */}
         <h3 className={styles.categoryTitle}>All Categories</h3>
         <ul
           className={clsx(

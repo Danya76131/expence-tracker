@@ -5,7 +5,7 @@ import {
   editCategory,
   getCategories,
 } from "./operations";
-import { login, refreshUser } from "../auth/operations";
+import { login } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -46,42 +46,33 @@ const categoriesSlice = createSlice({
       .addCase(addCategory.rejected, handleRejected)
 
       .addCase(editCategory.pending, handlePending)
-      .addCase(editCategory.fulfilled, (state, { payload, meta }) => {
-        console.log(meta);
-        state.categories.expenses = state.categories.expenses.map((item) => {
+
+      .addCase(editCategory.fulfilled, (state, { payload }) => {
+        console.log("STATE", state);
+        console.log("PayLOAD", payload);
+        // state.categories.expenses = state.categories.expenses.map((item) => {
+        //   if (item._id === payload._id) {
+        //     return payload;
+        //   }
+        //   return item;
+        // });
+        console.log("Початковий", JSON.stringify(state.categories.incomes));
+        state.categories.incomes = state.categories.incomes.map((item) => {
           if (item._id === payload._id) {
+            console.log("Pay", payload);
             return payload;
           }
+
           return item;
         });
-        const update = (state.categories.incomes = state.categories.incomes.map(
-          (item) => {
-            if (item._id === payload._id) {
-              console.log("Pay", payload);
-              return payload;
-            }
-            console.log("Item", item);
-            return item;
-          }
-        ));
+        console.log("Після", JSON.stringify(state.categories.incomes));
       })
-
       // .addCase(editCategory.fulfilled, (state, { payload }) => {
-      //   const updateIn = state.categories.incomes.find(
-      //     (cat) => cat._id === payload._id
-      //   );
-      //   if (updateIn) {
-      //     updateIn.categoryName = payload.categoryName;
-      //   }
+      //   const { _id } = payload;
 
-      //   const updateEx = state.categories.expenses.find(
-      //     (cat) => cat._id === payload._id
+      //   state.categories.incomes = state.categories.incomes.map((item) =>
+      //     item._id === _id ? payload : item
       //   );
-      //   if (updateEx) {
-      //     updateEx.categoryName = payload.categoryName;
-      //   }
-      //   state.isError = false;
-      //   state.isLoading = false;
       // })
 
       .addCase(editCategory.rejected, handleRejected)
