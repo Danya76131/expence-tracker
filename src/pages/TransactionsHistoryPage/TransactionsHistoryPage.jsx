@@ -19,7 +19,6 @@ import {
 import toast from "react-hot-toast";
 // import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import { openModal } from "../../redux/modal/slice";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 const TransactionsHistoryPage = () => {
@@ -53,21 +52,10 @@ const TransactionsHistoryPage = () => {
 
   const handleEditClick = (tx) => {
     console.log("HistoryPage --> handleEditClick: ", tx);
-    setSelectedTransaction(tx);
+    const { date, time, _id, sum, comment, type } = tx;
+    setSelectedTransaction({ comment, date, sum, time, type, _id });
     setIsEditModalOpen(true);
     setCategoryName(tx.category.categoryName);
-    // dispatch(
-    //   openModal({
-    //     modalType: "TransactionForm",
-    //     modalProps: {
-    //       editedData: {
-    //         ...selectedTransaction,
-    //         category: selectedTransaction.category._id,
-    //       },
-    //       categoryName: { categoryName },
-    //     },
-    //   })
-    // );
   };
   console.log("HistoryPage --> Edit local state: ", selectedTransaction);
 
@@ -93,15 +81,16 @@ const TransactionsHistoryPage = () => {
       />
 
       {isEditModalOpen && (
-        //  onClose={() => setIsEditModalOpen(false)}
-        <Backdrop>
+        <Backdrop onClose={() => setIsEditModalOpen(false)}>
           <TransactionForm
-          // editedData={{
-          //   ...selectedTransaction,
-          //   category: selectedTransaction.category._id,
-          // }}
-          // categoryName={categoryName}
-          // onSubmit={handleFormSubmit}
+            editedData={{
+              ...selectedTransaction,
+              category: selectedTransaction.category._id,
+            }}
+            categoryName={categoryName}
+            // onSubmit={handleFormSubmit}
+            isEditMode={isEditModalOpen}
+            transactionsType={transactionsType}
           />
         </Backdrop>
       )}

@@ -10,7 +10,13 @@ import { useRef } from "react";
 import CategoriesModal from "../CategoriesModal/CategoriesModal";
 import { useDispatch } from "react-redux";
 import { parseISO, isValid, isFuture, startOfDay } from "date-fns";
-import { addTransaction } from "../../redux/transactions/operations";
+import {
+  addTransaction,
+  updateTransactions,
+} from "../../redux/transactions/operations";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
+import { openModal } from "../../redux/modal/slice";
+import { useNavigate } from "react-router-dom";
 
 const transactionFormSchema = Yup.object().shape({
   type: Yup.string()
@@ -65,7 +71,7 @@ const transactionFormSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  type: "expenses",
+  type: "",
   date: "",
   time: "00:00:00",
   category: "",
@@ -73,38 +79,68 @@ const initialValues = {
   comment: "",
 };
 
-const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
-  console.log(
-    "TransactionForm take data from HistoryPage -->",
-    editedData,
-    categoryName,
-    onSubmit
-  );
+const TransactionForm = ({
+  editedData,
+  categoryName,
+  // onSubmit,
+  isEditMode,
+
+  transactionsType,
+}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [getCategory, setGetCategory] = useState("");
+  // const [radioType, setRadioType] = useState("");
+
   const dateRef = useRef(null);
   const timeRef = useRef(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleRadioTypeChange = (e) => {
+    // setRadioType(e.target.value);
+    navigate(`/transactions/${e.target.value}`);
+  };
 
   const handleSubmit = async (values, { resetForm }) => {
-    try {
-      console.log(values);
-      await dispatch(addTransaction(values)).unwrap();
-      toast.success("Transaction created successfully");
-      resetForm();
-    } catch (e) {
-      toast.error("Failed to create transaction");
+    if (isEditMode) {
+      try {
+        console.log("Form -- edit -->", values);
+        await dispatch(updateTransactions(values)).unwrap();
+        toast.custom(
+          <ShowSuccessToast msg={"Transaction edited successfully"} />
+        );
+        resetForm();
+      } catch (e) {
+        toast.custom(<ShowErrorToast msg={"Failed to update transaction"} />);
+      }
+    } else {
+      try {
+        await dispatch(addTransaction(values)).unwrap();
+        toast.custom(
+          <ShowSuccessToast msg={"Transaction created successfully"} />
+        );
+        resetForm();
+      } catch (e) {
+        toast.custom(<ShowErrorToast msg={"Failed to create transaction"} />);
+      }
     }
+  };
+
+  const handleCategoryClick = () => {
+    setModalOpen(true);
   };
 
   return (
     <div className={s.formikWrapper}>
       <Formik
         initialValues={
-          initialValues
-          // editedData === null
-          //   ? initialValues
-          //   : { ...editedData, category: editedData.category._id }
+          // editedData
+          //   ? editedData
+          {
+            ...initialValues,
+            type: transactionsType,
+            category: getCategory._id,
+          }
         }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}
@@ -119,22 +155,29 @@ const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
                   type="radio"
                   name="type"
                   value="expenses"
+                  onChange={handleRadioTypeChange}
                 />
-                {values.type === "expenses" ? (
+                {/* {values.type === "expenses" ? (
                   <MdRadioButtonChecked className={s.radioButtonActive} />
                 ) : (
                   <MdRadioButtonUnchecked className={s.radioButton} />
-                )}
+                )} */}
                 <span className={s.radioSpan}>Expense</span>
               </label>
 
               <label htmlFor="incomes" className={s.radioLabel}>
-                <Field id="incomes" type="radio" name="type" value="incomes" />
-                {values.type === "incomes" ? (
+                <Field
+                  id="incomes"
+                  type="radio"
+                  name="type"
+                  value="incomes"
+                  onChange={handleRadioTypeChange}
+                />
+                {/* {values.type === "incomes" ? (
                   <MdRadioButtonChecked className={s.radioButtonActive} />
                 ) : (
                   <MdRadioButtonUnchecked className={s.radioButton} />
-                )}
+                )} */}
                 <span className={s.radioSpan}>Income</span>
               </label>
             </div>
@@ -212,9 +255,13 @@ const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
               name="categoryInput"
               placeholder="Select category"
               type="text"
-              value={categoryName || "Select category"}
+              value={
+                getCategory.categoryName === ""
+                  ? "Select category"
+                  : getCategory.categoryName
+              }
               className={s.categoryInput}
-              onClick={() => setModalOpen(true)}
+              onClick={handleCategoryClick}
             />
 
             <Field
@@ -273,14 +320,15 @@ const TransactionForm = ({ editedData, categoryName, onSubmit }) => {
             {/* Category Modal */}
             {isModalOpen && (
               <CategoriesModal
-                type={values.type}
+                type={transactionsType}
+                // type={values.type}
                 closeModal={() => setModalOpen(false)}
-                onSelect={(category) => {
-                  setFieldValue("category", category._id);
-                  console.log("Selected category:", category);
-                  setModalOpen(false);
-                  setSelectCategory(category.categoryName);
-                }}
+                setGetCategory={setGetCategory}
+                // onSelect={(category) => {
+                //   setFieldValue("category", category._id);
+                //   setModalOpen(false);
+                //   setSelectCategory(category.categoryName);
+                // }}
                 onClose={() => setModalOpen(false)}
               />
             )}
