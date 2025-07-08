@@ -1,4 +1,4 @@
-// import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 
 export const selectIsLoading = (state) => state.categories.isLoading;
 
@@ -10,16 +10,7 @@ export const selectCategoryExpenses = (state) =>
 
 export const selectCategoryState = (state) => state.categories.categories;
 
-// export const selectCategoryId = (_id) =>
-//   createSelector(
-//     [selectCategoryExpenses, selectCategoryIncomes],
-//     ({ expenses }, incomes) => {
-//       console.log("UUUUUU", expenses);
-//       return (
-//         expenses.find((item) => item.id === _id) ||
-//         incomes.find((item) => item.id === _id)
-//       );
-//     }
-//   );
+export const selectCategoryByType = (type) =>
+  createSelector([selectCategoryState], (categories) => categories[type] ?? []);
 
 export const selectSelectedItems = (state) => state.categories.selected;

@@ -1,3 +1,4 @@
+
 import Container from "../Container/Container";
 import { useAuth } from "./hooks";
 import Authenticated from "./variants/Authenticated/Authenticated";
@@ -19,6 +20,7 @@ const Header = () => {
   }
 
   return <Unauthenticated />;
+
 };
 
 export default Header;

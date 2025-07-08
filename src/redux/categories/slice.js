@@ -50,12 +50,12 @@ const categoriesSlice = createSlice({
       .addCase(editCategory.fulfilled, (state, { payload }) => {
         console.log("STATE", state);
         console.log("PayLOAD", payload);
-        // state.categories.expenses = state.categories.expenses.map((item) => {
-        //   if (item._id === payload._id) {
-        //     return payload;
-        //   }
-        //   return item;
-        // });
+        state.categories.expenses = state.categories.expenses.map((item) => {
+          if (item._id === payload._id) {
+            return payload;
+          }
+          return item;
+        });
         console.log("Початковий", JSON.stringify(state.categories.incomes));
         state.categories.incomes = state.categories.incomes.map((item) => {
           if (item._id === payload._id) {

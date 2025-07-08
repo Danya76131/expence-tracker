@@ -19,6 +19,7 @@
  */
 
 import CategoriesModal from "../../CategoriesModal/CategoriesModal";
+import TransactionForm from "../../TransactionForm/TransactionForm";
 
 /**
  * modalMap — maps modalType string keys to corresponding React components.
@@ -41,6 +42,7 @@ import CategoriesModal from "../../CategoriesModal/CategoriesModal";
 
 const modalMap = {
   CategoriesModal,
+  TransactionForm,
   // add other modals
 };
 

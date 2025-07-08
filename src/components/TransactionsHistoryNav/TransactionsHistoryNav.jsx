@@ -1,3 +1,5 @@
+
+
 import { NavLink } from "react-router-dom";
 import Button from "../UI/Button/Button";
 import css from "./TransactionsHistoryNav.module.css";
@@ -15,6 +17,7 @@ const TransactionsHistoryNav = () => {
           <NavLink to={"/transactions/history/incomes"}>
             <Button variant="transparent">All Income</Button>
           </NavLink>
+
         </li>
       </ul>
     </nav>
