@@ -247,28 +247,29 @@ const TransactionForm = ({
 
             <label htmlFor="categoryInput" className={s.label}>
               Category
+              <input
+                readOnly
+                // ref={inputRef}
+                id="categoryInput"
+                name="categoryInput"
+                placeholder="Select category"
+                type="text"
+                value={getCategory.categoryName}
+                className={s.categoryInput}
+                onClick={handleCategoryClick}
+              />
+              <Field
+                type="hidden"
+                name="category"
+                id="category"
+                aria-label="Selected Category ID"
+              />
+              <ErrorMessage
+                className={s.ErrorMessage}
+                name="category"
+                component="div"
+              />
             </label>
-            <input
-              readOnly
-              // ref={inputRef}
-              id="categoryInput"
-              name="categoryInput"
-              placeholder="Select category"
-              type="text"
-              value={getCategory.categoryName}
-              className={s.categoryInput}
-              onClick={handleCategoryClick}
-            />
-
-            <Field
-              type="hidden"
-              name="category"
-              id="category"
-              aria-label="Selected Category ID"
-            />
-
-            <ErrorMessage className={s.error} name="category" component="div" />
-
             {/* Sum */}
 
             <label htmlFor="sum" className={`${s.labelx} ${s.label}`}>
