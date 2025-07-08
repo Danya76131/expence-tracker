@@ -1,0 +1,53 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  background-color: #0c0d0d;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.1);
+}
+
+.navDesktop {
+  display: none;
+}
+
+.navMobile {
+  display: flex;
+  align-items: center;
+}
+
+.userBarBtn {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    height: 90px;
+  }
+  .navDesktop {
+    display: none;
+  }
+
+  .navMobile {
+    display: flex;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .navDesktop {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .userBarBtn {
+    display: flex;
+    color: white;
+    position: relative;
+  }
+
+  .navMobile {
+    display: none;
+  }
+}
