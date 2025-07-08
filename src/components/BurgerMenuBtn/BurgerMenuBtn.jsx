@@ -1,7 +1,18 @@
-import styles from "./BurgerMenuBtn.module.css";
+import Button from "../UI/Button/Button";
+import Icon from "../UI/Icon/Icon";
+import css from "./BurgerMenuBtn.module.css";
 
-const BurgerMenuBtn = () => {
-  return <div className={styles.wrapper}>BurgerMenuBtn</div>;
+const BurgerMenuBtn = ({ onClick }) => {
+  return (
+    <Button
+      className={css.button}
+      type="button"
+      aria-label="Open menu"
+      onClick={onClick}
+    >
+      <Icon name="burger-menu" className={css.burger} />
+    </Button>
+  );
 };
 
 export default BurgerMenuBtn;
