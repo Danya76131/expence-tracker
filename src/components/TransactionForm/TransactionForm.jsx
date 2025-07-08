@@ -1,13 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { MdRadioButtonChecked, MdRadioButtonUnchecked } from "react-icons/md";
 import { Calendar, Clock } from "lucide-react";
 import s from "./TransactionForm.module.css";
 import { useRef } from "react";
-
-import CategoriesModal from "../CategoriesModal/CategoriesModal";
 import { useDispatch } from "react-redux";
 import { parseISO, isValid, isFuture, startOfDay } from "date-fns";
 import {
@@ -15,8 +13,8 @@ import {
   updateTransactions,
 } from "../../redux/transactions/operations";
 import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
-import { openModal } from "../../redux/modal/slice";
 import { useNavigate } from "react-router-dom";
+import CategoriesModal from "../CategoriesModal/CategoriesModal";
 
 const transactionFormSchema = Yup.object().shape({
   type: Yup.string()
@@ -80,24 +78,23 @@ const initialValues = {
 };
 
 const TransactionForm = ({
-  editedData,
-  categoryName,
-  // onSubmit,
+  // editedData,
+  // categoryName,
   isEditMode,
-
   transactionsType,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [getCategory, setGetCategory] = useState("");
-  // const [radioType, setRadioType] = useState("");
+  const [getCategory, setGetCategory] = useState({ categoryName: "" });
+  console.log("get category", getCategory);
+  useEffect(() => {}, [getCategory]);
 
+  // const inputRef = useRef();
   const dateRef = useRef(null);
   const timeRef = useRef(null);
 
   const handleRadioTypeChange = (e) => {
-    // setRadioType(e.target.value);
     navigate(`/transactions/${e.target.value}`);
   };
 
@@ -106,21 +103,24 @@ const TransactionForm = ({
       try {
         console.log("Form -- edit -->", values);
         await dispatch(updateTransactions(values)).unwrap();
+
+        resetForm();
+        setGetCategory({ categoryName: "" });
         toast.custom(
           <ShowSuccessToast msg={"Transaction edited successfully"} />
         );
-        resetForm();
-      } catch (e) {
+      } catch {
         toast.custom(<ShowErrorToast msg={"Failed to update transaction"} />);
       }
     } else {
       try {
         await dispatch(addTransaction(values)).unwrap();
+        setGetCategory({ categoryName: "" });
+        resetForm();
         toast.custom(
           <ShowSuccessToast msg={"Transaction created successfully"} />
         );
-        resetForm();
-      } catch (e) {
+      } catch {
         toast.custom(<ShowErrorToast msg={"Failed to create transaction"} />);
       }
     }
@@ -134,18 +134,17 @@ const TransactionForm = ({
     <div className={s.formikWrapper}>
       <Formik
         initialValues={
-          // editedData
-          //   ? editedData
+          // editedData  ? editedData :
           {
             ...initialValues,
             type: transactionsType,
-            category: getCategory._id,
+            // category: getCategory._id,
           }
         }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}
       >
-        {({ setFieldValue, values }) => (
+        {({ setFieldValue }) => (
           <Form className={s.formikForm}>
             {/* Radio */}
             <div className={s.radioGroup}>
@@ -251,15 +250,12 @@ const TransactionForm = ({
             </label>
             <input
               readOnly
+              // ref={inputRef}
               id="categoryInput"
               name="categoryInput"
               placeholder="Select category"
               type="text"
-              value={
-                getCategory.categoryName === ""
-                  ? "Select category"
-                  : getCategory.categoryName
-              }
+              value={getCategory.categoryName}
               className={s.categoryInput}
               onClick={handleCategoryClick}
             />
@@ -321,14 +317,12 @@ const TransactionForm = ({
             {isModalOpen && (
               <CategoriesModal
                 type={transactionsType}
-                // type={values.type}
                 closeModal={() => setModalOpen(false)}
-                setGetCategory={setGetCategory}
-                // onSelect={(category) => {
-                //   setFieldValue("category", category._id);
-                //   setModalOpen(false);
-                //   setSelectCategory(category.categoryName);
-                // }}
+                onSelect={(category) => {
+                  setGetCategory(category);
+                  setFieldValue("category", category._id);
+                  setModalOpen(false);
+                }}
                 onClose={() => setModalOpen(false)}
               />
             )}

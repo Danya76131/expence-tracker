@@ -24,6 +24,7 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
+  console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
 
@@ -71,11 +72,13 @@ const TransactionsHistoryPage = () => {
   //     );
   // };
 
+  console.log("selected tr", selectedTransaction);
+
   return (
     <div>
       <TransactionsList
         transactions={transactions}
-        type={transactionsType}
+        transactionsType={transactionsType}
         onDelete={handleDelete}
         onEdit={handleEditClick}
       />
@@ -85,7 +88,7 @@ const TransactionsHistoryPage = () => {
           <TransactionForm
             editedData={{
               ...selectedTransaction,
-              category: selectedTransaction.category._id,
+              category: selectedTransaction._id,
             }}
             categoryName={categoryName}
             // onSubmit={handleFormSubmit}

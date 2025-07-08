@@ -4,7 +4,7 @@ import { rest } from "lodash";
 
 export const getTransactions = createAsyncThunk(
   "transactions/all",
-  async ({ type }, { rejectWithValue }) => {
+  async (type, { rejectWithValue }) => {
     console.warn("Get operat -->", type);
     try {
       const { data } = await api.get(`transactions/${type}`);

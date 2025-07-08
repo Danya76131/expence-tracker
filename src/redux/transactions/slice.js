@@ -39,7 +39,7 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(deleteTransaction.fulfilled, (state, { payload, meta }) => {
+      .addCase(deleteTransaction.fulfilled, (state, { meta }) => {
         state.loading = false;
         state.error = false;
         state.incomes = state.incomes.filter(
@@ -76,7 +76,7 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(updateTransactions.fulfilled, (state, { payload }) => {
+      .addCase(updateTransactions.fulfilled, (state) => {
         state.loading = false;
         state.error = false;
       })

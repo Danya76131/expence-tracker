@@ -14,7 +14,7 @@ const MainTransactionsPage = () => {
   const { transactionsType } = useParams();
 
   useEffect(() => {
-    dispatch(getTransactions({ type: transactionsType }));
+    dispatch(getTransactions(transactionsType));
   }, [dispatch, transactionsType]);
 
   return (
@@ -35,7 +35,7 @@ const MainTransactionsPage = () => {
             <TransactionForm transactionsType={transactionsType} />
           </div>
           <div className={styles.chart}>
-            <TransactionsChart />
+            <TransactionsChart transactionsType={transactionsType} />
           </div>
         </div>
       </Container>

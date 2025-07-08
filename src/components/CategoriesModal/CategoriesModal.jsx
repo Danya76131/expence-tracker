@@ -17,9 +17,10 @@ import {
   selectCategoryIncomes,
   selectCategoryState,
 } from "../../redux/categories/selectors";
+import { getTransactions } from "../../redux/transactions/operations";
 // import { getTransactions } from "../../redux/transactions/operations";
 
-const CategoriesModal = ({ type, closeModal, setGetCategory }) => {
+const CategoriesModal = ({ type, closeModal, onSelect }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,8 +33,6 @@ const CategoriesModal = ({ type, closeModal, setGetCategory }) => {
     return () => {
       removeEventListener("keydown", handleEsc);
     };
-    // document.addEventListener("mousedown", handleClickOutside);
-    // return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeModal]);
 
   const categories = useSelector(selectCategoryByType(type));
@@ -57,9 +56,9 @@ const CategoriesModal = ({ type, closeModal, setGetCategory }) => {
   };
 
   const handleCheck = (item) => {
-    setGetCategory(item);
-    console.warn("CatModal -- item", item);
-    // dispatch(closeModal());
+    console.log("item modal", item);
+
+    onSelect(item);
   };
 
   const handleSubmitCategory = async (event) => {
@@ -76,14 +75,14 @@ const CategoriesModal = ({ type, closeModal, setGetCategory }) => {
 
     if (isEditMode) {
       try {
-        console.warn("Before dispatch payload:", {
-          categoryName,
-          id: categoryId,
-        });
-        await dispatch(editCategory({ categoryName, categoryId })).unwrap();
-        console.log("edit dispatch");
-      } catch {
-        console.log("Edit dispatch error");
+        await dispatch(editCategory({ categoryName, categoryId }))
+          .unwrap()
+          .then(() => {
+            dispatch(getTransactions(type));
+            isEditMode(false);
+          });
+      } catch (error) {
+        toast.error(error);
       }
     } else {
       dispatch(addCategory({ type: type, categoryName: categoryName }))
