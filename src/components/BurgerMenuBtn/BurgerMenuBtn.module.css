@@ -1,4 +1,4 @@
-.wrapper {
+.button {
   background: none;
   border: none;
   cursor: pointer;
@@ -9,8 +9,8 @@
   margin-right: 20px;
 }
 
-.wrapper:focus,
-.wrapper:hover {
+.button:focus,
+.button:hover {
   border: 1px solid #ffffff;
 }
 
@@ -22,7 +22,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .wrapper {
+  .button {
     margin-right: 32px;
   }
 

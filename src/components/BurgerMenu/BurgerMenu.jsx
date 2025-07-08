@@ -4,6 +4,7 @@ import TransactionsHistoryNav from "../TransactionsHistoryNav/TransactionsHistor
 import UserBarBtn from "../UserBarBtn/UserBarBtn";
 import UserPanel from "../UserPanel/UserPanel";
 import Icon from "../UI/Icon/Icon";
+import Button from "../UI/Button/Button";
 
 const BurgerMenu = ({
   isOpen,
@@ -38,13 +39,13 @@ const BurgerMenu = ({
     <>
       <div className={css.backdrop} onClick={onClose} />
       <nav className={css.menu}>
-        <button
+        <Button
           className={css.closeBtn}
           onClick={handleCloseByClick}
           aria-label="Close menu"
         >
           <Icon name="close" className={css.closeIcon} />
-        </button>
+        </Button>
 
         <div className={css.userBarBtn} onClick={handleCloseByClick}>
           <UserBarBtn

@@ -50,7 +50,6 @@
   fill: none;
 }
 
-/* Планшет і вище (від 768px) */
 @media screen and (min-width: 768px) {
   .wrapper {
     width: 220px;
@@ -72,7 +71,6 @@
   }
 }
 
-/* Десктоп (від 1440px) */
 @media screen and (min-width: 1440px) {
   .wrapper {
     width: 220px;

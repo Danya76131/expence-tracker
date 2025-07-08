@@ -29,16 +29,25 @@
   width: 20px;
   height: 20px;
   align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   fill: #0c0d0d;
 }
 
 .closeIcon {
   width: 20px;
   height: 20px;
+}
+
+.closeIcon:focus,
+.closeIcon:hover {
+  border: 1px solid #ffffff;
+  border-radius: 40px;
 }
 
 .userBarBtn {

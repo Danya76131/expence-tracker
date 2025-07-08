@@ -5,7 +5,7 @@ import css from "./BurgerMenuBtn.module.css";
 const BurgerMenuBtn = ({ onClick }) => {
   return (
     <Button
-      className={css.wrapper}
+      className={css.button}
       type="button"
       aria-label="Open menu"
       onClick={onClick}
