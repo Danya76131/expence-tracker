@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import css from "./UserSetsModal.module.css";
 import Icon from "../UI/Icon/Icon";
 import Button from "../UI/Button/Button";
+import CloseButton from "./CloseButton";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -104,6 +105,7 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
       aria-modal="true"
     >
       <div className={css["wrapper"]}>
+        <CloseButton onClick={onClose} />
         <h2>Profile settings</h2>
         <form onSubmit={handleSubmit}>
           <div className={`${css.field} ${css["avatar-field"]}`}>
@@ -138,9 +140,7 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
 
           <div className={css.inputs}>
             <div className={css.field}>
-              <label htmlFor="currency">Currency</label>
               <select
-                className={css.select}
                 id="currency"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
@@ -152,7 +152,6 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
             </div>
 
             <div className={css.field}>
-              <label htmlFor="name">Name</label>
               <input
                 id="name"
                 type="text"
