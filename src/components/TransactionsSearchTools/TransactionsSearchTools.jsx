@@ -8,8 +8,8 @@ import {
   resetFilter,
 } from "../../redux/filter/slice";
 import { selectDate, selectFilter } from "../../redux/filter/selectors";
-import Icon from "../../components/UI/Icon/Icon";
-// import { UniversalButton } from "../UniversalButton/UniversalButton";
+// import Icon from "../../components/UI/Icon/Icon";
+
 import style from "./TransactionsSearchTools.module.css";
 import DatePicker from "react-datepicker";
 export const TransactionsSearchTools = ({ type }) => {
@@ -31,10 +31,9 @@ export const TransactionsSearchTools = ({ type }) => {
     }
     dispatch(changeDate(format(e, "yyyy-MM-dd")));
   };
-
-  // const handleResetFilter = () => {
-  //   dispatch(resetFilter());
-  // };
+  const handleResetFilter = () => {
+    dispatch(resetFilter());
+  };
 
   return (
     <div className={style.formContainer}>
@@ -73,8 +72,13 @@ export const TransactionsSearchTools = ({ type }) => {
             size={20}
           /> */}
         </div>
-        {/* <UniversalButton action={handleResetFilter} type="reset" />
-        <UniversalButton className={style.addBtn} action={handleOpenModal} /> */}
+        <button
+          type="button"
+          onClick={handleResetFilter}
+          className={style.resetButton} // стиль можешь задать сам
+        >
+          Clear
+        </button>
       </form>
     </div>
   );

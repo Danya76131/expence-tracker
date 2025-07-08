@@ -39,6 +39,7 @@ const TransactionsHistoryPage = () => {
 
   useEffect(() => {
     if (!transactionsType) return;
+
     try {
       dispatch(getTransactions({ type: transactionsType, filter, date }));
     } catch (err) {
@@ -105,8 +106,8 @@ const TransactionsHistoryPage = () => {
         <Backdrop onClose={() => setIsEditModalOpen(false)}>
           <TransactionForm
             editedData={{
-              ...selectedTransaction,
-              category: selectedTransaction._id,
+              selectedTransaction,
+              categoryName,
             }}
             categoryName={categoryName}
             // onSubmit={handleFormSubmit}

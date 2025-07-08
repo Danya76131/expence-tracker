@@ -19,7 +19,20 @@ import { rest } from "lodash";
 export const getTransactions = createAsyncThunk(
   "transactions/all",
   async ({ type, filter, date }, { rejectWithValue }) => {
-    const params = { date, search: filter };
+    // const params = { date, search: filter };
+    const params = {};
+
+    if (date) {
+      params.date = date;
+    }
+
+    if (filter && filter.trim().length >= 3 && filter.trim().length <= 24) {
+      params.search = filter.trim();
+    }
+
+    console.log("Request params:", params);
+
+    console.log(params);
     try {
       const { data } = await api.get(`transactions/${type}`, { params });
 
