@@ -1,7 +1,6 @@
-import { useRef, useEffect } from "react";
-import UserBarBtn from "../UserBarBtn/UserBarBtn";
+import React, { useEffect, useRef } from "react";
 import css from "./UserPanel.module.css";
-import Backdrop from "../UI/Backdrop/Backdrop";
+import Icon from "../UI/Icon/Icon";
 
 const UserPanel = ({
   openUserSetsModal,
@@ -11,18 +10,17 @@ const UserPanel = ({
   userBarBtnRef,
   isBurger = false,
 }) => {
-  const dropdownRef = useRef(null);
+  const panelRef = useRef(null);
 
   useEffect(() => {
     if (isBurger) return; // для бургер-меню не закриваємо при кліку поза
 
     const handleClickOutside = (event) => {
       if (
-        isUserPanelOpen &&
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target) &&
-        userBarBtnRef &&
-        !userBarBtnRef.contains(e.target)
+        panelRef.current &&
+        !panelRef.current.contains(event.target) &&
+        userBarBtnRef.current &&
+        !userBarBtnRef.current.contains(event.target)
       ) {
         toggleUserPanel();
       }
