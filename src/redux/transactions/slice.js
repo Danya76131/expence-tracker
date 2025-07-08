@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTransaction, deleteTransaction, getTransactions, updateTransactions } from "./operations";
+import {
+  addTransaction,
+  deleteTransaction,
+  getTransactions,
+  updateTransactions,
+} from "./operations";
 
 const transactionsSlice = createSlice({
   name: "transactions",
@@ -34,7 +39,7 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(deleteTransaction.fulfilled, (state, { payload, meta }) => {
+      .addCase(deleteTransaction.fulfilled, (state, { meta }) => {
         state.loading = false;
         state.error = false;
         state.incomes = state.incomes.filter(
@@ -71,7 +76,7 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(updateTransactions.fulfilled, (state, { payload }) => {
+      .addCase(updateTransactions.fulfilled, (state) => {
         state.loading = false;
         state.error = false;
       })
@@ -82,6 +87,3 @@ const transactionsSlice = createSlice({
 });
 
 export const transactionsReducer = transactionsSlice.reducer;
-
-
-

@@ -1,0 +1,110 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.wrapper {
+  width: 500px;
+  height: 477px;
+  border-radius: 30px;
+  background: #171719;
+  border: 1px solid rgba(250, 250, 250, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  padding: 20px 40px;
+}
+
+.userAvatarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 100px;
+  background: rgba(12, 13, 13, 0.5);
+  width: 100px;
+  height: 100px;
+}
+
+.wrapper h2 {
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #fafafa;
+  margin-bottom: 38px;
+}
+
+.avatarButtonsWrapper {
+  width: 228px;
+  height: 31px;
+  display: flex;
+  gap: 8px;
+}
+
+.avatarButtons {
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+.field {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+}
+
+.field label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #444;
+}
+
+.field input[type="text"],
+.field select {
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  background-color: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.4);
+  border-radius: 12px;
+  padding: 12px 56px 12px 18px;
+}
+
+.field input[type="text"]:focus,
+.field select:focus {
+  border-color: #007bff;
+}
+
+.avatar-field {
+  align-items: center;
+}
+
+.avatar-preview {
+  width: 80px;
+  display: block;
+  border-radius: 100px;
+  margin-bottom: 12px;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  background: rgba(12, 13, 13, 0.5);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.inputs {
+  display: flex;
+  gap: 8px;
+}
+
+.saveButton {
+  padding: 14px 192px;
+  width: 420px;
+  height: 47px;
+  /* margin-bottom: 40px; */
+}

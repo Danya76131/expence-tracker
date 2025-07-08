@@ -1,0 +1,79 @@
+.wrapper {
+  width: 197px;
+  height: 46px;
+  padding: 6px 16px;
+  border-radius: 30px;
+  background-color: #171719;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
+  object-fit: cover;
+}
+
+.initial {
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
+  background-color: #0ef387;
+  font-weight: 700;
+  font-size: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.userName {
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(250, 250, 250, 0.4);
+}
+
+.chevronIcon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    width: 220px;
+    height: 56px;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .initial {
+    width: 44px;
+    height: 44px;
+  }
+
+  .userName {
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    width: 220px;
+    height: 56px;
+  }
+}

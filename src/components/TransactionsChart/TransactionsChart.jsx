@@ -1,26 +1,67 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import styles from "./TransactionsChart.module.css";
+import { useSelector } from "react-redux";
+import {
+  selectExpensesTotal,
+  selectIncomesTotal,
+  selectTransactionByType,
+} from "../../redux/transactions/selectors";
 
 const RADIAN = Math.PI / 180;
 
-const MOCK_DATA = [
-  { name: "Hobby", value: 40, color: "#00FF83" },
-  { name: "Cinema", value: 25, color: "#FFFFFF" },
-  { name: "Products", value: 20, color: "#00C49F" },
-  { name: "Health", value: 15, color: "#3B3B3B" },
-  { name: "Books", value: 10, color: "#8884d8" }, // 5-й для перевірки скролу
-];
+export const TransactionsChart = ({ transactionsType }) => {
+  console.log(transactionsType);
 
-export const TransactionsChart = ({ data = MOCK_DATA }) => {
-  const total = data.reduce((acc, item) => acc + item.value, 0);
-  const [ready, setReady] = React.useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 375);
 
-  React.useEffect(() => {
-    const timeout = setTimeout(() => setReady(true), 100); // задержка, чтобы DOM обновился
-    return () => clearTimeout(timeout);
+  const list = useSelector(selectTransactionByType(transactionsType));
+  const incomesTotal = useSelector(selectIncomesTotal);
+  const expensesTotal = useSelector(selectExpensesTotal);
+
+  const totalAmount =
+    transactionsType === "incomes" ? incomesTotal : expensesTotal;
+
+  console.log(incomesTotal);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 375);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
-  if (!ready) return null;
+
+  const innerRadius = isMobile ? 70 : 95;
+  const outerRadius = isMobile ? 121 : 146;
+
+  const colors = (data) => {
+    const colors = [
+      "#008000",
+      "#32CD32",
+      "#00FA9A",
+      "#98FB98",
+      "#228B22",
+      "#2E8B57",
+      "#3CB371",
+      "#00FF7F",
+      "#66CDAA",
+      "#8FBC8F",
+      "#2F4F4F",
+      "#aabaaa",
+      "#dbf0db",
+      "#777f77",
+      "#5a5e5a",
+    ];
+
+    return data.map((item, index) => ({
+      ...item,
+      color: colors[index % colors.length],
+    }));
+  };
+
+  const colorData = colors(list);
 
   return (
     <div className={styles["expenses-chart"]}>
@@ -28,41 +69,50 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
 
       <div className={styles["chart-and-list"]}>
         <div className={styles["chart-wrapper"]}>
-          <div className={styles.centerTotal}>{"100"}%</div>
-          <ResponsiveContainer width="100%" height={152}>
+          <div className={styles.centerTotal}>
+            {totalAmount > 0 ? "100%" : "No data"}
+          </div>
+          <ResponsiveContainer
+            className={styles.responsiveWrapper}
+            width="100%"
+            height="100%"
+          >
             <PieChart>
               <Pie
-                className={styles.rechartsWrapper}
-                data={data}
+                data={colorData}
                 dataKey="value"
                 cx="50%"
                 cy="100%"
                 startAngle={180}
                 endAngle={0}
-                innerRadius={95}
-                outerRadius={146}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
                 paddingAngle={-8}
-                border-radius={10}
                 cornerRadius={10}
                 stroke="none"
               >
-                {data.map((entry, index) => (
+                {colorData.map((entry, index) => (
                   <Cell key={`slice-${index}`} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
           </ResponsiveContainer>
         </div>
+
         <div className={styles["category-list"]}>
-          {data.map((item, idx) => (
+          {colorData.map((item, idx) => (
             <div key={idx} className={styles["category-item"]}>
               <span
                 className={styles.dot}
                 style={{ backgroundColor: item.color }}
               />
-              <span className={styles.name}>{item.name}</span>
+              <span className={styles.name}>
+                {item.name || item.categoryName}
+              </span>
               <span className={styles.percent}>
-                {((item.value / total) * 100).toFixed(0)}%
+                {totalAmount > 0
+                  ? `${((item.sum / totalAmount) * 100).toFixed(0)}%`
+                  : "0%"}
               </span>
             </div>
           ))}

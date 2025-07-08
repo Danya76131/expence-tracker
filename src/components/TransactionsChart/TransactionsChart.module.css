@@ -1,9 +1,25 @@
+.responsiveWrapper {
+  width: fit-content;
+  height: 142px;
+}
+
+.chart-wrapper {
+  height: 155px;
+  position: relative;
+  margin-bottom: 42px;
+  pointer-events: none;
+  user-select: none;
+  /* border: 1px solid green; */
+  width: 100%;
+}
+
 .expenses-chart {
   background-color: #1a1a1a;
   border-radius: 24px;
   padding: 28px 20px;
   color: #aaa;
   width: 100%;
+  margin-top: 40px;
 }
 
 .title {
@@ -54,13 +70,6 @@
   font-weight: 700;
   color: white;
 }
-.chart-wrapper {
-  position: relative;
-  margin-bottom: 42px;
-  min-width: 0;
-  pointer-events: none;
-  user-select: none;
-}
 
 .centerTotal {
   position: absolute;
@@ -101,5 +110,7 @@
   .expenses-chart {
     width: 630px;
     padding: 40px 40px 60px 40px;
+    margin-top: 0;
+    height: 302px;
   }
 }

@@ -18,6 +18,9 @@
  * - Не додавай функції або обгортки — лише компоненти
  */
 
+import CategoriesModal from "../../CategoriesModal/CategoriesModal";
+import TransactionForm from "../../TransactionForm/TransactionForm";
+
 /**
  * modalMap — maps modalType string keys to corresponding React components.
  *
@@ -38,8 +41,8 @@
  */
 
 const modalMap = {
-  // ModalContentOne,
-  // ModalContentTwo,
+  CategoriesModal,
+  TransactionForm,
   // add other modals
 };
 

@@ -1,3 +1,18 @@
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 375px;
+  margin: auto;
+}
+.total {
+  max-width: 375px;
+  margin: auto;
+}
+.chart {
+  max-width: 375px;
+  margin: auto;
+}
+
 .mainTitle {
   font-family: var(--font-family);
   font-weight: 400;
@@ -25,4 +40,57 @@
     display: inline-block;
     width: 499px;
   }
+
+  .textWrapper {
+    max-width: 768px;
+    margin: auto;
+  }
+  .total {
+    max-width: 768px;
+    margin: auto;
+  }
+  .chart {
+    max-width: 768px;
+    margin: auto;
+  }
+}
+
+/* Desktop ≥ 1440px */
+@media (min-width: 1440px) {
+  .mainWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "text form"
+      "total form"
+      "chart form";
+    align-items: start;
+    max-height: 600px;
+  }
+
+  .textWrapper {
+    grid-area: text;
+    margin: 0;
+    max-height: 97px;
+  }
+
+  .form {
+    grid-area: form;
+    /* align-self: stretch; */
+  }
+
+  .total {
+    grid-area: total;
+  }
+
+  .chart {
+    grid-area: chart;
+  }
+}
+.mainTitle {
+  margin-top: 0;
+  margin-bottom: 13px;
+}
+.mainText {
+  width: auto;
 }
