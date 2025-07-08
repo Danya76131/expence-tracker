@@ -34,6 +34,7 @@ export const getTransactions = createAsyncThunk(
 
     console.log(params);
     try {
+      console.log("Request type:", type);
       const { data } = await api.get(`transactions/${type}`, { params });
 
       return data;

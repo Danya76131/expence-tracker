@@ -80,6 +80,7 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
         await dispatch(editCategory({ categoryName, categoryId }))
           .unwrap()
           .then(() => {
+            console.log("Modal -- Type -->", type);
             dispatch(getTransactions(type));
           });
         closeModal(false);
