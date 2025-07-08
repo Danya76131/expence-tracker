@@ -271,7 +271,7 @@ const TransactionForm = ({
 
             {/* Sum */}
 
-            <label htmlFor="sum" className={s.label}>
+            <label htmlFor="sum" className={`${s.labelx} ${s.label}`}>
               <span className={s.nameInputOther}>Sum</span>
               <div className={s.inputWrapperSum}>
                 <Field
@@ -292,7 +292,7 @@ const TransactionForm = ({
 
             {/* Comment */}
 
-            <label htmlFor="comment" className={s.label}>
+            <label htmlFor="comment" className={`${s.labelc} ${s.label}`}>
               <span className={s.nameInputOther}>Comment</span>
               <Field
                 id="comment"
