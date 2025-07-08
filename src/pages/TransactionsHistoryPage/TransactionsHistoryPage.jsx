@@ -8,7 +8,7 @@ import { selectTransactionByType } from "../../redux/transactions/selectors";
 import {
   getTransactions,
   deleteTransaction,
-  updateTransactions,
+  // updateTransactions,
 } from "../../redux/transactions/operations";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
