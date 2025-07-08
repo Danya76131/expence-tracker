@@ -22,27 +22,61 @@
   padding: 20px 40px;
 }
 
-.userAvatarWrapper {
+.closeBtn {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  border-radius: 100px;
-  background: rgba(12, 13, 13, 0.5);
-  width: 100px;
-  height: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.closeIcon {
+  width: 24px;
+  height: 24px;
+  stroke: #ffffff;
+}
+
+.closeIcon:focus,
+.closeIcon:hover {
+  border: 1px solid #ffffff;
+  border-radius: 40px;
 }
 
 .wrapper h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: #fafafa;
   margin-bottom: 38px;
 }
 
+.userAvatarWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  border: 1px solid #0ef387;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
+  background: rgba(12, 13, 13, 0.5);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-field {
+  align-items: center;
+}
+
 .avatarButtonsWrapper {
-  width: 228px;
+  width: 218px;
   height: 31px;
   display: flex;
   gap: 8px;
@@ -51,6 +85,12 @@
 .avatarButtons {
   padding: 8px 16px;
   font-size: 12px;
+  letter-spacing: -0.02em;
+}
+
+.inputs {
+  display: flex;
+  gap: 4px;
 }
 
 .field {
@@ -60,51 +100,40 @@
   background-color: transparent;
 }
 
-.field label {
-  margin-bottom: 6px;
-  font-weight: 500;
-  color: #444;
-}
-
 .field input[type="text"],
 .field select {
   font-size: 16px;
+  color: #fafafa;
   outline: none;
   transition: border-color 0.2s ease;
-  background-color: transparent;
+  background-color: #171719;
   border: 1px solid rgba(250, 250, 250, 0.4);
   border-radius: 12px;
-  padding: 12px 56px 12px 18px;
+  padding: 12px 18px;
+}
+
+select.option {
+  background: #0c0d0d;
 }
 
 .field input[type="text"]:focus,
 .field select:focus {
-  border-color: #007bff;
+  border-color: #0ebb69;
 }
 
-.avatar-field {
-  align-items: center;
+select {
+  border: 1px solid rgba(250, 250, 250, 0.4);
+  border-radius: 12px;
+  width: 124px;
+  height: 48px;
 }
 
-.avatar-preview {
-  width: 80px;
-  display: block;
-  border-radius: 100px;
-  margin-bottom: 12px;
-  object-fit: cover;
-  border: 2px solid #ddd;
-  background: rgba(12, 13, 13, 0.5);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
-
-.inputs {
-  display: flex;
-  gap: 8px;
+input {
+  width: 293px;
+  height: 48px;
 }
 
 .saveButton {
-  padding: 14px 192px;
   width: 420px;
   height: 47px;
-  /* margin-bottom: 40px; */
 }
