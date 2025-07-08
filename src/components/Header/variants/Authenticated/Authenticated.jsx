@@ -7,6 +7,7 @@ import TransactionsHistoryNav from "../../../TransactionsHistoryNav/Transactions
 import BurgerMenuBtn from "../../../BurgerMenuBtn/BurgerMenuBtn";
 import BurgerMenu from "../../../BurgerMenu/BurgerMenu";
 import UserSetsModal from "../../../UserSetsModal/UserSetsModal";
+import LogOutModal from "../../../LogOutModal/LogOutModal";
 
 import css from "./Authenticated.module.css";
 
@@ -14,6 +15,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isUserSetsModalOpen, setIsUserSetsModalOpen] = useState(false);
+  const [showLogOutModal, setShowLogOutModal] = useState(false);
 
   const userBarBtnRef = useRef(null);
 
@@ -27,12 +29,25 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
     setIsUserSetsModalOpen(true);
   };
 
+  const closeUserSetsModal = () => {
+    setIsUserSetsModalOpen(false);
+  };
+
+  const openLogOutModal = () => {
+    setShowLogOutModal(true);
+  };
+
+  const closeLogOutModal = () => {
+    setShowLogOutModal(false);
+  };
+
   const handleLogout = () => {
     if (logOut) {
       logOut();
     } else {
       alert("Логіка виходу");
     }
+    setShowLogOutModal(false);
     setIsUserPanelOpen(false);
     setIsBurgerOpen(false);
   };
@@ -40,10 +55,6 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const toggleBurgerMenu = () => {
     if (isUserPanelOpen) setIsUserPanelOpen(false);
     setIsBurgerOpen((prev) => !prev);
-  };
-
-  const closeUserSetsModal = () => {
-    setIsUserSetsModalOpen(false);
   };
 
   const closeBurgerMenu = () => {
@@ -68,6 +79,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
         />
         <UserPanel
           openUserSetsModal={openUserSetsModal}
+          onOpenLogoutModal={openLogOutModal}
           handleLogout={handleLogout}
           isUserPanelOpen={isUserPanelOpen}
           toggleUserPanel={toggleUserPanel}
@@ -86,15 +98,26 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
           toggleUserPanel={toggleUserPanel}
           isUserPanelOpen={isUserPanelOpen}
           openUserSetsModal={openUserSetsModal}
+          onOpenLogoutModal={openLogOutModal}
           handleLogout={handleLogout}
           userBarBtnRef={userBarBtnRef}
         />
       </div>
+
+      {/* Модалки */}
       {isUserSetsModalOpen && (
         <UserSetsModal
           isOpen={isUserSetsModalOpen}
           onClose={closeUserSetsModal}
           userData={{ firstName, lastName, avatar }}
+        />
+      )}
+
+      {showLogOutModal && (
+        <LogOutModal
+          isOpen={showLogOutModal}
+          onCancel={closeLogOutModal}
+          onConfirm={handleLogout}
         />
       )}
     </header>
