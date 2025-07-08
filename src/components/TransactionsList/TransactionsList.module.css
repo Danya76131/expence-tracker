@@ -1,12 +1,14 @@
 /* === БАЗОВІ СТИЛІ === */
 .wrapper {
   width: 100%;
-  max-width: 335px;
+
   height: 516px;
   margin: auto;
-  padding: 20px 16px;
+  /* padding: 20px 16px; */
   background: #171719;
-  border-radius: 30px;
+  /* border-radius: 30px; */
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -66,7 +68,8 @@
 
 /* === ТАБЛИЦЯ === */
 .tableWrapper {
-  flex: 1;
+  /* flex: 1; */
+
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -201,9 +204,9 @@ tbody .actions {
 /* ================= Tablet (≥768px) ================= */
 @media screen and (min-width: 768px) {
   .wrapper {
-    min-width: 704px;
-    height: 544px;
-    padding: 32px;
+    /* min-width: 704px; */
+    /* height: 544px; */
+    /* padding: 32px; */
     gap: 16px;
   }
 
@@ -293,9 +296,9 @@ tbody .actions {
 /* ======================= DESKTOP (≥1440px) ================== */
 @media screen and (min-width: 1440px) {
   .wrapper {
-    min-width: 1240px;
+    /* min-width: 1240px; */
     height: 440px;
-    padding: 20px 40px;
+    /* padding: 20px 40px; */
     gap: 20px;
   }
 
