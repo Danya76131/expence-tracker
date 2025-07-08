@@ -20,15 +20,14 @@ import toast from "react-hot-toast";
 // import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
-import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
 
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
-  console.log("params", transactionsType);
+  // console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
-
+  // const isLoading = useSelector(selectIsLoading);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [categoryName, setCategoryName] = useState("");
@@ -59,7 +58,7 @@ const TransactionsHistoryPage = () => {
     setIsEditModalOpen(true);
     setCategoryName(tx.category.categoryName);
   };
-  console.log("HistoryPage --> Edit local state: ", selectedTransaction);
+  // console.log("HistoryPage --> Edit local state: ", selectedTransaction);
 
   // const handleFormSubmit = (values) => {
   //   dispatch(updateTransactions(values))
@@ -73,14 +72,10 @@ const TransactionsHistoryPage = () => {
   //     );
   // };
 
-  console.log("selected tr", selectedTransaction);
+  // console.log("selected tr", selectedTransaction);
 
   return (
     <div>
-      <TransactionsSearchTools
-        handleOpenModal={toggleIsAddModal}
-        type={transactionsType}
-      />
       <TransactionsList
         transactions={transactions}
         transactionsType={transactionsType}

@@ -22,7 +22,7 @@ const slice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.user = payload;
-        console.log("User", payload);
+        // console.log("User", payload);
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
