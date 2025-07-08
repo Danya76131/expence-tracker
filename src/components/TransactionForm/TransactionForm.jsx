@@ -78,7 +78,7 @@ const initialValues = {
 };
 
 const TransactionForm = ({
-  // editedData,
+  editedData,
   // categoryName,
   isEditMode,
   transactionsType,
@@ -86,8 +86,10 @@ const TransactionForm = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [getCategory, setGetCategory] = useState({ categoryName: "" });
-  // console.log("get category", getCategory);
+  const [getCategory, setGetCategory] = useState({
+    categoryName: editedData?.categoryName ? editedData.categoryName : "",
+    // categoryName: editedData.categoryName || "",
+  });
   useEffect(() => {}, [getCategory]);
 
   // const inputRef = useRef();
@@ -101,7 +103,6 @@ const TransactionForm = ({
   const handleSubmit = async (values, { resetForm }) => {
     if (isEditMode) {
       try {
-        console.log("Form -- edit -->", values);
         await dispatch(updateTransactions(values)).unwrap();
 
         resetForm();
@@ -130,16 +131,24 @@ const TransactionForm = ({
     setModalOpen(true);
   };
 
+  // if (editedData.categoryName) {
+  //   setGetCategory(editedData.categoryName);
+  // }
+
+  console.log("Form -- editedData --> ", editedData);
+  console.log("Form -- getCategory --> ", getCategory);
+
   return (
     <div className={s.formikWrapper}>
       <Formik
         initialValues={
-          // editedData  ? editedData :
-          {
-            ...initialValues,
-            type: transactionsType,
-            // category: getCategory._id,
-          }
+          editedData
+            ? editedData.selectedTransaction
+            : {
+                ...initialValues,
+                type: transactionsType,
+                // category: getCategory._id,
+              }
         }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}
@@ -322,6 +331,7 @@ const TransactionForm = ({
                 onSelect={(category) => {
                   setGetCategory(category);
                   setFieldValue("category", category._id);
+                  console.log("Form --> categoryID", category);
                   setModalOpen(false);
                 }}
                 onClose={() => setModalOpen(false)}
