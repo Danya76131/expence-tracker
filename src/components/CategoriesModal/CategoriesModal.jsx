@@ -11,43 +11,61 @@ import {
   editCategory,
   getCategories,
 } from "../../redux/categories/operations";
-import { selectCategoryIncomes } from "../../redux/categories/selectors";
-import { closeModal } from "../../redux/modal/slice";
+import {
+  selectCategoryByType,
+  selectCategoryExpenses,
+  selectCategoryIncomes,
+  selectCategoryState,
+} from "../../redux/categories/selectors";
+import { getTransactions } from "../../redux/transactions/operations";
 // import { getTransactions } from "../../redux/transactions/operations";
 
-const CategoriesModal = () => {
+const CategoriesModal = ({ type, closeModal, onSelect }) => {
   const dispatch = useDispatch();
 
-  const type = "incomes";
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      removeEventListener("keydown", handleEsc);
+    };
+  }, [closeModal]);
 
-  const categories = useSelector(selectCategoryIncomes);
-
-  console.log(categories);
+  const categories = useSelector(selectCategoryByType(type));
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const itemRefs = useRef([]);
 
   // const selectedId = useSelector(selectCategoryId(categoryId));
 
-  // console.log("Selected ID", selectedId);
-
   const handleEditCategory = (id, name) => {
     setCategoryName(name);
-    console.log(id);
+    console.warn("CatModal EditCategory ID -->", id);
+    console.warn("CatModal EditCategory Name -->", name);
     setCategoryId(id);
     setIsEditMode(true);
   };
 
-  const handleCheck = () => {
-    dispatch(closeModal());
+  const handleCheck = (item) => {
+    console.log("item modal", item);
+
+    onSelect(item);
   };
 
   const handleSubmitCategory = async (event) => {
     event.preventDefault();
+    console.log("pressed on submit btn");
     if (categoryName.length > 16) {
+      console.log("what is categoryName", categoryName);
       toast.error(
         "Category name length must be less than or equal to 16 characters long"
       );
@@ -57,21 +75,15 @@ const CategoriesModal = () => {
 
     if (isEditMode) {
       try {
-        console.log("Before dispatch payload:", {
-          categoryName,
-          id: categoryId,
-        });
-        await dispatch(editCategory({ categoryName, categoryId })).unwrap();
-        console.log("edit dispatch");
-      } catch {
-        console.log("Edit dispatch error");
+        await dispatch(editCategory({ categoryName, categoryId }))
+          .unwrap()
+          .then(() => {
+            dispatch(getTransactions(type));
+            isEditMode(false);
+          });
+      } catch (error) {
+        toast.error(error);
       }
-
-      // .then(() => {
-      //   dispatch(getTransactions({ type }));
-      //   setIsEditMode(false);
-      // })
-      // .catch((error) => toast.error(`Error editing category: ${error}`));
     } else {
       dispatch(addCategory({ type: type, categoryName: categoryName }))
         .unwrap()
@@ -80,7 +92,6 @@ const CategoriesModal = () => {
           console.log("success");
         })
         .catch(() => {
-          // console.log("Error", error);
           toast.error("Error adding category  ");
         });
     }
@@ -132,22 +143,16 @@ const CategoriesModal = () => {
   return (
     <Backdrop>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Incomes</h2>
-        {/* <button className={styles.buttonClose}>
-          {" "}
-          <Icon
-            name="close"
-            className={styles.icons}
-            size={20}
-            stroke="#fafafa"
-          />
-        </button> */}
+        <h2 className={styles.title}>
+          {type === "expenses" ? "Expenses" : "Incomes"}
+        </h2>
+
         <h3 className={styles.categoryTitle}>All Categories</h3>
         <ul
           className={clsx(
             "scroll scrollB",
             styles.categoryList,
-            categories.length === 0 && styles.noCategoriesBox
+            categories[type]?.length === 0 && styles.noCategoriesBox
           )}
         >
           {categories.length === 0 ? (
@@ -157,7 +162,7 @@ const CategoriesModal = () => {
               </p>
             </li>
           ) : (
-            categories?.map((item) => (
+            categories.map((item) => (
               <li
                 key={item._id}
                 ref={(el) => (itemRefs.current[item._id] = el)}
@@ -202,7 +207,7 @@ const CategoriesModal = () => {
                   <button
                     className={styles.deleteBtn}
                     onClick={() => handleDeleteCategory(item._id, type)}
-                    disabled={isButtonDisabled}
+                    // disabled={isButtonDisabled}
                   >
                     {" "}
                     <Icon
@@ -222,7 +227,7 @@ const CategoriesModal = () => {
           <h3 className={styles.categoryName}>
             {isEditMode ? "Edit category" : "New Category"}
           </h3>
-          <form onSubmit={handleSubmitCategory}>
+          <div>
             <label
               className={styles.categoryName}
               htmlFor="categoryInput"
@@ -236,13 +241,14 @@ const CategoriesModal = () => {
               value={categoryName}
             />
             <button
-              type="submit"
+              type="button"
               className={styles.buttonAdd}
-              disabled={categoryName.length === 0}
+              onClick={handleSubmitCategory}
+              // disabled={categoryName.length === 0}
             >
               {isEditMode ? "Edit" : "Add"}
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </Backdrop>

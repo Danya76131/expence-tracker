@@ -13,8 +13,6 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 
-// import {selectAuthLoading} from '../redux/auth/selectors'; // для лоадера
-
 function LoginPage() {
   console.log("loginpage mount");
   const dispatch = useDispatch();

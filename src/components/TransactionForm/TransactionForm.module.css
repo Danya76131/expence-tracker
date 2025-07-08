@@ -215,9 +215,9 @@
   transition: border-color 0.2s ease;
 }
 
-.radioLabel input[type="radio"] {
+/* .radioLabel input[type="radio"] {
   display: none;
-}
+} */
 
 .radioButtonActive {
   color: #0ef387;
