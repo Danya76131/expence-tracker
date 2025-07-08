@@ -13,9 +13,9 @@ import {
 } from "../../redux/categories/operations";
 import {
   selectCategoryByType,
-  selectCategoryExpenses,
-  selectCategoryIncomes,
-  selectCategoryState,
+  // selectCategoryExpenses,
+  // selectCategoryIncomes,
+  // selectCategoryState,
 } from "../../redux/categories/selectors";
 import { getTransactions } from "../../redux/transactions/operations";
 // import { getTransactions } from "../../redux/transactions/operations";
@@ -49,14 +49,14 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
 
   const handleEditCategory = (id, name) => {
     setCategoryName(name);
-    console.warn("CatModal EditCategory ID -->", id);
-    console.warn("CatModal EditCategory Name -->", name);
+    // console.warn("CatModal EditCategory ID -->", id);
+    // console.warn("CatModal EditCategory Name -->", name);
     setCategoryId(id);
     setIsEditMode(true);
   };
 
   const handleCheck = (item) => {
-    console.log("item modal", item);
+    // console.log("item modal", item);
 
     onSelect(item);
   };

@@ -22,18 +22,45 @@ const initialState = {
     expenses: [],
     incomes: [],
   },
+  incomesPercent: [],
+  expensesPercent: [],
   error: null,
   isLoading: false,
+};
+
+// 🔸 Функція для підрахунку відсотків:
+const calculatePercent = (array) => {
+  const total = array.reduce((acc, item) => acc + (item.sum || 0), 0);
+  return array.map((item) => ({
+    ...item,
+    percent: total ? (item.sum / total) * 100 : 0,
+  }));
 };
 
 const categoriesSlice = createSlice({
   name: "categories",
   initialState,
+
+  reducers: {
+    setIncomesCategories: (state, action) => {
+      state.categories.incomes = action.payload;
+      state.incomesPercent = calculatePercent(action.payload);
+    },
+    setExpensesCategories: (state, action) => {
+      state.categories.expenses = action.payload;
+      state.expensesPercent = calculatePercent(action.payload);
+    },
+  },
+
   extraReducers: (builder) =>
     builder
       .addCase(getCategories.pending, handlePending)
       .addCase(getCategories.fulfilled, (state, action) => {
         state.categories = action.payload;
+
+        // ✅ Розрахунок відсотків
+        state.expensesPercent = calculatePercent(action.payload.expenses || []);
+        state.incomesPercent = calculatePercent(action.payload.incomes || []);
 
         console.log("Data Fulfilled", action.payload);
       })
@@ -41,61 +68,61 @@ const categoriesSlice = createSlice({
 
       .addCase(addCategory.pending, handlePending)
       .addCase(addCategory.fulfilled, (state, action) => {
-        state.categories[action.payload.type].push(action.payload);
+        const { type } = action.payload;
+        state.categories[type].push(action.payload);
+
+        // ✅ Оновити відсотки
+        if (type === "incomes") {
+          state.incomesPercent = calculatePercent(state.categories.incomes);
+        } else {
+          state.expensesPercent = calculatePercent(state.categories.expenses);
+        }
       })
       .addCase(addCategory.rejected, handleRejected)
 
       .addCase(editCategory.pending, handlePending)
-
       .addCase(editCategory.fulfilled, (state, { payload }) => {
-        console.log("STATE", state);
-        console.log("PayLOAD", payload);
-        state.categories.expenses = state.categories.expenses.map((item) => {
-          if (item._id === payload._id) {
-            return payload;
-          }
-          return item;
-        });
-        console.log("Початковий", JSON.stringify(state.categories.incomes));
-        state.categories.incomes = state.categories.incomes.map((item) => {
-          if (item._id === payload._id) {
-            console.log("Pay", payload);
-            return payload;
-          }
+        const { _id } = payload;
 
-          return item;
-        });
-        console.log("Після", JSON.stringify(state.categories.incomes));
+        state.categories.expenses = state.categories.expenses.map((item) =>
+          item._id === _id ? payload : item
+        );
+        state.categories.incomes = state.categories.incomes.map((item) =>
+          item._id === _id ? payload : item
+        );
+
+        // ✅ Оновити відсотки
+        state.incomesPercent = calculatePercent(state.categories.incomes);
+        state.expensesPercent = calculatePercent(state.categories.expenses);
       })
-      // .addCase(editCategory.fulfilled, (state, { payload }) => {
-      //   const { _id } = payload;
-
-      //   state.categories.incomes = state.categories.incomes.map((item) =>
-      //     item._id === _id ? payload : item
-      //   );
-      // })
-
       .addCase(editCategory.rejected, handleRejected)
 
       .addCase(deleteCategory.pending, handlePending)
       .addCase(deleteCategory.fulfilled, (state, { payload }) => {
-        state.categories[payload.type] = state.categories[payload.type].filter(
-          (item) => item._id !== payload.id
+        const { type, id } = payload;
+        state.categories[type] = state.categories[type].filter(
+          (item) => item._id !== id
         );
+
+        // ✅ Оновити відсотки
+        if (type === "incomes") {
+          state.incomesPercent = calculatePercent(state.categories.incomes);
+        } else {
+          state.expensesPercent = calculatePercent(state.categories.expenses);
+        }
       })
       .addCase(deleteCategory.rejected, handleRejected)
 
       .addCase(login.fulfilled, (state, { payload: { user } }) => {
         state.categories.expenses = user.categories?.expenses || [];
         state.categories.incomes = user.categories?.incomes || [];
+
+        // ✅ Оновити відсотки при логіні
+        state.incomesPercent = calculatePercent(state.categories.incomes);
+        state.expensesPercent = calculatePercent(state.categories.expenses);
       }),
-  // .addCase(refreshUser.fulfilled, (state, { payload }) => {
-  //   state.categories.expenses = payload.categories?.expenses || [];
-  //   state.categories.incomes = payload.categories?.incomes || [];
-  // }),
-  // .addCase(logOut.fulfilled, (state) => {
-  //   return initialState;
-  // }),
 });
 
+export const { setIncomesCategories, setExpensesCategories } =
+  categoriesSlice.actions;
 export const categoriesReducer = categoriesSlice.reducer;
