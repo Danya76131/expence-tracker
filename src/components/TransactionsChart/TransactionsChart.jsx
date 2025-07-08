@@ -70,7 +70,7 @@ const TransactionsChart = ({ transactionsType }) => {
       <div className={styles["chart-and-list"]}>
         <div className={styles["chart-wrapper"]}>
           <div className={styles.centerTotal}>
-            {totalAmount > 0 ? "100%" : "No data"}
+            {totalAmount > 0 ? "100%" : ""}
           </div>
           <ResponsiveContainer className={styles.responsiveWrapper}>
             <PieChart>
