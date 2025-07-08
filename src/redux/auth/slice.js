@@ -1,15 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { login, register, refreshUser } from "./operations";
+import { login, register } from "./operations";
 
 const initialState = {
-  user: { name: null, email: null },
-  accessToken: null,
-  refreshToken: null,
-  sid: null,
-  isLoggedIn: false,
-  isLoading: false,
-  error: null,
+  name: "auth",
+  initialState: {
+    user: {
+      name: null,
+      email: null,
+      avatarUrl: null,
+      currency: "uah",
+      categories: { incomes: [] },
+      transactionsTotal: { incomes: 0, expenses: 0 },
+    },
+    token: null,
+    sid: null,
+    refreshToken: null,
+    isLoggedIn: false,
+    isRefreshing: false,
+  },
 };
 
 const authSlice = createSlice({
@@ -19,17 +28,16 @@ const authSlice = createSlice({
     resetError(state) {
       state.error = null;
     },
-    // logout() {
-    //   return { ...initialState };
-    // },
   },
   extraReducers: (builder) => {
     builder
-
       .addCase(register.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
+      // .addCase(refreshUser.pending, (state) => {
+      //   state.isRefreshing = true;
+      // })
       .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
         state.isLoggedIn = true;
@@ -55,28 +63,25 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || { message: "Login failed" };
-      })
-
-      .addCase(refreshUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.accessToken = action.payload.accessToken;
-        state.refreshToken = action.payload.refreshToken;
-        state.sid = action.payload.sid;
-        state.isLoggedIn = true;
-      })
-      .addCase(refreshUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload || { message: "Refresh failed" };
-        state.isLoggedIn = false;
-        state.user = { name: null, email: null, _id: null };
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.sid = null;
       });
+    // .addCase(refreshUser.fulfilled, (state, action) => {
+    //   state.token = action.payload.accessToken;
+    //   state.refreshToken = action.payload.refreshToken;
+    //   state.sid = action.payload.sid;
+    //   state.isLoggedIn = true;
+    //   state.isRefreshing = false;
+    // })
+    // .addCase(refreshUser.rejected, (state) => {
+    //   state.user = {
+    //     name: null,
+    //     email: null,
+    //     avatarUrl: null,
+    //     currency: "uah",
+    //     categories: { incomes: [] },
+    //     transactionsTotal: { incomes: 0, expenses: 0 },
+    //   };
+    //   state.isRefreshing = false;
+    // });
   },
 });
 

@@ -3,14 +3,12 @@ import SharedLayout from "./components/SharedLayout/SharedLayout";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import RestrictedRoute from "./routes/RestrictedRoute";
-// import { ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUser } from "./redux/user/operations";
-import { selectAccessToken } from "./redux/auth/selectors";
 import { Toaster } from "react-hot-toast";
-import NotFoundPage from "./components/NotFoundPage/NotFoundPage";
+import { selectRefreshToken } from "./redux/auth/selectors";
+import { getCurrentUser } from "./redux/user/operations";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -23,13 +21,21 @@ const TransactionsHistoryPage = lazy(() =>
 );
 
 const App = () => {
-  console.log("app mount");
   const dispatch = useDispatch();
-  const isToken = useSelector(selectAccessToken);
+  const refreshToken = useSelector(selectRefreshToken);
 
   useEffect(() => {
-    if (isToken) dispatch(getCurrentUser());
-  }, [dispatch, isToken]);
+    if (refreshToken) dispatch(getCurrentUser());
+  }, [dispatch, refreshToken]);
+
+  // useEffect(() => {
+  //   const storedRefreshToken =
+  //     localStorage.getItem("refreshToken") || refreshToken;
+
+  //   if (storedRefreshToken && !isLoggedIn) {
+  //     dispatch(refreshUser());
+  //   }
+  // }, [dispatch, refreshToken, isLoggedIn]);
 
   // для анімашки
   const location = useLocation();

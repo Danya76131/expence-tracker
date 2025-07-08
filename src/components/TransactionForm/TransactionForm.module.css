@@ -13,7 +13,11 @@
 .formikForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0px;
+}
+
+.dateTimeGroup {
+  margin: 20px 0;
 }
 
 /* ----------- RADIO GROUP ----------- */
@@ -101,6 +105,13 @@
   letter-spacing: -0.02em;
   color: #fafafa;
   font-family: var(--font-family);
+}
+
+.labelx {
+  margin: 20px 0;
+}
+.labelc {
+  margin-bottom: 20px;
 }
 
 /* .labelOther {
@@ -204,9 +215,9 @@
   transition: border-color 0.2s ease;
 }
 
-.radioLabel input[type="radio"] {
+/* .radioLabel input[type="radio"] {
   display: none;
-}
+} */
 
 .radioButtonActive {
   color: #0ef387;
@@ -312,6 +323,7 @@
     margin-left: 40px;
     height: 100%;
     align-self: stretch;
-    /* max-height: 600px; */
+    max-height: 600px;
+    min-height: 600px;
   }
 }
