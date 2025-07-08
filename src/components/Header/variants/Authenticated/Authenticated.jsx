@@ -8,7 +8,7 @@ import BurgerMenu from "../../../BurgerMenu/BurgerMenu";
 
 import css from "./Authenticated.module.css";
 
-const Authenticated = ({ userData, handleLogout, openUserSetsModal }) => {
+const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
 
@@ -20,8 +20,8 @@ const Authenticated = ({ userData, handleLogout, openUserSetsModal }) => {
     setIsUserPanelOpen((prev) => !prev);
   };
 
-  const openBurgerMenu = () => {
-    setIsBurgerMenuOpen(true);
+  const openUserSetsModal = () => {
+    alert("Тут буде модалка ))");
   };
 
   const handleLogout = () => {
