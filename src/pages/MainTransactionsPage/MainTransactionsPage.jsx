@@ -1,11 +1,22 @@
+import { useParams } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import Section from "../../components/Section/Section";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
 import TransactionsChart from "../../components/TransactionsChart/TransactionsChart";
 import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
 import styles from "./MainTransactionsPage.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getTransactions } from "../../redux/transactions/operations";
 
 const MainTransactionsPage = () => {
+  const dispatch = useDispatch();
+  const { transactionsType } = useParams();
+
+  useEffect(() => {
+    dispatch(getTransactions(transactionsType));
+  }, [dispatch, transactionsType]);
+
   return (
     <Section>
       <Container>
@@ -21,10 +32,10 @@ const MainTransactionsPage = () => {
             <TransactionsTotalAmount />
           </div>
           <div className={styles.form}>
-            <TransactionForm />
+            <TransactionForm transactionsType={transactionsType} />
           </div>
           <div className={styles.chart}>
-            <TransactionsChart />
+            <TransactionsChart transactionsType={transactionsType} />
           </div>
         </div>
       </Container>
