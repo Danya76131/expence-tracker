@@ -20,8 +20,8 @@ import toast from "react-hot-toast";
 // import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
-import { selectIsLoading } from "../../redux/categories/selectors";
-import Loader from "../../components/Loader/Loader";
+// import { selectIsLoading } from "../../redux/categories/selectors";
+// import Loader from "../../components/Loader/Loader";
 
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
@@ -29,7 +29,7 @@ const TransactionsHistoryPage = () => {
   console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
-  const isLoading = useSelector(selectIsLoading);
+  // const isLoading = useSelector(selectIsLoading);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [categoryName, setCategoryName] = useState("");
@@ -78,32 +78,31 @@ const TransactionsHistoryPage = () => {
 
   return (
     <div>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Loader />
-      ) : (
-        <>
-          <TransactionsList
-            transactions={transactions}
-            transactionsType={transactionsType}
-            onDelete={handleDelete}
-            onEdit={handleEditClick}
-          />
-          {isEditModalOpen && (
-            <Backdrop onClose={() => setIsEditModalOpen(false)}>
-              <TransactionForm
-                editedData={{
-                  ...selectedTransaction,
-                  category: selectedTransaction._id,
-                }}
-                categoryName={categoryName}
-                // onSubmit={handleFormSubmit}
-                isEditMode={isEditModalOpen}
-                transactionsType={transactionsType}
-              />
-            </Backdrop>
-          )}
-        </>
-      )}
+      ) : ()} */}
+      <>
+        <TransactionsList
+          transactions={transactions}
+          transactionsType={transactionsType}
+          onDelete={handleDelete}
+          onEdit={handleEditClick}
+        />
+        {isEditModalOpen && (
+          <Backdrop onClose={() => setIsEditModalOpen(false)}>
+            <TransactionForm
+              editedData={{
+                ...selectedTransaction,
+                category: selectedTransaction._id,
+              }}
+              categoryName={categoryName}
+              // onSubmit={handleFormSubmit}
+              isEditMode={isEditModalOpen}
+              transactionsType={transactionsType}
+            />
+          </Backdrop>
+        )}
+      </>
     </div>
   );
 };

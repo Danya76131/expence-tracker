@@ -8,13 +8,13 @@ import styles from "./MainTransactionsPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../redux/transactions/operations";
-import { selectIsLoading } from "../../redux/categories/selectors";
-import Loader from "../../components/Loader/Loader";
+// import { selectIsLoading } from "../../redux/categories/selectors";
+// import Loader from "../../components/Loader/Loader";
 
 const MainTransactionsPage = () => {
   const dispatch = useDispatch();
   const { transactionsType } = useParams();
-  const isLoading = useSelector(selectIsLoading);
+  // const isLoading = useSelector(selectIsLoading);
   useEffect(() => {
     dispatch(getTransactions(transactionsType));
   }, [dispatch, transactionsType]);
@@ -22,28 +22,27 @@ const MainTransactionsPage = () => {
   return (
     <Section>
       <Container>
-        {isLoading ? (
+        {/* {isLoading ? (
           <Loader />
-        ) : (
-          <div className={styles.mainWrapper}>
-            <div className={styles.textWrapper}>
-              <h2 className={styles.mainTitle}>Expense Log</h2>
-              <p className={styles.mainText}>
-                Capture and organize every penny spent with ease! A clear view
-                of your financial habits at your fingertips.
-              </p>
-            </div>
-            <div className={styles.total}>
-              <TransactionsTotalAmount />
-            </div>
-            <div className={styles.form}>
-              <TransactionForm transactionsType={transactionsType} />
-            </div>
-            <div className={styles.chart}>
-              <TransactionsChart transactionsType={transactionsType} />
-            </div>
+        ) : () */}
+        <div className={styles.mainWrapper}>
+          <div className={styles.textWrapper}>
+            <h2 className={styles.mainTitle}>Expense Log</h2>
+            <p className={styles.mainText}>
+              Capture and organize every penny spent with ease! A clear view of
+              your financial habits at your fingertips.
+            </p>
           </div>
-        )}
+          <div className={styles.total}>
+            <TransactionsTotalAmount />
+          </div>
+          <div className={styles.form}>
+            <TransactionForm transactionsType={transactionsType} />
+          </div>
+          <div className={styles.chart}>
+            <TransactionsChart transactionsType={transactionsType} />
+          </div>
+        </div>
       </Container>
     </Section>
   );
