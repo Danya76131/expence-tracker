@@ -8,7 +8,7 @@ import { selectTransactionByType } from "../../redux/transactions/selectors";
 import {
   getTransactions,
   deleteTransaction,
-  updateTransactions,
+  // updateTransactions,
 } from "../../redux/transactions/operations";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
@@ -17,7 +17,6 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 import toast from "react-hot-toast";
-// import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
@@ -26,10 +25,8 @@ import { selectFilter, selectDate } from "../../redux/filter/selectors";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
-  console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
-  // const isLoading = useSelector(selectIsLoading);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [categoryName, setCategoryName] = useState("");
