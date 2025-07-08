@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import css from "./UserSetsModal.module.css";
-import Button from "../UI/Button/Button";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -124,20 +123,20 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               style={{ display: "none" }}
             />
             <div className={css["avatar-buttons"]}>
-              <Button
+              <label
                 htmlFor="avatar-upload"
                 className={`${css.btn} ${css["upload-btn"]}`}
               >
                 Upload new photo
-              </Button>
-              <Button
+              </label>
+              <button
                 type="button"
                 className={`${css.btn} ${css["remove-btn"]}`}
                 onClick={handleRemoveAvatar}
                 disabled={!avatarPreview && !avatarFile}
               >
                 Remove
-              </Button>
+              </button>
             </div>
           </div>
 
