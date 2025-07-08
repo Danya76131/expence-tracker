@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 // import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
+import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
 
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
@@ -76,6 +77,10 @@ const TransactionsHistoryPage = () => {
 
   return (
     <div>
+      <TransactionsSearchTools
+        handleOpenModal={toggleIsAddModal}
+        type={transactionsType}
+      />
       <TransactionsList
         transactions={transactions}
         transactionsType={transactionsType}
