@@ -43,7 +43,9 @@ const transactionsSlice = createSlice({
       .addCase(getTransactions.fulfilled, (state, { payload, meta }) => {
         state.loading = false;
         state.error = false;
-        if (meta.arg === "incomes") {
+        const { type } = meta.arg;
+
+        if (type === "incomes") {
           state.incomes = payload;
         } else {
           state.expenses = payload;

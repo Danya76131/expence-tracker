@@ -9,7 +9,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
   return (
     <div className={styles.wrapper}>
       {/* Фільтр */}
-      <div className={styles.filter}>
+      {/* <div className={styles.filter}>
         <div className={styles.inputWrapper}>
           <input
             type="text"
@@ -26,7 +26,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
           />
           <BsCalendar2Week className={styles.icon} />
         </div>
-      </div>
+      </div> */}
 
       {/* Таблиця */}
       <div className={styles.tableWrapper}>
