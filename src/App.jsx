@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import { selectRefreshToken } from "./redux/auth/selectors";
 import { getCurrentUser } from "./redux/user/operations";
+import Loader from "./components/Loader/Loader";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -42,7 +43,7 @@ const App = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      <Suspense fallback={null}>
+      <Suspense fallback={<Loader />}>
         <AnimatePresence mode="wait" initial={false}>
           <SharedLayout>
             <Routes location={location} key={location.pathname}>
