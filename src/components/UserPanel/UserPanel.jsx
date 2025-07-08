@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import css from "./UserPanel.module.css";
 import Icon from "../UI/Icon/Icon";
+import LogoutModal from "../LogOutModal/LogOutModal";
 
 const UserPanel = ({
   openUserSetsModal,
@@ -11,7 +12,9 @@ const UserPanel = ({
   isBurger = false,
 }) => {
   const panelRef = useRef(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
+  // Закриваю панель при кліку поза нею (тільки якщо не burger)
   useEffect(() => {
     if (isBurger) return;
 
@@ -41,7 +44,17 @@ const UserPanel = ({
   };
 
   const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    toggleUserPanel();
     handleLogout();
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   const panelClassName = isBurger
@@ -49,27 +62,41 @@ const UserPanel = ({
     : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
 
   return (
-    <div ref={panelRef} className={panelClassName}>
-      <button onClick={handleOpenUserSets} className={css.button} type="button">
-        <Icon
-          name="user"
-          size={16}
-          stroke="currentColor"
-          className={css.icon}
-        />
-        <span>Profile settings</span>
-      </button>
+    <>
+      <div ref={panelRef} className={panelClassName}>
+        <button
+          onClick={handleOpenUserSets}
+          className={css.button}
+          type="button"
+        >
+          <Icon
+            name="user"
+            size={16}
+            stroke="currentColor"
+            className={css.icon}
+          />
+          <span>Profile settings</span>
+        </button>
 
-      <button onClick={handleLogoutClick} className={css.button} type="button">
-        <Icon
-          name="log-out"
-          size={16}
-          stroke="currentColor"
-          className={css.icon}
-        />
-        <span>Log out</span>
-      </button>
-    </div>
+        <button
+          onClick={handleLogoutClick}
+          className={css.button}
+          type="button"
+        >
+          <Icon
+            name="log-out"
+            size={16}
+            stroke="currentColor"
+            className={css.icon}
+          />
+          <span>Log out</span>
+        </button>
+      </div>
+
+      {showLogoutModal && (
+        <LogoutModal onLogout={confirmLogout} onCancel={cancelLogout} />
+      )}
+    </>
   );
 };
 
