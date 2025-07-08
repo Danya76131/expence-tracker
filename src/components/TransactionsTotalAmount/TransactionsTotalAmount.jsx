@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./TransactionsTotalAmount.module.css";
-import { PiArrowDownLeftBold, PiArrowUpRightBold } from "react-icons/pi";
+import Icon from "../UI/Icon/Icon";
+import { useSelector } from "react-redux";
 
 const Card = ({ type, amount }) => {
   const isIncome = type === "income";
@@ -9,9 +10,9 @@ const Card = ({ type, amount }) => {
     <div className={styles.card}>
       <div className={styles.iconWrapper}>
         {isIncome ? (
-          <PiArrowUpRightBold color="black" />
+          <Icon name="arrow-up" fill="#0c0d0d" stroke="#0c0d0d" />
         ) : (
-          <PiArrowDownLeftBold color="black" />
+          <Icon name="arrow-down" fill="#0c0d0d" stroke="#0c0d0d" />
         )}
       </div>
       <div>
@@ -25,10 +26,25 @@ const Card = ({ type, amount }) => {
 };
 
 const TransactionsTotalAmount = () => {
+  const incomesTotal = useSelector((state) => state.transactions.incomesTotal);
+  const expensesTotal = useSelector(
+    (state) => state.transactions.expensesTotal
+  );
+
+  // ✅ Зберігати у localStorage при зміні
+  useEffect(() => {
+    if (incomesTotal != null) {
+      localStorage.setItem("incomesTotal", JSON.stringify(incomesTotal));
+    }
+    if (expensesTotal != null) {
+      localStorage.setItem("expensesTotal", JSON.stringify(expensesTotal));
+    }
+  }, [incomesTotal, expensesTotal]);
+
   return (
     <div className={styles.wrapper}>
-      <Card type="income" amount={632} />
-      <Card type="expense" amount={632} />
+      <Card type="income" amount={incomesTotal} />
+      <Card type="expense" amount={expensesTotal} />
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import { selectRefreshToken } from "./redux/auth/selectors";
 import { getCurrentUser } from "./redux/user/operations";
+import { useInitFinanceData } from "./hooks/useInitFinanceData";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -21,6 +22,8 @@ const TransactionsHistoryPage = lazy(() =>
 );
 
 const App = () => {
+  useInitFinanceData();
+
   const dispatch = useDispatch();
   const refreshToken = useSelector(selectRefreshToken);
 
