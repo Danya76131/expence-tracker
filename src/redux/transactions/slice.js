@@ -16,6 +16,24 @@ const transactionsSlice = createSlice({
     incomesTotal: null,
     expensesTotal: null,
   },
+
+  reducers: {
+    setIncomes: (state, action) => {
+      state.incomes = action.payload;
+      state.incomesTotal = action.payload.reduce(
+        (acc, tx) => acc + (tx.sum || 0),
+        0
+      );
+    },
+    setExpenses: (state, action) => {
+      state.expenses = action.payload;
+      state.expensesTotal = action.payload.reduce(
+        (acc, tx) => acc + (tx.sum || 0),
+        0
+      );
+    },
+  },
+
   extraReducers: (builder) =>
     builder
       .addCase(getTransactions.pending, (state) => {
@@ -86,4 +104,5 @@ const transactionsSlice = createSlice({
       }),
 });
 
+export const { setIncomes, setExpenses } = transactionsSlice.actions;
 export const transactionsReducer = transactionsSlice.reducer;

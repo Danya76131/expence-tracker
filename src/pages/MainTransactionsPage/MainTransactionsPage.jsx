@@ -14,6 +14,9 @@ import { getTransactions } from "../../redux/transactions/operations";
 const MainTransactionsPage = () => {
   const dispatch = useDispatch();
   const { transactionsType } = useParams();
+
+  const path = window.location.pathname;
+
   // const isLoading = useSelector(selectIsLoading);
   useEffect(() => {
     dispatch(getTransactions(transactionsType));
@@ -27,7 +30,11 @@ const MainTransactionsPage = () => {
         ) : () */}
         <div className={styles.mainWrapper}>
           <div className={styles.textWrapper}>
-            <h2 className={styles.mainTitle}>Expense Log</h2>
+            <h2 className={styles.mainTitle}>
+              {path.includes("/transactions/incomes")
+                ? "Income Log"
+                : "Expense Log"}
+            </h2>
             <p className={styles.mainText}>
               Capture and organize every penny spent with ease! A clear view of
               your financial habits at your fingertips.

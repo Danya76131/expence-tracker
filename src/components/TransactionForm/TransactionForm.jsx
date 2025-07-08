@@ -87,7 +87,7 @@ const TransactionForm = ({
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [getCategory, setGetCategory] = useState({ categoryName: "" });
-  console.log("get category", getCategory);
+  // console.log("get category", getCategory);
   useEffect(() => {}, [getCategory]);
 
   // const inputRef = useRef();

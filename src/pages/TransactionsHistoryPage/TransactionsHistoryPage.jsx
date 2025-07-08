@@ -26,7 +26,7 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
-  console.log("params", transactionsType);
+  // console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
   // const isLoading = useSelector(selectIsLoading);
@@ -60,7 +60,7 @@ const TransactionsHistoryPage = () => {
     setIsEditModalOpen(true);
     setCategoryName(tx.category.categoryName);
   };
-  console.log("HistoryPage --> Edit local state: ", selectedTransaction);
+  // console.log("HistoryPage --> Edit local state: ", selectedTransaction);
 
   // const handleFormSubmit = (values) => {
   //   dispatch(updateTransactions(values))
@@ -74,7 +74,7 @@ const TransactionsHistoryPage = () => {
   //     );
   // };
 
-  console.log("selected tr", selectedTransaction);
+  // console.log("selected tr", selectedTransaction);
 
   return (
     <div>
