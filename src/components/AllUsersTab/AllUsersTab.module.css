@@ -1,0 +1,50 @@
+.usersTab {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    position: absolute;
+    bottom: 38px;
+
+}
+
+@media (max-width: 1439px) {
+    .usersTab {
+        display: none;
+    }
+}
+
+.usersInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 210px;
+}
+
+.usersTitle {
+    font-weight: 400;
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    color: #fafafa;
+}
+
+.usersText {
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+    color: rgba(250, 250, 250, 0.4);
+}
+.usersImages {
+    display: flex;
+    position: relative;
+}
+
+.usersImages img {
+    border-radius: 50%;
+    object-fit: cover;
+    outline: 2px solid var(--color-bg-primary);
+    outline-offset: -2px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); }
+
+.usersImages img:not(:first-child) {
+    margin-left: -20px;
+   }

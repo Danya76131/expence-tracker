@@ -1,7 +1,35 @@
+import Container from "../../components/Container/Container";
+import Section from "../../components/Section/Section";
+import TransactionForm from "../../components/TransactionForm/TransactionForm";
+import TransactionsChart from "../../components/TransactionsChart/TransactionsChart";
+import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
 import styles from "./MainTransactionsPage.module.css";
 
 const MainTransactionsPage = () => {
-  return <div className={styles.wrapper}>MainTransactionsPage</div>;
+  return (
+    <Section>
+      <Container>
+        <div className={styles.mainWrapper}>
+          <div className={styles.textWrapper}>
+            <h2 className={styles.mainTitle}>Expense Log</h2>
+            <p className={styles.mainText}>
+              Capture and organize every penny spent with ease! A clear view of
+              your financial habits at your fingertips.
+            </p>
+          </div>
+          <div className={styles.total}>
+            <TransactionsTotalAmount />
+          </div>
+          <div className={styles.form}>
+            <TransactionForm />
+          </div>
+          <div className={styles.chart}>
+            <TransactionsChart />
+          </div>
+        </div>
+      </Container>
+    </Section>
+  );
 };
 
 export default MainTransactionsPage;

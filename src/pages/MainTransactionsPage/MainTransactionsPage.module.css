@@ -1,0 +1,88 @@
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 375px;
+  margin: auto;
+}
+.total {
+  max-width: 375px;
+  margin: auto;
+}
+.chart {
+  max-width: 375px;
+  margin: auto;
+}
+
+.mainTitle {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  color: #fafafa;
+  margin-bottom: 13px;
+}
+
+.mainText {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  color: rgba(250, 250, 250, 0.4);
+}
+
+/* Tablet ≥ 768px */
+@media (min-width: 768px) {
+  .mainTitle {
+    font-size: 38px;
+  }
+  .mainText {
+    font-size: 16px;
+    display: inline-block;
+    width: 499px;
+  }
+
+  .textWrapper {
+    max-width: 768px;
+    margin: auto;
+  }
+  .total {
+    max-width: 768px;
+    margin: auto;
+  }
+  .chart {
+    max-width: 768px;
+    margin: auto;
+  }
+}
+
+/* Desktop ≥ 1440px */
+@media (min-width: 1440px) {
+  .mainWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "text form"
+      "total form"
+      "chart form";
+    align-items: start;
+    /* max-height: 600px; */
+  }
+
+  .textWrapper {
+    grid-area: text;
+    margin: 0;
+  }
+
+  .form {
+    grid-area: form;
+    align-self: stretch;
+  }
+
+  .total {
+    grid-area: total;
+  }
+
+  .chart {
+    grid-area: chart;
+  }
+}
