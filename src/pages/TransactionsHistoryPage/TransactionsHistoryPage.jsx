@@ -17,7 +17,7 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
@@ -36,21 +36,19 @@ const TransactionsHistoryPage = () => {
 
   useEffect(() => {
     if (!transactionsType) return;
+    dispatch(getTransactions({ type: transactionsType }));
+  }, [dispatch, transactionsType]);
+
+  useEffect(() => {
+    if (!transactionsType) return;
 
     try {
-      dispatch(getTransactions({ type: transactionsType, filter, date }));
+      if (filter || date)
+        dispatch(getTransactions({ type: transactionsType, filter, date }));
     } catch (err) {
       console.error(err);
     }
-  }, [transactionsType, dispatch, filter, date]);
-
-  // useEffect(() => {
-  //   try {
-  //     dispatch(getTransactions(transactionsType));
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [transactionsType, dispatch]);
+  }, [transactionsType, dispatch, filter, date, transactions]);
 
   const handleDelete = async (id) => {
     dispatch(deleteTransaction(id))
@@ -110,6 +108,7 @@ const TransactionsHistoryPage = () => {
             // onSubmit={handleFormSubmit}
             isEditMode={isEditModalOpen}
             transactionsType={transactionsType}
+            handleCloseEditModal={() => setIsEditModalOpen(false)}
           />
         </Backdrop>
       )}
