@@ -5,9 +5,9 @@ const NotFoundPage = () => {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.code}>404</h1>
-      <p className={styles.message}>Сторінку не знайдено</p>
+      <p className={styles.message}>Page is not found</p>
       <Link to="/" className={styles.homeLink}>
-        На головну
+        Go home
       </Link>
     </div>
   );
