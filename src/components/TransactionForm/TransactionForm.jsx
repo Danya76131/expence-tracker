@@ -195,27 +195,28 @@ const TransactionForm = ({ type }) => {
 
             <label htmlFor="categoryInput" className={s.label}>
               Category
+              <input
+                readOnly
+                id="categoryInput"
+                name="categoryInput"
+                placeholder="Select category"
+                type="text"
+                value={selectCategory || "Select category"}
+                className={s.categoryInput}
+                onClick={() => setModalOpen(true)}
+              />
+              <Field
+                type="hidden"
+                name="category"
+                id="category"
+                aria-label="Selected Category ID"
+              />
+              <ErrorMessage
+                className={s.error}
+                name="category"
+                component="div"
+              />
             </label>
-            <input
-              readOnly
-              id="categoryInput"
-              name="categoryInput"
-              placeholder="Select category"
-              type="text"
-              value={selectCategory || "Select category"}
-              className={s.categoryInput}
-              onClick={() => setModalOpen(true)}
-            />
-
-            <Field
-              type="hidden"
-              name="category"
-              id="category"
-              aria-label="Selected Category ID"
-            />
-
-            <ErrorMessage className={s.error} name="category" component="div" />
-
             {/* Sum */}
 
             <label htmlFor="sum" className={s.label}>
