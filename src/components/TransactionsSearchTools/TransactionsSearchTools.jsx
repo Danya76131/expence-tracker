@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import DatePicker from "react-datepicker";
+
 import { format } from "date-fns";
 import {
   changeDate,
   changeFilter,
   resetFilter,
-  selectDate,
-  selectFilter,
 } from "../../redux/filter/slice";
-import { Icon } from "../../components/UI/Icon/Icon";
+import { selectDate, selectFilter } from "../../redux/filter/selectors";
+import Icon from "../../components/UI/Icon/Icon";
 // import { UniversalButton } from "../UniversalButton/UniversalButton";
 import style from "./TransactionsSearchTools.module.css";
+import DatePicker from "react-datepicker";
 export const TransactionsSearchTools = ({ type }) => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
@@ -47,7 +47,14 @@ export const TransactionsSearchTools = ({ type }) => {
             className={style.formInput}
             placeholder="Search for anything.."
           />
-          <Icon name="search" className={style.iconSearch} size="20" />
+
+          {/* <Icon
+            name="search"
+            // className={style.iconSearch}
+            size={20}
+            fill="white"
+            stroke="white"
+          /> */}
         </div>
 
         <div className={style.datepickerContainer}>
@@ -59,7 +66,12 @@ export const TransactionsSearchTools = ({ type }) => {
             maxDate={new Date()}
             placeholderText="dd/mm/yyyy"
           />
-          <Icon name="calendar" className={style.iconDate} size="20" />
+
+          {/* <Icon
+            name="calendar"
+            // className={style.iconDate}
+            size={20}
+          /> */}
         </div>
         {/* <UniversalButton action={handleResetFilter} type="reset" />
         <UniversalButton className={style.addBtn} action={handleOpenModal} /> */}
