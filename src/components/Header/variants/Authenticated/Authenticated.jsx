@@ -1,16 +1,19 @@
 import { useState, useRef } from "react";
+
 import Logo from "../../../Logo/Logo";
 import UserBarBtn from "../../../UserBarBtn/UserBarBtn";
 import UserPanel from "../../../UserPanel/UserPanel";
 import TransactionsHistoryNav from "../../../TransactionsHistoryNav/TransactionsHistoryNav";
 import BurgerMenuBtn from "../../../BurgerMenuBtn/BurgerMenuBtn";
 import BurgerMenu from "../../../BurgerMenu/BurgerMenu";
+import UserSetsModal from "../../../UserSetsModal/UserSetsModal";
 
 import css from "./Authenticated.module.css";
 
 const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [isUserSetsModalOpen, setIsUserSetsModalOpen] = useState(false);
 
   const userBarBtnRef = useRef(null);
 
@@ -21,7 +24,7 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   };
 
   const openUserSetsModal = () => {
-    alert("Тут буде модалка ))");
+    setIsUserSetsModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -37,6 +40,10 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
   const toggleBurgerMenu = () => {
     if (isUserPanelOpen) setIsUserPanelOpen(false);
     setIsBurgerOpen((prev) => !prev);
+  };
+
+  const closeUserSetsModal = () => {
+    setIsUserSetsModalOpen(false);
   };
 
   const closeBurgerMenu = () => {
@@ -83,6 +90,13 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
           userBarBtnRef={userBarBtnRef}
         />
       </div>
+      {isUserSetsModalOpen && (
+        <UserSetsModal
+          isOpen={isUserSetsModalOpen}
+          onClose={closeUserSetsModal}
+          userData={{ firstName, lastName, avatar }}
+        />
+      )}
     </header>
   );
 };

@@ -13,7 +13,7 @@ const UserPanel = ({
   const panelRef = useRef(null);
 
   useEffect(() => {
-    if (isBurger) return; // для бургер-меню не закриваємо при кліку поза
+    if (isBurger) return;
 
     const handleClickOutside = (event) => {
       if (
@@ -35,13 +35,22 @@ const UserPanel = ({
     };
   }, [isUserPanelOpen, toggleUserPanel, userBarBtnRef, isBurger]);
 
+  const handleOpenUserSets = () => {
+    openUserSetsModal();
+    toggleUserPanel();
+  };
+
+  const handleLogoutClick = () => {
+    handleLogout();
+  };
+
   const panelClassName = isBurger
     ? css.mobileWrapper
     : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
 
   return (
     <div ref={panelRef} className={panelClassName}>
-      <button onClick={openUserSetsModal} className={css.button} type="button">
+      <button onClick={handleOpenUserSets} className={css.button} type="button">
         <Icon
           name="user"
           size={16}
@@ -50,7 +59,8 @@ const UserPanel = ({
         />
         <span>Profile settings</span>
       </button>
-      <button onClick={handleLogout} className={css.button} type="button">
+
+      <button onClick={handleLogoutClick} className={css.button} type="button">
         <Icon
           name="log-out"
           size={16}
