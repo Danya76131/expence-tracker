@@ -2,13 +2,41 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../api/authApi";
 import { rest } from "lodash";
 
+// export const getTransactions = createAsyncThunk(
+//   "transactions/all",
+//   async (type, { rejectWithValue }) => {
+//     // console.warn("Get operat -->", type);
+//     try {
+//       const { data } = await api.get(`transactions/${type}`);
+//       // console.log(data);
+//       return data;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 export const getTransactions = createAsyncThunk(
   "transactions/all",
-  async (type, { rejectWithValue }) => {
-    // console.warn("Get operat -->", type);
+  async ({ type, filter, date }, { rejectWithValue }) => {
+    // const params = { date, search: filter };
+    const params = {};
+
+    if (date) {
+      params.date = date;
+    }
+
+    if (filter && filter.trim().length >= 3 && filter.trim().length <= 24) {
+      params.search = filter.trim();
+    }
+
+    console.log("Request params:", params);
+
+    console.log(params);
     try {
-      const { data } = await api.get(`transactions/${type}`);
-      // console.log(data);
+      console.log("Request type:", type);
+      const { data } = await api.get(`transactions/${type}`, { params });
+
       return data;
     } catch (error) {
       return rejectWithValue(error.message);

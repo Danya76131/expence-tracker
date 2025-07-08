@@ -5,11 +5,10 @@ import { BsCalendar2Week } from "react-icons/bs";
 import styles from "./TransactionsList.module.css";
 
 const TransactionsList = ({ transactions, onDelete, onEdit }) => {
-  // console.warn("List -- Transction -->", transactions);
   return (
     <div className={styles.wrapper}>
       {/* Фільтр */}
-      <div className={styles.filter}>
+      {/* <div className={styles.filter}>
         <div className={styles.inputWrapper}>
           <input
             type="text"
@@ -26,7 +25,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
           />
           <BsCalendar2Week className={styles.icon} />
         </div>
-      </div>
+      </div> */}
 
       {/* Таблиця */}
       <div className={styles.tableWrapper}>

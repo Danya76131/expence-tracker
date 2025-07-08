@@ -4,23 +4,14 @@ import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../redux/auth/operations";
 import BgImageWrapper from "../../components/BgImageWrapper/BgImageWrapper";
-import { selectAuthError, selectAuthLoading } from "../../redux/auth/selectors";
+import { selectAuthError } from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
 import { ShowSuccessToast } from "../../components/CustomToast/CustomToast";
 import Loader from "../../components/Loader/Loader";
 
-// import {
-//   showErrorToast,
-//   showSuccessToast,
-// } from "../../components/CustomToast/CustomToast";
-// import {selectAuthLoading} from '../redux/auth/selectors';
-// імпорт для лоадера
-
 function RegisterPage() {
   const dispatch = useDispatch();
   const error = useSelector(selectAuthError);
-  const isLoading = useSelector(selectAuthLoading);
-  // const isLoading = useSelector(state => state.auth.isLoading);
 
   const fields = [
     { name: "name", type: "text", placeholder: "Name" },
@@ -85,36 +76,32 @@ function RegisterPage() {
 
   return (
     <div className="login-wrapper">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className={css.regPage}>
-          <div className={css.leftSide}>
-            <BgImageWrapper desktopOnly />
-          </div>
-          <div className={css.rightSide}>
-            <h2 className={css.title}>Sign Up</h2>
-            <p className={css.aboutApp}>
-              Step into a world of hassle-free expense management! Your journey
-              towards financial mastery begins here.
-            </p>
-            {error && (
-              <div style={{ color: "#E74A3B", marginBottom: "10px" }}>
-                {error}
-              </div>
-            )}
-            <AuthForm
-              fields={fields}
-              submitText="Sign Up"
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmitAction={onSubmitAction}
-              navigationData={navigationData}
-              formVariant="register"
-            />
-          </div>
+      <div className={css.regPage}>
+        <div className={css.leftSide}>
+          <BgImageWrapper desktopOnly />
         </div>
-      )}
+        <div className={css.rightSide}>
+          <h2 className={css.title}>Sign Up</h2>
+          <p className={css.aboutApp}>
+            Step into a world of hassle-free expense management! Your journey
+            towards financial mastery begins here.
+          </p>
+          {error && (
+            <div style={{ color: "#E74A3B", marginBottom: "10px" }}>
+              {error}
+            </div>
+          )}
+          <AuthForm
+            fields={fields}
+            submitText="Sign Up"
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmitAction={onSubmitAction}
+            navigationData={navigationData}
+            formVariant="register"
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,11 +5,9 @@ import TransactionForm from "../../components/TransactionForm/TransactionForm";
 import TransactionsChart from "../../components/TransactionsChart/TransactionsChart";
 import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
 import styles from "./MainTransactionsPage.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../redux/transactions/operations";
-// import { selectIsLoading } from "../../redux/categories/selectors";
-// import Loader from "../../components/Loader/Loader";
 
 const MainTransactionsPage = () => {
   const dispatch = useDispatch();
@@ -17,17 +15,13 @@ const MainTransactionsPage = () => {
 
   const path = window.location.pathname;
 
-  // const isLoading = useSelector(selectIsLoading);
   useEffect(() => {
-    dispatch(getTransactions(transactionsType));
+    dispatch(getTransactions({ type: transactionsType }));
   }, [dispatch, transactionsType]);
 
   return (
     <Section>
       <Container>
-        {/* {isLoading ? (
-          <Loader />
-        ) : () */}
         <div className={styles.mainWrapper}>
           <div className={styles.textWrapper}>
             <h2 className={styles.mainTitle}>
