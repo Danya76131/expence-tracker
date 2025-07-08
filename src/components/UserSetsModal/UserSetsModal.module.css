@@ -11,9 +11,9 @@
   z-index: 9999;
 }
 
-.modal-content {
-  width: 335px;
-  height: 444px;
+.wrapper {
+  width: 500px;
+  height: 477px;
   border-radius: 30px;
   background: #171719;
   border: 1px solid rgba(250, 250, 250, 0.1);
@@ -22,17 +22,42 @@
   padding: 20px 40px;
 }
 
-.modal-content h2 {
+.userAvatarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 100px;
+  background: rgba(12, 13, 13, 0.5);
+  width: 100px;
+  height: 100px;
+}
+
+.wrapper h2 {
   font-size: 24px;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: #fafafa;
+  margin-bottom: 38px;
+}
+
+.avatarButtonsWrapper {
+  width: 228px;
+  height: 31px;
+  display: flex;
+  gap: 8px;
+}
+
+.avatarButtons {
+  padding: 8px 16px;
+  font-size: 12px;
 }
 
 .field {
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
+  background-color: transparent;
 }
 
 .field label {
@@ -43,12 +68,13 @@
 
 .field input[type="text"],
 .field select {
-  padding: 10px 14px;
   font-size: 16px;
-  border: 1.5px solid #ccc;
-  border-radius: 4px;
   outline: none;
   transition: border-color 0.2s ease;
+  background-color: transparent;
+  border: 1px solid rgba(250, 250, 250, 0.4);
+  border-radius: 12px;
+  padding: 12px 56px 12px 18px;
 }
 
 .field input[type="text"]:focus,
@@ -71,82 +97,14 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
-.avatar-placeholder {
-  width: 80px;
-  height: 80px;
-  background: rgba(12, 13, 13, 0.5);
-  border-radius: 100px;
-  margin-top: 40px;
-  margin-bottom: 20px;
+.inputs {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #999;
-  font-size: 14px;
-  border: 2px dashed #ccc;
+  gap: 8px;
 }
 
-.avatar-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.btn {
-  cursor: pointer;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 14px;
-  transition: background-color 0.2s ease;
-}
-
-.upload-btn {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.upload-btn:disabled {
-  background-color: #9ec5fe;
-  cursor: not-allowed;
-}
-
-.upload-btn:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.remove-btn {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-.remove-btn:disabled {
-  background-color: #f5a6aa;
-  cursor: not-allowed;
-}
-
-.remove-btn:hover:not(:disabled) {
-  background-color: #a71d2a;
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 12px;
-  background-color: #28a745;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 700;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button[type="submit"]:disabled {
-  background-color: #94d3a2;
-  cursor: not-allowed;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-  background-color: #1e7e34;
+.saveButton {
+  padding: 14px 192px;
+  width: 420px;
+  height: 47px;
+  /* margin-bottom: 40px; */
 }

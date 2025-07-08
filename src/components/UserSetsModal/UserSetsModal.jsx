@@ -2,13 +2,15 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import css from "./UserSetsModal.module.css";
+import Icon from "../UI/Icon/Icon";
+import Button from "../UI/Button/Button";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [avatarFile, setAvatarFile] = useState(null);
+  const [, /*avatarFile*/ setAvatarFile] = useState(null);
   const [currency, setCurrency] = useState("");
   const [name, setName] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, /*isSubmitting*/ setIsSubmitting] = useState(false);
 
   const modalRef = useRef();
 
@@ -39,24 +41,24 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
     }
   };
 
-  const handleRemoveAvatar = async () => {
-    try {
-      const response = await fetch("/api/user/avatar", {
-        method: "DELETE",
-        credentials: "include",
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Delete failed");
-      }
-      toast.success("Avatar removed successfully");
-      setAvatarPreview(null);
-      setAvatarFile(null);
-      onUpdateUser({ avatarUrl: null });
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
+  // const handleRemoveAvatar = async () => {
+  //   try {
+  //     const response = await fetch("/api/user/avatar", {
+  //       method: "DELETE",
+  //       credentials: "include",
+  //     });
+  //     if (!response.ok) {
+  //       const err = await response.json();
+  //       throw new Error(err.message || "Delete failed");
+  //     }
+  //     toast.success("Avatar removed successfully");
+  //     setAvatarPreview(null);
+  //     setAvatarFile(null);
+  //     onUpdateUser({ avatarUrl: null });
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,7 +103,7 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
       role="dialog"
       aria-modal="true"
     >
-      <div className={css["modal-content"]}>
+      <div className={css["wrapper"]}>
         <h2>Profile settings</h2>
         <form onSubmit={handleSubmit}>
           <div className={`${css.field} ${css["avatar-field"]}`}>
@@ -112,7 +114,9 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
                 className={css["avatar-preview"]}
               />
             ) : (
-              <div className={css["avatar-placeholder"]}>No avatar</div>
+              <div className={css.userAvatarWrapper}>
+                <Icon name="user-avatar" size={38} fill="#0EF387" />
+              </div>
             )}
 
             <input
@@ -122,53 +126,46 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               onChange={handleAvatarChange}
               style={{ display: "none" }}
             />
-            <div className={css["avatar-buttons"]}>
-              <label
-                htmlFor="avatar-upload"
-                className={`${css.btn} ${css["upload-btn"]}`}
-              >
+            <div className={css.avatarButtonsWrapper}>
+              <Button variant="dark" className={css.avatarButtons}>
                 Upload new photo
-              </label>
-              <button
-                type="button"
-                className={`${css.btn} ${css["remove-btn"]}`}
-                onClick={handleRemoveAvatar}
-                disabled={!avatarPreview && !avatarFile}
-              >
+              </Button>
+              <Button variant="dark" className={css.avatarButtons}>
                 Remove
-              </button>
+              </Button>
             </div>
           </div>
 
-          <div className={css.field}>
-            <label htmlFor="currency">Currency</label>
-            <select
-              id="currency"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-            >
-              <option value="UAH">₴ UAH</option>
-              <option value="USD">$ USD</option>
-              <option value="EUR">€ EUR</option>
-            </select>
+          <div className={css.inputs}>
+            <div className={css.field}>
+              <label htmlFor="currency">Currency</label>
+              <select
+                className={css.select}
+                id="currency"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+              >
+                <option value="UAH">₴ UAH</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+              </select>
+            </div>
+
+            <div className={css.field}>
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                minLength={2}
+                maxLength={30}
+              />
+            </div>
           </div>
 
-          <div className={css.field}>
-            <label htmlFor="name">Name</label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              minLength={2}
-              maxLength={30}
-            />
-          </div>
-
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : "Save"}
-          </button>
+          <Button className={css.saveButton}>Save</Button>
         </form>
       </div>
     </div>
