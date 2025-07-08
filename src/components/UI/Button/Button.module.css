@@ -44,3 +44,17 @@
   align-items: center;
   justify-content: center;
 }
+
+@media screen and (max-width: 1439px) {
+  .transparent {
+    border-color: black;
+    color: black;
+  }
+
+  .transparent:hover,
+  .transparent:focus {
+    background-color: black;
+    color: white;
+    border-color: black;
+  }
+}

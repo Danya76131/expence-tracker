@@ -1,0 +1,83 @@
+/* Mobile first (до 768px) */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0ef387;
+  padding: 24px 16px;
+  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.closeBtn {
+  width: 20px;
+  height: 20px;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  fill: #0c0d0d;
+}
+
+.closeIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.closeIcon:focus,
+.closeIcon:hover {
+  border: 1px solid #ffffff;
+  border-radius: 40px;
+}
+
+.userBarBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Планшет і вище (від 768px) */
+@media screen and (min-width: 768px) {
+  .menu {
+    width: 50vw;
+    padding: 32px;
+  }
+
+  .closeBtn {
+    width: 27px;
+    height: 27px;
+  }
+
+  .closeIcon {
+    width: 27px;
+    height: 27px;
+  }
+}
+
+/* Десктоп (від 1440px) */
+@media screen and (min-width: 1440px) {
+  .menu,
+  .backdrop {
+    display: none;
+  }
+}
