@@ -16,7 +16,7 @@ const MainTransactionsPage = () => {
   const path = window.location.pathname;
 
   useEffect(() => {
-    dispatch(getTransactions(transactionsType));
+    dispatch(getTransactions({ type: transactionsType }));
   }, [dispatch, transactionsType]);
 
   return (
