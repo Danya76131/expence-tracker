@@ -4,7 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 24px;
 }
 
 .logoIcon {
@@ -24,16 +23,9 @@
   .logoWrapper {
     width: 217px;
     height: 24px;
-    margin-left: 36px;
   }
 
   .logoText {
     font-size: 20px;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .logoWrapper {
-    margin-left: 100px;
   }
 }

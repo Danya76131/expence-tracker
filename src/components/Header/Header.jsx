@@ -1,3 +1,4 @@
+import Container from "../Container/Container";
 import { useAuth } from "./hooks";
 import Authenticated from "./variants/Authenticated/Authenticated";
 import Unauthenticated from "./variants/Unauthenticated/Unauthenticated";
@@ -7,11 +8,13 @@ const Header = () => {
 
   if (isAuthenticated) {
     return (
-      <Authenticated
-        firstName={user.firstName}
-        lastName={user.lastName}
-        logOut={logOut}
-      />
+      <Container>
+        <Authenticated
+          firstName={user.firstName}
+          lastName={user.lastName}
+          logOut={logOut}
+        />
+      </Container>
     );
   }
 

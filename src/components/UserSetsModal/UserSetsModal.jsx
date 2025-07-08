@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import css from "./UserSetsModal.module.css";
+import Button from "../UI/Button/Button";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
@@ -36,34 +37,6 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
     if (file) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleUploadAvatar = async () => {
-    if (!avatarFile) {
-      toast.info("Please select a photo first");
-      return;
-    }
-    try {
-      const formData = new FormData();
-      formData.append("avatar", avatarFile);
-
-      const response = await fetch("/api/user/avatar", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Upload failed");
-      }
-      const data = await response.json();
-      toast.success("Avatar uploaded successfully");
-      setAvatarPreview(data.avatarUrl);
-      setAvatarFile(null);
-      onUpdateUser({ avatarUrl: data.avatarUrl });
-    } catch (error) {
-      toast.error(error.message);
     }
   };
 
@@ -130,10 +103,9 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
       aria-modal="true"
     >
       <div className={css["modal-content"]}>
-        <h2>User Settings</h2>
+        <h2>Profile settings</h2>
         <form onSubmit={handleSubmit}>
           <div className={`${css.field} ${css["avatar-field"]}`}>
-            <label>Avatar</label>
             {avatarPreview ? (
               <img
                 src={avatarPreview}
@@ -152,28 +124,20 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               style={{ display: "none" }}
             />
             <div className={css["avatar-buttons"]}>
-              <label
+              <Button
                 htmlFor="avatar-upload"
                 className={`${css.btn} ${css["upload-btn"]}`}
               >
                 Upload new photo
-              </label>
-              <button
+              </Button>
+              <Button
                 type="button"
                 className={`${css.btn} ${css["remove-btn"]}`}
                 onClick={handleRemoveAvatar}
                 disabled={!avatarPreview && !avatarFile}
               >
                 Remove
-              </button>
-              <button
-                type="button"
-                className={`${css.btn} ${css["upload-btn"]}`}
-                onClick={handleUploadAvatar}
-                disabled={!avatarFile}
-              >
-                Save photo
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -184,11 +148,9 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
             >
-              <option value="">Select currency</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="UAH">UAH</option>
-              <option value="GBP">GBP</option>
+              <option value="UAH">₴ UAH</option>
+              <option value="USD">$ USD</option>
+              <option value="EUR">€ EUR</option>
             </select>
           </div>
 
