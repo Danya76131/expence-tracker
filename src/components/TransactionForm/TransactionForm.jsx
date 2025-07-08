@@ -82,13 +82,13 @@ const TransactionForm = ({
   // categoryName,
   isEditMode,
   transactionsType,
+  handleCloseEditModal,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const [getCategory, setGetCategory] = useState({
-    categoryName: editedData?.categoryName ? editedData.categoryName : "",
-    // categoryName: editedData.categoryName || "",
+    categoryName: editedData?.categoryName || "",
   });
   useEffect(() => {}, [getCategory]);
 
@@ -107,6 +107,7 @@ const TransactionForm = ({
 
         resetForm();
         setGetCategory({ categoryName: "" });
+        handleCloseEditModal();
         toast.custom(
           <ShowSuccessToast msg={"Transaction edited successfully"} />
         );
@@ -130,13 +131,6 @@ const TransactionForm = ({
   const handleCategoryClick = () => {
     setModalOpen(true);
   };
-
-  // if (editedData.categoryName) {
-  //   setGetCategory(editedData.categoryName);
-  // }
-
-  console.log("Form -- editedData --> ", editedData);
-  console.log("Form -- getCategory --> ", getCategory);
 
   return (
     <div className={s.formikWrapper}>
