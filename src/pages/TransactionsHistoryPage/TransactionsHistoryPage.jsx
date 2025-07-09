@@ -17,13 +17,15 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 import toast from "react-hot-toast";
-import { data, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
-import { selectFilter, selectDate } from "../../redux/filter/selectors";
+// import { selectFilter, selectDate } from "../../redux/filter/selectors";
 import Section from "../../components/Section/Section";
 import Container from "../../components/Container/Container";
+import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
+
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
@@ -32,10 +34,13 @@ const TransactionsHistoryPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [categoryName, setCategoryName] = useState("");
-
-  const filter = useSelector(selectFilter);
-  const date = useSelector(selectDate);
-
+  ////////
+  const [searchParams] = useSearchParams();
+  const filter = searchParams.get("search") || "";
+  const date = searchParams.get("date") || null;
+  // const filter = useSelector(selectFilter);
+  // const date = useSelector(selectDate);
+  ////////
   useEffect(() => {
     if (!transactionsType) return;
     dispatch(getTransactions({ type: transactionsType }));
@@ -45,12 +50,18 @@ const TransactionsHistoryPage = () => {
     if (!transactionsType) return;
 
     try {
-      if (filter || date)
-        dispatch(getTransactions({ type: transactionsType, filter, date }));
+      // if (filter || date)
+      dispatch(
+        getTransactions({
+          type: transactionsType,
+          filter: filter || null,
+          date: date || null,
+        })
+      );
     } catch (err) {
       console.error(err);
     }
-  }, [transactionsType, dispatch, filter, date, transactions]);
+  }, [transactionsType, dispatch, filter, date]);
 
   const handleDelete = async (id) => {
     dispatch(deleteTransaction(id))
@@ -89,6 +100,7 @@ const TransactionsHistoryPage = () => {
   return (
     <Section>
       <Container>
+        <TransactionsTotalAmount />
         <TransactionsSearchTools
           // handleOpenModal={toggleIsAddModal}
           type={transactionsType}
