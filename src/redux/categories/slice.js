@@ -5,7 +5,7 @@ import {
   editCategory,
   getCategories,
 } from "./operations";
-import { login } from "../auth/operations";
+import { login, userLogout } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -120,6 +120,10 @@ const categoriesSlice = createSlice({
         // ✅ Оновити відсотки при логіні
         state.incomesPercent = calculatePercent(state.categories.incomes);
         state.expensesPercent = calculatePercent(state.categories.expenses);
+      })
+
+      .addCase(userLogout.fulfilled, () => {
+        return { ...initialState };
       }),
 });
 

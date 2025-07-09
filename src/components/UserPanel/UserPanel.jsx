@@ -1,6 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import css from "./UserPanel.module.css";
+import { useEffect, useRef } from "react";
 import Icon from "../UI/Icon/Icon";
+import css from "./UserPanel.module.css";
+import { userLogout } from "../../redux/auth/operations";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
 
 const UserPanel = ({
   openUserSetsModal,
@@ -11,6 +16,8 @@ const UserPanel = ({
   isBurger = false,
 }) => {
   const panelRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isBurger) return;
@@ -47,6 +54,21 @@ const UserPanel = ({
     }, 300);
   };
 
+  const handleLogout = async () => {
+    try {
+      console.log("click");
+      await dispatch(userLogout()).unwprap();
+      navigate("/");
+      toast.custom(<ShowSuccessToast msg={"Goodbye my friend!"} />);
+    } catch {
+      toast.custom(
+        <ShowErrorToast
+          msg={"Ups something went wrong. Try logout one more time!"}
+        />
+      );
+    }
+  };
+
   const panelClassName = isBurger
     ? css.mobileWrapper
     : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
@@ -70,7 +92,7 @@ const UserPanel = ({
           stroke="currentColor"
           className={css.icon}
         />
-        <span>Log out</span>
+        <span onClick={handleLogout}>Log out</span>
       </button>
     </div>
   );

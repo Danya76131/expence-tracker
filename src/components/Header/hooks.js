@@ -1,33 +1,29 @@
-import { useState } from "react";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../redux/user/selectors";
+import { userLogout } from "../../redux/auth/operations";
 
 export const useAuth = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  let firstName = "";
-  let lastName = "";
+  const user = useSelector(selectUser);
 
-  if (isLoggedIn) {
-    try {
-      const persistAuth = localStorage.getItem("persist:auth");
-      if (persistAuth) {
-        const parsed = JSON.parse(persistAuth);
-        const user = JSON.parse(parsed.user);
-        const nameParts = (user.name || "").trim().split(" ");
-        firstName = nameParts[0] || "";
-        lastName = nameParts.slice(1).join(" ") || "";
-      }
-    } catch (error) {
-      console.error("Error parsing user from localStorage:", error);
-    }
-  }
-
-  const logOut = () => setIsAuthenticated(false);
+  const firstName = user?.name?.split(" ")[0] || "";
+  const lastName = user?.name?.split(" ").slice(1).join(" ") || "";
+  // const avatarUrl = user?.avatarUrl || null;
+  const logOut = () => dispatch(userLogout());
 
   return {
     isLoggedIn,
-    user: isLoggedIn ? { firstName, lastName } : null,
+    user: isLoggedIn
+      ? {
+          firstName,
+          lastName,
+          // avatarUrl,
+          currency: user?.currency || "UAH",
+          name: user?.name,
+        }
+      : null,
     logOut,
   };
 };
