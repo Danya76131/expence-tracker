@@ -1,19 +1,29 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import css from "./UserSetsModal.module.css";
 import Icon from "../UI/Icon/Icon";
 import Button from "../UI/Button/Button";
 import CloseButton from "./CloseButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUserAvatar,
+  userAvatarChange,
+} from "../../redux/user/operations";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
+import toast from "react-hot-toast";
+import { selectUserAvatar } from "../../redux/user/selectors";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
+  const dispatch = useDispatch();
+  const userAvatar = useSelector(selectUserAvatar);
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [, /*avatarFile*/ setAvatarFile] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const [currency, setCurrency] = useState("");
   const [name, setName] = useState("");
   const [, /*isSubmitting*/ setIsSubmitting] = useState(false);
 
   const modalRef = useRef();
+  const uploadFotoInput = useRef();
 
   useEffect(() => {
     if (isOpen) {
@@ -39,27 +49,41 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
     if (file) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
+      console.log(file);
+    }
+  };
+  console.log(avatarFile);
+  console.log(avatarPreview);
+
+  const handleRemoveAvatar = async () => {
+    try {
+      await dispatch(deleteUserAvatar()).unwrap();
+
+      toast.custom(<ShowSuccessToast msg={"Photo succesfuly removed"} />);
+      setAvatarPreview(null);
+      setAvatarFile(null);
+      onUpdateUser({ avatarUrl: null });
+    } catch {
+      toast.custom(<ShowErrorToast msg={"Something went wrong"} />);
     }
   };
 
-  // const handleRemoveAvatar = async () => {
-  //   try {
-  //     const response = await fetch("/api/user/avatar", {
-  //       method: "DELETE",
-  //       credentials: "include",
-  //     });
-  //     if (!response.ok) {
-  //       const err = await response.json();
-  //       throw new Error(err.message || "Delete failed");
-  //     }
-  //     toast.success("Avatar removed successfully");
-  //     setAvatarPreview(null);
-  //     setAvatarFile(null);
-  //     onUpdateUser({ avatarUrl: null });
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
+  const handleUploadAvatar = (ref) => {
+    const input = ref.current;
+    if (input) input.click();
+  };
+
+  const handleFetchFoto = async () => {
+    if (!avatarPreview) return;
+    try {
+      const formData = new FormData();
+      formData.append("avatar", avatarFile);
+      await dispatch(userAvatarChange(formData)).unwrap();
+      toast.custom(<ShowSuccessToast msg={"Photo succesfuly added"} />);
+    } catch {
+      toast.custom(<ShowErrorToast msg={"Something went wrong"} />);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,9 +133,9 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
         <h2>Profile settings</h2>
         <form onSubmit={handleSubmit}>
           <div className={`${css.field} ${css["avatar-field"]}`}>
-            {avatarPreview ? (
+            {userAvatar ? (
               <img
-                src={avatarPreview}
+                src={userAvatar}
                 alt="User avatar preview"
                 className={css["avatar-preview"]}
               />
@@ -122,6 +146,7 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
             )}
 
             <input
+              ref={uploadFotoInput}
               type="file"
               accept="image/*"
               id="avatar-upload"
@@ -129,10 +154,19 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               style={{ display: "none" }}
             />
             <div className={css.avatarButtonsWrapper}>
-              <Button variant="dark" className={css.avatarButtons}>
+              <Button
+                type=""
+                variant="dark"
+                className={css.avatarButtons}
+                onClick={() => handleUploadAvatar(uploadFotoInput)}
+              >
                 Upload new photo
               </Button>
-              <Button variant="dark" className={css.avatarButtons}>
+              <Button
+                variant="dark"
+                className={css.avatarButtons}
+                onClick={handleRemoveAvatar}
+              >
                 Remove
               </Button>
             </div>
@@ -164,7 +198,9 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
             </div>
           </div>
 
-          <Button className={css.saveButton}>Save</Button>
+          <Button className={css.saveButton} onClick={handleFetchFoto}>
+            Save
+          </Button>
         </form>
       </div>
     </div>
