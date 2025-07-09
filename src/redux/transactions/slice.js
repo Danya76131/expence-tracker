@@ -5,18 +5,20 @@ import {
   getTransactions,
   updateTransactions,
 } from "./operations";
+import { userLogout } from "../auth/operations";
+
+const initialState = {
+  incomes: [],
+  expenses: [],
+  loading: false,
+  error: false,
+  incomesTotal: null,
+  expensesTotal: null,
+};
 
 const transactionsSlice = createSlice({
   name: "transactions",
-  initialState: {
-    incomes: [],
-    expenses: [],
-    loading: false,
-    error: false,
-    incomesTotal: null,
-    expensesTotal: null,
-  },
-
+  initialState,
   reducers: {
     setIncomes: (state, action) => {
       state.incomes = action.payload;
@@ -103,6 +105,9 @@ const transactionsSlice = createSlice({
       .addCase(updateTransactions.rejected, (state) => {
         state.loading = false;
         state.error = true;
+      })
+      .addCase(userLogout.fulfilled, () => {
+        return initialState;
       }),
 });
 

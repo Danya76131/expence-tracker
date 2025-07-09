@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api, { setAuthHeader } from "../../api/authApi.js";
+import api, { clearAuthHeader, setAuthHeader } from "../../api/authApi.js";
 
 // const saveTokensToStorage = (data) => {
 //   localStorage.setItem("accessToken", data.accessToken);
@@ -77,6 +77,30 @@ export const login = createAsyncThunk(
       }
 
       return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const userLogout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await api.get("/auth/logout");
+      clearAuthHeader();
+      return {};
+    } catch (error) {
+      console.error("Logout error:", error.response?.data || error.message);
+      let errorMessage = "Logout failed";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      return rejectWithValue({ message: errorMessage });
     }
   }
 );

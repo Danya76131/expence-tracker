@@ -62,7 +62,7 @@ tbody tr {
   width: 100%;
   height: 50px;
   box-sizing: border-box;
-  padding: 20px 30px 18px 20px;
+  padding: 18px 30px 18px 20px;
   align-items: center;
 }
 
@@ -133,14 +133,17 @@ tbody .actions {
 .tableWrapper::-webkit-scrollbar {
   height: 8px;
 }
+
 .tableWrapper::-webkit-scrollbar-track {
   background: rgba(250, 250, 250, 0.1);
   border-radius: 12px;
 }
+
 .tableWrapper::-webkit-scrollbar-thumb {
   background: rgba(250, 250, 250, 0.2);
   border-radius: 12px;
 }
+
 .tableWrapper::-webkit-scrollbar-thumb:hover {
   background: rgba(250, 250, 250, 0.6);
 }
@@ -165,6 +168,7 @@ tbody .actions {
     overflow-y: auto;
     margin: 0 -5px;
   }
+
   /* 
   thead {
     position: sticky;
@@ -175,17 +179,21 @@ tbody .actions {
   .tableWrapper::-webkit-scrollbar {
     width: 6px;
   }
+
   .tableWrapper::-webkit-scrollbar-track {
     background: rgba(250, 250, 250, 0.1);
     border-radius: 12px;
   }
+
   .tableWrapper::-webkit-scrollbar-thumb {
     background: rgba(250, 250, 250, 0.2);
     border-radius: 12px;
   }
+
   .tableWrapper::-webkit-scrollbar-thumb:hover {
     background: rgba(250, 250, 250, 0.6);
   }
+
   /* =========================================================== */
   .table {
     display: table;
@@ -201,6 +209,7 @@ tbody .actions {
   thead tr {
     padding: 20px 73px 20px 32px;
   }
+
   tbody tr {
     padding: 20px 73px 20px 32px;
   }
