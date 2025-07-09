@@ -8,10 +8,12 @@ import {
   resetFilter,
 } from "../../redux/filter/slice";
 import { selectDate, selectFilter } from "../../redux/filter/selectors";
-// import Icon from "../../components/UI/Icon/Icon";
+import Icon from "../../components/UI/Icon/Icon";
 
 import style from "./TransactionsSearchTools.module.css";
 import DatePicker from "react-datepicker";
+import { clsx } from "clsx";
+import Button from "../UI/Button/Button";
 export const TransactionsSearchTools = ({ type }) => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
@@ -38,7 +40,7 @@ export const TransactionsSearchTools = ({ type }) => {
   return (
     <div className={style.formContainer}>
       <form action="" className={style.formBox}>
-        <div className={style.filterContainer}>
+        <div className={clsx(style.filterContainer)}>
           <input
             value={filter}
             onChange={changeFilterValue}
@@ -47,16 +49,10 @@ export const TransactionsSearchTools = ({ type }) => {
             placeholder="Search for anything.."
           />
 
-          {/* <Icon
-            name="search"
-            // className={style.iconSearch}
-            size={20}
-            fill="white"
-            stroke="white"
-          /> */}
+          <Icon name="search" className={style.icon} size={20} />
         </div>
 
-        <div className={style.datepickerContainer}>
+        <div className={clsx(style.datepickerContainer)}>
           <DatePicker
             className={style.formCalendar}
             selected={date}
@@ -66,19 +62,15 @@ export const TransactionsSearchTools = ({ type }) => {
             placeholderText="dd/mm/yyyy"
           />
 
-          {/* <Icon
-            name="calendar"
-            // className={style.iconDate}
-            size={20}
-          /> */}
+          <Icon name="calendar" className={style.icon} size={20} />
         </div>
-        <button
+        <Button
           type="button"
           onClick={handleResetFilter}
-          className={style.resetButton} // стиль можешь задать сам
+          className={style.resetButton}
         >
-          Clear
-        </button>
+          Reset
+        </Button>
       </form>
     </div>
   );

@@ -17,11 +17,13 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
 import { selectFilter, selectDate } from "../../redux/filter/selectors";
+import Section from "../../components/Section/Section";
+import Container from "../../components/Container/Container";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
@@ -36,21 +38,19 @@ const TransactionsHistoryPage = () => {
 
   useEffect(() => {
     if (!transactionsType) return;
+    dispatch(getTransactions({ type: transactionsType }));
+  }, [dispatch, transactionsType]);
+
+  useEffect(() => {
+    if (!transactionsType) return;
 
     try {
-      dispatch(getTransactions({ type: transactionsType, filter, date }));
+      if (filter || date)
+        dispatch(getTransactions({ type: transactionsType, filter, date }));
     } catch (err) {
       console.error(err);
     }
-  }, [transactionsType, dispatch, filter, date]);
-
-  // useEffect(() => {
-  //   try {
-  //     dispatch(getTransactions(transactionsType));
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [transactionsType, dispatch]);
+  }, [transactionsType, dispatch, filter, date, transactions]);
 
   const handleDelete = async (id) => {
     dispatch(deleteTransaction(id))
@@ -87,33 +87,36 @@ const TransactionsHistoryPage = () => {
   // console.log("selected tr", selectedTransaction);
 
   return (
-    <div>
-      <TransactionsSearchTools
-        // handleOpenModal={toggleIsAddModal}
-        type={transactionsType}
-      />
-      <TransactionsList
-        transactions={transactions}
-        transactionsType={transactionsType}
-        onDelete={handleDelete}
-        onEdit={handleEditClick}
-      />
+    <Section>
+      <Container>
+        <TransactionsSearchTools
+          // handleOpenModal={toggleIsAddModal}
+          type={transactionsType}
+        />
+        <TransactionsList
+          transactions={transactions}
+          transactionsType={transactionsType}
+          onDelete={handleDelete}
+          onEdit={handleEditClick}
+        />
 
-      {isEditModalOpen && (
-        <Backdrop onClose={() => setIsEditModalOpen(false)}>
-          <TransactionForm
-            editedData={{
-              selectedTransaction,
-              categoryName,
-            }}
-            categoryName={categoryName}
-            // onSubmit={handleFormSubmit}
-            isEditMode={isEditModalOpen}
-            transactionsType={transactionsType}
-          />
-        </Backdrop>
-      )}
-    </div>
+        {isEditModalOpen && (
+          <Backdrop onClose={() => setIsEditModalOpen(false)}>
+            <TransactionForm
+              editedData={{
+                selectedTransaction,
+                categoryName,
+              }}
+              categoryName={categoryName}
+              // onSubmit={handleFormSubmit}
+              isEditMode={isEditModalOpen}
+              transactionsType={transactionsType}
+              handleCloseEditModal={() => setIsEditModalOpen(false)}
+            />
+          </Backdrop>
+        )}
+      </Container>
+    </Section>
   );
 };
 

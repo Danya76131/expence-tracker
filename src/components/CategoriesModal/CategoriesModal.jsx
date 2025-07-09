@@ -54,6 +54,8 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
     console.log("modal --> handleEditCategory -- isEditMode -->", isEditMode);
     setCategoryName(name);
     setCategoryId(id);
+    console.warn("EditCat -->categoryId --> ", categoryId);
+    console.warn("EditCat -->categoryName --> ", categoryName);
     setIsEditMode(true);
   };
 
@@ -80,14 +82,8 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
         await dispatch(editCategory({ categoryName, categoryId }))
           .unwrap()
           .then(() => {
-            console.log("Modal -- Type -->", type);
-            dispatch(getTransactions(type));
+            dispatch(getTransactions({ type }));
           });
-        closeModal(false);
-
-        console.log("close modal worked");
-
-        toast.custom(<ShowSuccessToast msg={"Successfully edited !"} />);
       } catch (error) {
         toast.error(error);
       }
@@ -108,6 +104,8 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
 
   const handleInputChange = (event) => {
     setCategoryName(event.target.value);
+    console.warn("event.target.value --> ", event.target.value);
+    console.warn("HandleInputChange -- categoryName --> ", categoryName);
   };
 
   const handleDeleteCategory = (id, type) => {
@@ -153,6 +151,9 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
   // const handleItemClick = (index) => {
   //   setCategoryId(index === categoryId ? null : index);
   // };
+
+  console.warn("categoryId --> ", categoryId);
+  console.warn("categoryName --> ", categoryName);
 
   return (
     <Backdrop onClose={() => closeModal(false)}>

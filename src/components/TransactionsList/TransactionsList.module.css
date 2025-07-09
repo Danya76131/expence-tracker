@@ -1,72 +1,24 @@
 /* === БАЗОВІ СТИЛІ === */
 .wrapper {
   width: 100%;
-  max-width: 335px;
+
   height: 516px;
   margin: auto;
-  padding: 20px 16px;
+  /* padding: 20px 16px; */
   background: #171719;
-  border-radius: 30px;
+  /* border-radius: 30px; */
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.filter {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.inputWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.icon {
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  color: #0ef387;
-  font-size: 20px;
-  pointer-events: none;
-}
-
-.searchInput,
-.dateInput {
-  width: 100%;
-  height: 50px;
-  padding: 0 20px;
-  padding-right: 50px;
-  border-radius: 30px;
-  border: none;
-  font: 16px/1 "Inter", sans-serif;
-  color: rgba(250, 250, 250, 0.4);
-  background: #171719;
-  box-sizing: border-box;
-}
-
-.searchInput {
-  background: #0c0d0d;
-}
-
-.dateInput {
-  border: 1px solid rgba(250, 250, 250, 0.2);
-}
-
-.searchInput:focus,
-.searchInput:hover,
-.dateInput:focus,
-.dateInput:hover {
-  outline: none;
-  border: 1px solid #0ef387;
-}
-
 /* === ТАБЛИЦЯ === */
 .tableWrapper {
-  flex: 1;
+  /* flex: 1; */
+
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -93,7 +45,7 @@ thead tr {
   width: 100%;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.2);
-  padding: 20px 30px 18px 6px;
+  padding: 20px 30px 18px 20px;
 }
 
 thead th {
@@ -110,7 +62,7 @@ tbody tr {
   width: 100%;
   height: 50px;
   box-sizing: border-box;
-  padding: 20px 30px 18px 6px;
+  padding: 20px 30px 18px 20px;
   align-items: center;
 }
 
@@ -201,40 +153,24 @@ tbody .actions {
 /* ================= Tablet (≥768px) ================= */
 @media screen and (min-width: 768px) {
   .wrapper {
-    min-width: 704px;
-    height: 544px;
-    padding: 32px;
+    /* min-width: 704px; */
+    /* height: 544px; */
+    /* padding: 32px; */
     gap: 16px;
   }
 
-  .filter {
-    flex-direction: row;
-    gap: 13px;
-  }
-
-  .inputWrapper {
-    width: auto;
-  }
-
-  .searchInput {
-    width: 260px;
-  }
-
-  .dateInput {
-    width: 188px;
-  }
   /* =================== vertical scroll ======================== */
   .tableWrapper {
     overflow-x: hidden;
     overflow-y: auto;
     margin: 0 -5px;
   }
-
+  /* 
   thead {
     position: sticky;
     top: 0;
     z-index: 2;
-  }
+  } */
 
   .tableWrapper::-webkit-scrollbar {
     width: 6px;
@@ -263,7 +199,10 @@ tbody .actions {
   }
 
   thead tr {
-    padding: 20px 73px 20px 6px;
+    padding: 20px 73px 20px 32px;
+  }
+  tbody tr {
+    padding: 20px 73px 20px 32px;
   }
 
   thead th {
@@ -293,18 +232,22 @@ tbody .actions {
 /* ======================= DESKTOP (≥1440px) ================== */
 @media screen and (min-width: 1440px) {
   .wrapper {
-    min-width: 1240px;
+    /* min-width: 1240px; */
     height: 440px;
-    padding: 20px 40px;
+    /* padding: 20px 40px; */
     gap: 20px;
   }
 
   thead tr {
-    padding: 20px 270px 20px 6px;
+    padding: 20px 270px 20px 40px;
+  }
+
+  tbody tr {
+    padding: 20px 270px 20px 40px;
   }
 
   thead th {
-    flex: 1 0 173px;
+    flex: 1 0 160px;
     padding-right: 0;
   }
 
