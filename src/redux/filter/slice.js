@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { format } from "date-fns";
 
 const initialState = {
   filter: "",
-  date: null,
+  date: format(new Date(), "yyyy-MM-dd"),
 };
 
 const filterSlice = createSlice({

@@ -30,7 +30,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
       {/* Таблиця */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
-          <thead>
+          <thead className={styles.tableHead}>
             <tr>
               <th className={styles.cell}>Category</th>
               <th className={styles.cell}>Comment</th>
@@ -41,7 +41,7 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
             </tr>
           </thead>
 
-          <tbody className={styles.bodyWrapper}>
+          <tbody>
             {/* <tr>
             <td className={styles.cell}>Cinema</td>
             <td className={styles.cell}>John Wick: Chapter 3 – Parabellum</td>
