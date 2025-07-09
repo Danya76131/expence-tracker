@@ -325,7 +325,6 @@ const TransactionForm = ({
                 onSelect={(category) => {
                   setGetCategory(category);
                   setFieldValue("category", category._id);
-                  console.log("Form --> categoryID", category);
                   setModalOpen(false);
                 }}
                 onClose={() => setModalOpen(false)}

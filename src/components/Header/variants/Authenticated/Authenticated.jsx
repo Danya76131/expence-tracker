@@ -62,8 +62,6 @@ const Authenticated = ({ firstName, lastName, avatar, logOut }) => {
     setIsUserPanelOpen(false);
   };
 
-  // console.log("Authenticated props:", { firstName, lastName });
-
   return (
     <header className={css.wrapper}>
       <Logo />

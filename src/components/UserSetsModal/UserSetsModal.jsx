@@ -57,7 +57,6 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
         const formData = new FormData();
         formData.append("avatar", file);
         const res = await dispatch(userAvatarChange(formData)).unwrap();
-        console.log(res);
 
         toast.custom(<ShowSuccessToast msg={"Photo uploaded successfully!"} />);
         onUpdateUser(res);
@@ -102,7 +101,6 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
     const c = selectRef.current.value;
 
     updates.currency = c.toLowerCase();
-    console.log(updates);
 
     if (Object.keys(updates).length === 0) {
       onClose();

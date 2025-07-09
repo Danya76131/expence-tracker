@@ -49,18 +49,15 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
   // const selectedId = useSelector(selectCategoryId(categoryId));
 
   const handleEditCategory = (id, name) => {
-    console.log("modal --> handleEditCategory --ID -->", id);
-    console.log("modal --> handleEditCategory -- Name -->", name);
-    console.log("modal --> handleEditCategory -- isEditMode -->", isEditMode);
+
     setCategoryName(name);
     setCategoryId(id);
-    console.warn("EditCat -->categoryId --> ", categoryId);
-    console.warn("EditCat -->categoryName --> ", categoryName);
+
     setIsEditMode(true);
   };
 
   const handleCheck = (item) => {
-    console.log("modal --> handleCheck -- item -->", item);
+
     onSelect(item);
   };
 
@@ -104,8 +101,7 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
 
   const handleInputChange = (event) => {
     setCategoryName(event.target.value);
-    console.warn("event.target.value --> ", event.target.value);
-    console.warn("HandleInputChange -- categoryName --> ", categoryName);
+
   };
 
   const handleDeleteCategory = (id, type) => {
@@ -152,8 +148,7 @@ const CategoriesModal = ({ type, closeModal, onSelect }) => {
   //   setCategoryId(index === categoryId ? null : index);
   // };
 
-  console.warn("categoryId --> ", categoryId);
-  console.warn("categoryName --> ", categoryName);
+
 
   return (
     <Backdrop onClose={() => closeModal(false)}>

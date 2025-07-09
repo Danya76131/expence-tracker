@@ -31,7 +31,6 @@ const slice = createSlice({
       .addCase(userAvatarChange.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.isError = false;
-        console.log(payload.avatarUrl);
         state.user = { ...state.user, avatarUrl: payload.avatarUrl };
       })
       .addCase(deleteUserAvatar.fulfilled, (state) => {

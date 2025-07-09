@@ -61,8 +61,6 @@ const categoriesSlice = createSlice({
         // ✅ Розрахунок відсотків
         state.expensesPercent = calculatePercent(action.payload.expenses || []);
         state.incomesPercent = calculatePercent(action.payload.incomes || []);
-
-        console.log("Data Fulfilled", action.payload);
       })
       .addCase(getCategories.rejected, handleRejected)
 

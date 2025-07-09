@@ -75,13 +75,11 @@ const TransactionsHistoryPage = () => {
   };
 
   const handleEditClick = (tx) => {
-    console.log("HistoryPage --> handleEditClick: ", tx);
     const { date, time, _id, sum, comment, type } = tx;
     setSelectedTransaction({ comment, date, sum, time, type, _id });
     setIsEditModalOpen(true);
     setCategoryName(tx.category.categoryName);
   };
-  // console.log("HistoryPage --> Edit local state: ", selectedTransaction);
 
   // const handleFormSubmit = (values) => {
   //   dispatch(updateTransactions(values))
@@ -95,7 +93,6 @@ const TransactionsHistoryPage = () => {
   //     );
   // };
 
-  // console.log("selected tr", selectedTransaction);
   let text = "All Expense";
   let description =
     "View and manage every transaction seamlessly! Your entire financial landscape, all in one place.";

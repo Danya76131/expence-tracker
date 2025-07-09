@@ -4,7 +4,7 @@ import { selectIsLoggedIn } from "../redux/auth/selectors";
 
 const RestrictedRoute = ({ children }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  // console.log('RestrictedRoute - isLoggedIn:', isLoggedIn);
+
   return !isLoggedIn ? (
     children
   ) : (

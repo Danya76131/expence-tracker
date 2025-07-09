@@ -45,7 +45,6 @@
 
 //             return Promise.reject(new Error("No access token received"));
 //           } catch (refreshError) {
-//             console.error("Token refresh failed:", refreshError);
 
 //             localStorage.removeItem("token");
 //             localStorage.removeItem("refreshToken");

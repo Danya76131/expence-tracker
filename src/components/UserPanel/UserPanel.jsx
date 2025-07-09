@@ -56,7 +56,6 @@ const UserPanel = ({
 
   const handleLogout = async () => {
     try {
-      console.log("click");
       await dispatch(userLogout()).unwprap();
       navigate("/");
       toast.custom(<ShowSuccessToast msg={"Goodbye my friend!"} />);
