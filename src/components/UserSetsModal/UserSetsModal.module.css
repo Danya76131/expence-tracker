@@ -57,7 +57,8 @@
   margin-bottom: 38px;
 }
 
-.userAvatarWrapper {
+.userAvatarWrapper,
+img {
   width: 100px;
   height: 100px;
   border-radius: 100px;

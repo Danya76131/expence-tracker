@@ -33,7 +33,9 @@ export const userAvatarChange = createAsyncThunk(
   "user/avatarChange",
   async (avatarUrl, { rejectWithValue }) => {
     try {
+      console.log(avatarUrl);
       const { data } = await api.patch("users/avatar", avatarUrl);
+      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -45,7 +47,9 @@ export const deleteUserAvatar = createAsyncThunk(
   "user/avatarDelete",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const avatar = getState().user.avatarUrl;
+      console.log(getState());
+      const avatar = getState().user.user.avatarUrl;
+      console.log("check avatar", avatar);
       if (!avatar) return rejectWithValue("No avatar!");
 
       await api.delete("users/avatar");

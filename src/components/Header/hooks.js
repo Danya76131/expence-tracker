@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { useSelector } from "react-redux";
 
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   let firstName = "";
   let lastName = "";
 
-  if (isAuthenticated) {
+  if (isLoggedIn) {
     try {
       const persistAuth = localStorage.getItem("persist:auth");
       if (persistAuth) {
@@ -24,8 +26,8 @@ export const useAuth = () => {
   const logOut = () => setIsAuthenticated(false);
 
   return {
-    isAuthenticated,
-    user: isAuthenticated ? { firstName, lastName } : null,
+    isLoggedIn,
+    user: isLoggedIn ? { firstName, lastName } : null,
     logOut,
   };
 };

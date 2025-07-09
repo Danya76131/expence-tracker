@@ -1,8 +1,9 @@
 import React from "react";
 import css from "./LogoutModal.module.css";
 import Icon from "../UI/Icon/Icon";
+import Button from "../UI/Button/Button";
 
-const LogoutModal = ({ onLogout, onCancel }) => {
+const LogoutModal = ({ onConfirm, onCancel }) => {
   return (
     <div className={css.backdrop}>
       <div className={css.modal}>
@@ -12,18 +13,18 @@ const LogoutModal = ({ onLogout, onCancel }) => {
           onClick={onCancel}
           aria-label="Close logout modal"
         >
-          <Icon name="close" size={20} stroke="white" />
+          <Icon name="close" size={24} stroke="white" />
         </button>
 
         <p className={css.text}>Are you sure you want to log out?</p>
 
         <div className={css.actions}>
-          <button type="button" className={css.logoutBtn} onClick={onLogout}>
+          <Button type="button" onClick={onConfirm}>
             Log out
-          </button>
-          <button type="button" className={css.cancelBtn} onClick={onCancel}>
+          </Button>
+          <Button variant="dark" type="button" onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
         </div>
       </div>
     </div>
