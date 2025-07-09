@@ -8,6 +8,7 @@ import styles from "./MainTransactionsPage.module.css";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getTransactions } from "../../redux/transactions/operations";
+import { getCurrentUser } from "../../redux/user/operations";
 
 const MainTransactionsPage = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,10 @@ const MainTransactionsPage = () => {
   useEffect(() => {
     dispatch(getTransactions({ type: transactionsType }));
   }, [dispatch, transactionsType]);
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
 
   return (
     <Section>

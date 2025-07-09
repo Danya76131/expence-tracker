@@ -8,7 +8,7 @@ export const getCurrentUser = createAsyncThunk(
       const token = getState().auth.accessToken;
       if (!token) return rejectWithValue("No token");
 
-      setAuthHeader(token);
+      // setAuthHeader(token);
       const { data } = await api.get("users/current");
       return data;
     } catch (error) {

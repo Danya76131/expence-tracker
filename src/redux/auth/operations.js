@@ -105,39 +105,38 @@ export const userLogout = createAsyncThunk(
   }
 );
 
-// export const refreshUser = createAsyncThunk(
-//   "auth/refresh",
-//   async (_, thunkAPI) => {
-//     const state = thunkAPI.getState();
-//     const refreshToken =
-//       state.auth.refreshToken || localStorage.getItem("refreshToken");
-//     const sid = state.auth.sid || localStorage.getItem("sid");
+export const refreshUser = createAsyncThunk(
+  "auth/refresh",
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const refreshToken = state.auth.refreshToken;
+    const sid = state.auth.sid;
 
-//     if (!refreshToken || !sid) {
-//       return thunkAPI.rejectWithValue("No session info for refresh");
-//     }
+    if (!refreshToken || !sid) {
+      return thunkAPI.rejectWithValue("No session info for refresh");
+    }
+    setAuthHeader(refreshToken);
+    try {
+      const res = await api.post(
+        "https://expense-tracker.b.goit.study/api/auth/refresh",
+        { sid },
+        {
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        }
+      );
 
-//     try {
-//       const res = await api.post(
-//         "https://expense-tracker.b.goit.study/api/auth/refresh",
-//         { sid },
-//         {
-//           headers: {
-//             Authorization: `Bearer ${refreshToken}`,
-//           },
-//         }
-//       );
+      if (res.data.accessToken) {
+        setAuthHeader(res.data.accessToken);
+        return res.data;
+      } else {
+        throw new Error("No access token received");
+      }
+    } catch (error) {
+      clearAuthHeader();
 
-//       if (res.data.accessToken) {
-//         setAuthHeader(res.data.accessToken);
-//         return res.data;
-//       } else {
-//         throw new Error("No access token received");
-//       }
-//     } catch (error) {
-//       clearAuthHeader();
-//       clearTokensFromStorage();
-//       return thunkAPI.rejectWithValue(error.response?.data || error.message);
-//     }
-//   }
-// );
+      return thunkAPI.rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);

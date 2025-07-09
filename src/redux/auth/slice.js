@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { login, register, userLogout } from "./operations";
+import { login, refreshUser, register, userLogout } from "./operations";
 
 const initialState = {
   user: {
@@ -32,9 +32,9 @@ const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      // .addCase(refreshUser.pending, (state) => {
-      //   state.isRefreshing = true;
-      // })
+      .addCase(refreshUser.pending, (state) => {
+        state.isRefreshing = true;
+      })
       .addCase(register.fulfilled, (state) => {
         state.isLoading = false;
       })
@@ -62,25 +62,26 @@ const authSlice = createSlice({
       })
       .addCase(userLogout.fulfilled, () => {
         return { ...initialState };
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.token = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+        state.sid = action.payload.sid;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(refreshUser.rejected, () => {
+        return initialState;
+        // state.user = {
+        //   name: null,
+        //   email: null,
+        //   avatarUrl: null,
+        //   currency: "uah",
+        //   categories: { incomes: [] },
+        //   transactionsTotal: { incomes: 0, expenses: 0 },
+        // };
+        // state.isRefreshing = false;
       });
-    // .addCase(refreshUser.fulfilled, (state, action) => {
-    //   state.token = action.payload.accessToken;
-    //   state.refreshToken = action.payload.refreshToken;
-    //   state.sid = action.payload.sid;
-    //   state.isLoggedIn = true;
-    //   state.isRefreshing = false;
-    // })
-    // .addCase(refreshUser.rejected, (state) => {
-    //   state.user = {
-    //     name: null,
-    //     email: null,
-    //     avatarUrl: null,
-    //     currency: "uah",
-    //     categories: { incomes: [] },
-    //     transactionsTotal: { incomes: 0, expenses: 0 },
-    //   };
-    //   state.isRefreshing = false;
-    // });
   },
 });
 

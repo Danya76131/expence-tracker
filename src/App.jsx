@@ -14,6 +14,7 @@ import { useInitFinanceData } from "./hooks/useInitFinanceData";
 import Loader from "./components/Loader/Loader";
 
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import { refreshUser } from "./redux/auth/operations";
 
 const WelcomePage = lazy(() => import("./pages/WelcomePage/WelcomePage"));
 const LoginPage = lazy(() => import("./pages/LoginPage/LoginPage"));
@@ -30,23 +31,19 @@ const App = () => {
 
   const dispatch = useDispatch();
   const refreshToken = useSelector(selectRefreshToken);
-
-  useEffect(() => {
-    if (refreshToken) dispatch(getCurrentUser());
-  }, [dispatch, refreshToken]);
+  const isRefreshing = useSelector((state) => state.auth.isRefreshing);
 
   // useEffect(() => {
-  //   const storedRefreshToken =
-  //     localStorage.getItem("refreshToken") || refreshToken;
+  //   if (refreshToken) dispatch(getCurrentUser());
+  // }, [dispatch, refreshToken]);
 
-  //   if (storedRefreshToken && !isLoggedIn) {
-  //     dispatch(refreshUser());
-  //   }
-  // }, [dispatch, refreshToken, isLoggedIn]);
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
 
   // для анімашки
   const location = useLocation();
-  return (
+  return isRefreshing ? null : (
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <Suspense fallback={<Loader />}>
