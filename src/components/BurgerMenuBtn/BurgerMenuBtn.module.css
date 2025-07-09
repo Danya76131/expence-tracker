@@ -1,0 +1,33 @@
+.button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.button:focus,
+.button:hover {
+  border: 1px solid #ffffff;
+}
+
+.burger {
+  width: 36px;
+  height: 36px;
+  stroke-width: 3px;
+  stroke: var(--color-text-primary);
+}
+
+@media screen and (min-width: 768px) {
+  .button {
+    margin-right: 32px;
+  }
+
+  .burger {
+    width: 44px;
+    height: 44px;
+  }
+}

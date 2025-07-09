@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import styles from "./TransactionsChart.module.css";
+import { useSelector } from "react-redux";
+import {
+  selectExpensesTotal,
+  selectIncomesTotal,
+  selectTransactionByType,
+} from "../../redux/transactions/selectors";
 
-const RADIAN = Math.PI / 180;
-
-const MOCK_DATA = [
-  { name: "Hobby", value: 40, color: "#00FF83" },
-  { name: "Cinema", value: 25, color: "#FFFFFF" },
-  { name: "Products", value: 20, color: "#00C49F" },
-  { name: "Health", value: 15, color: "#3B3B3B" },
-  { name: "Books", value: 10, color: "#8884d8" }, // 5-й для перевірки скролу
-];
-
-export const TransactionsChart = ({ data = MOCK_DATA }) => {
-  const total = data.reduce((acc, item) => acc + item.value, 0);
-
+const TransactionsChart = ({ transactionsType }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 375);
+
+  const rawList = useSelector(selectTransactionByType(transactionsType));
+  const incomesTotal = useSelector(selectIncomesTotal);
+  const expensesTotal = useSelector(selectExpensesTotal);
+
+  const totalAmount =
+    transactionsType === "incomes" ? incomesTotal : expensesTotal;
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 375);
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -29,22 +29,50 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
   const innerRadius = isMobile ? 70 : 95;
   const outerRadius = isMobile ? 121 : 146;
 
+  // Генеруємо кольори
+  const COLORS = [
+    "#FFFFFF", // білий — для акцентів і світлих частин
+    "#1E90FF", // яскравий синій (Dodger Blue)
+    "#FF4500", // яскравий оранжево-червоний (Orange Red)
+    "#32CD32", // лаймовий зелений (Lime Green)
+    "#FFD700", // золото (Gold)
+    "#8A2BE2", // синьо-фіолетовий (Blue Violet)
+    "#FF69B4", // яскравий рожевий (Hot Pink)
+    "#00CED1", // темний бірюзовий (Dark Turquoise)
+    "#FF8C00", // темний помаранчевий (Dark Orange)
+    "#4B0082", // індиго (Indigo)
+    "#7FFF00", // яскравий зелений (Chartreuse)
+    "#DC143C", // яскравий червоний (Crimson)
+    "#00BFFF", // глибокий небесно-блакитний (Deep Sky Blue)
+    "#FF6347", // томатний (Tomato)
+    "#2E8B57", // морська хвоя (Sea Green)
+  ];
+
+  // Форматуємо дані для чарта
+  const chartData =
+    rawList?.map((item, index) => ({
+      name: item.category.categoryName || `Category ${index + 1}`,
+      value: item.sum ?? 0,
+      color: COLORS[index % COLORS.length],
+    })) || [];
+
   return (
     <div className={styles["expenses-chart"]}>
-      <h3 className={styles.title}>Expenses categories</h3>
+      <h3 className={styles.title}>
+        {transactionsType === "incomes"
+          ? "Income categories"
+          : "Expenses categories"}
+      </h3>
 
       <div className={styles["chart-and-list"]}>
         <div className={styles["chart-wrapper"]}>
-          <div className={styles.centerTotal}>{"100"}%</div>
-          <ResponsiveContainer
-            className={styles.responsiveWrapper}
-            width="100%"
-            height="100%"
-          >
+          <div className={styles.centerTotal}>
+            {totalAmount > 0 ? "100%" : ""}
+          </div>
+          <ResponsiveContainer className={styles.responsiveWrapper}>
             <PieChart>
               <Pie
-                className={styles.rechartsWrapper}
-                data={data}
+                data={chartData}
                 dataKey="value"
                 cx="50%"
                 cy="100%"
@@ -53,19 +81,19 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
                 innerRadius={innerRadius}
                 outerRadius={outerRadius}
                 paddingAngle={-8}
-                border-radius={10}
                 cornerRadius={10}
                 stroke="none"
               >
-                {data.map((entry, index) => (
+                {chartData.map((entry, index) => (
                   <Cell key={`slice-${index}`} fill={entry.color} />
                 ))}
               </Pie>
             </PieChart>
           </ResponsiveContainer>
         </div>
+
         <div className={styles["category-list"]}>
-          {data.map((item, idx) => (
+          {chartData.map((item, idx) => (
             <div key={idx} className={styles["category-item"]}>
               <span
                 className={styles.dot}
@@ -73,7 +101,9 @@ export const TransactionsChart = ({ data = MOCK_DATA }) => {
               />
               <span className={styles.name}>{item.name}</span>
               <span className={styles.percent}>
-                {((item.value / total) * 100).toFixed(0)}%
+                {totalAmount > 0
+                  ? `${((item.value / totalAmount) * 100).toFixed(0)}%`
+                  : "0%"}
               </span>
             </div>
           ))}

@@ -11,77 +11,89 @@ import {
   editCategory,
   getCategories,
 } from "../../redux/categories/operations";
-import { selectCategoryIncomes } from "../../redux/categories/selectors";
-import { closeModal } from "../../redux/modal/slice";
+import {
+  selectCategoryByType,
+  // selectCategoryExpenses,
+  // selectCategoryIncomes,
+  // selectCategoryState,
+} from "../../redux/categories/selectors";
+import { getTransactions } from "../../redux/transactions/operations";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
 // import { getTransactions } from "../../redux/transactions/operations";
 
-const CategoriesModal = () => {
+const CategoriesModal = ({ type, closeModal, onSelect }) => {
   const dispatch = useDispatch();
 
-  const type = "incomes";
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      removeEventListener("keydown", handleEsc);
+    };
+  }, [closeModal]);
 
-  const categories = useSelector(selectCategoryIncomes);
-
-  console.log(categories);
+  const categories = useSelector(selectCategoryByType(type));
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const itemRefs = useRef([]);
 
   // const selectedId = useSelector(selectCategoryId(categoryId));
 
-  // console.log("Selected ID", selectedId);
-
   const handleEditCategory = (id, name) => {
+
     setCategoryName(name);
-    console.log(id);
     setCategoryId(id);
+
     setIsEditMode(true);
   };
 
-  const handleCheck = () => {
-    dispatch(closeModal());
+  const handleCheck = (item) => {
+
+    onSelect(item);
   };
 
   const handleSubmitCategory = async (event) => {
     event.preventDefault();
     if (categoryName.length > 16) {
-      toast.error(
-        "Category name length must be less than or equal to 16 characters long"
+      toast.custom(
+        <ShowErrorToast
+          msg={
+            "Category name length must be less than or equal to 16 characters long"
+          }
+        />
       );
       return;
     }
-    console.log(categoryId);
 
     if (isEditMode) {
       try {
-        console.log("Before dispatch payload:", {
-          categoryName,
-          id: categoryId,
-        });
-        await dispatch(editCategory({ categoryName, categoryId })).unwrap();
-        console.log("edit dispatch");
-      } catch {
-        console.log("Edit dispatch error");
+        await dispatch(editCategory({ categoryName, categoryId }))
+          .unwrap()
+          .then(() => {
+            dispatch(getTransactions({ type }));
+          });
+      } catch (error) {
+        toast.error(error);
       }
-
-      // .then(() => {
-      //   dispatch(getTransactions({ type }));
-      //   setIsEditMode(false);
-      // })
-      // .catch((error) => toast.error(`Error editing category: ${error}`));
     } else {
       dispatch(addCategory({ type: type, categoryName: categoryName }))
         .unwrap()
         .then(() => {
-          toast.success("New Category added successfully");
-          console.log("success");
+          toast.custom(
+            <ShowSuccessToast msg={"New Category added successfully"} />
+          );
         })
         .catch(() => {
-          // console.log("Error", error);
-          toast.error("Error adding category  ");
+          toast.custom(<ShowErrorToast msg={"Error adding category  "} />);
         });
     }
     setCategoryName("");
@@ -89,6 +101,7 @@ const CategoriesModal = () => {
 
   const handleInputChange = (event) => {
     setCategoryName(event.target.value);
+
   };
 
   const handleDeleteCategory = (id, type) => {
@@ -96,9 +109,15 @@ const CategoriesModal = () => {
     setIsButtonDisabled(true);
     dispatch(deleteCategory({ id, type }))
       .unwrap()
-      .then(() => toast.success("Category deleted successfully"))
+      .then(() =>
+        toast.custom(<ShowSuccessToast msg={"Category deleted successfully"} />)
+      )
       .catch(() => {
-        toast.error("Cannot delete category with existing transactions");
+        toast.custom(
+          <ShowErrorToast
+            msg={"Cannot delete category with existing transactions"}
+          />
+        );
       })
       .finally(setIsButtonDisabled(false));
   };
@@ -129,25 +148,21 @@ const CategoriesModal = () => {
   //   setCategoryId(index === categoryId ? null : index);
   // };
 
+
+
   return (
-    <Backdrop>
+    <Backdrop onClose={() => closeModal(false)}>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Incomes</h2>
-        {/* <button className={styles.buttonClose}>
-          {" "}
-          <Icon
-            name="close"
-            className={styles.icons}
-            size={20}
-            stroke="#fafafa"
-          />
-        </button> */}
+        <h2 className={styles.title}>
+          {type === "expenses" ? "Expenses" : "Incomes"}
+        </h2>
+
         <h3 className={styles.categoryTitle}>All Categories</h3>
         <ul
           className={clsx(
             "scroll scrollB",
             styles.categoryList,
-            categories.length === 0 && styles.noCategoriesBox
+            categories[type]?.length === 0 && styles.noCategoriesBox
           )}
         >
           {categories.length === 0 ? (
@@ -157,7 +172,7 @@ const CategoriesModal = () => {
               </p>
             </li>
           ) : (
-            categories?.map((item) => (
+            categories.map((item) => (
               <li
                 key={item._id}
                 ref={(el) => (itemRefs.current[item._id] = el)}
@@ -191,7 +206,6 @@ const CategoriesModal = () => {
                       handleEditCategory(item._id, item.categoryName);
                     }}
                   >
-                    {" "}
                     <Icon
                       name="edit"
                       size={16}
@@ -204,7 +218,6 @@ const CategoriesModal = () => {
                     onClick={() => handleDeleteCategory(item._id, type)}
                     disabled={isButtonDisabled}
                   >
-                    {" "}
                     <Icon
                       name="trash"
                       size={16}
@@ -222,7 +235,7 @@ const CategoriesModal = () => {
           <h3 className={styles.categoryName}>
             {isEditMode ? "Edit category" : "New Category"}
           </h3>
-          <form onSubmit={handleSubmitCategory}>
+          <div>
             <label
               className={styles.categoryName}
               htmlFor="categoryInput"
@@ -236,13 +249,14 @@ const CategoriesModal = () => {
               value={categoryName}
             />
             <button
-              type="submit"
+              type="button"
               className={styles.buttonAdd}
-              disabled={categoryName.length === 0}
+              onClick={handleSubmitCategory}
+              // disabled={categoryName.length === 0}
             >
               {isEditMode ? "Edit" : "Add"}
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </Backdrop>

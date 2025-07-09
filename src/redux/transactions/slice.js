@@ -1,16 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addTransaction, deleteTransaction, getTransactions, updateTransactions } from "./operations";
+import {
+  addTransaction,
+  deleteTransaction,
+  getTransactions,
+  updateTransactions,
+} from "./operations";
+import { userLogout } from "../auth/operations";
+
+const initialState = {
+  incomes: [],
+  expenses: [],
+  loading: false,
+  error: false,
+  incomesTotal: null,
+  expensesTotal: null,
+};
 
 const transactionsSlice = createSlice({
   name: "transactions",
-  initialState: {
-    incomes: [],
-    expenses: [],
-    loading: false,
-    error: false,
-    incomesTotal: null,
-    expensesTotal: null,
+  initialState,
+  reducers: {
+    setIncomes: (state, action) => {
+      state.incomes = action.payload;
+      state.incomesTotal = action.payload.reduce(
+        (acc, tx) => acc + (tx.sum || 0),
+        0
+      );
+    },
+    setExpenses: (state, action) => {
+      state.expenses = action.payload;
+      state.expensesTotal = action.payload.reduce(
+        (acc, tx) => acc + (tx.sum || 0),
+        0
+      );
+    },
   },
+
   extraReducers: (builder) =>
     builder
       .addCase(getTransactions.pending, (state) => {
@@ -20,7 +45,9 @@ const transactionsSlice = createSlice({
       .addCase(getTransactions.fulfilled, (state, { payload, meta }) => {
         state.loading = false;
         state.error = false;
-        if (meta.arg === "incomes") {
+        const { type } = meta.arg;
+
+        if (type === "incomes") {
           state.incomes = payload;
         } else {
           state.expenses = payload;
@@ -34,7 +61,7 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(deleteTransaction.fulfilled, (state, { payload, meta }) => {
+      .addCase(deleteTransaction.fulfilled, (state, { meta }) => {
         state.loading = false;
         state.error = false;
         state.incomes = state.incomes.filter(
@@ -71,17 +98,18 @@ const transactionsSlice = createSlice({
         state.loading = true;
         state.error = false;
       })
-      .addCase(updateTransactions.fulfilled, (state, { payload }) => {
+      .addCase(updateTransactions.fulfilled, (state) => {
         state.loading = false;
         state.error = false;
       })
       .addCase(updateTransactions.rejected, (state) => {
         state.loading = false;
         state.error = true;
+      })
+      .addCase(userLogout.fulfilled, () => {
+        return initialState;
       }),
 });
 
+export const { setIncomes, setExpenses } = transactionsSlice.actions;
 export const transactionsReducer = transactionsSlice.reducer;
-
-
-

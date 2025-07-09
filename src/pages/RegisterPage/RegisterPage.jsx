@@ -7,18 +7,11 @@ import BgImageWrapper from "../../components/BgImageWrapper/BgImageWrapper";
 import { selectAuthError } from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
 import { ShowSuccessToast } from "../../components/CustomToast/CustomToast";
-
-// import {
-//   showErrorToast,
-//   showSuccessToast,
-// } from "../../components/CustomToast/CustomToast";
-// import {selectAuthLoading} from '../redux/auth/selectors';
-// імпорт для лоадера
+import Loader from "../../components/Loader/Loader";
 
 function RegisterPage() {
   const dispatch = useDispatch();
   const error = useSelector(selectAuthError);
-  // const isLoading = useSelector(state => state.auth.isLoading);
 
   const fields = [
     { name: "name", type: "text", placeholder: "Name" },

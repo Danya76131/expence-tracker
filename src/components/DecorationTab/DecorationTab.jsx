@@ -1,19 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { throttle } from 'lodash';
-import css from './DecorationTab.module.css';
+import React, { useEffect, useRef, useState } from "react";
+import { throttle } from "lodash";
+import css from "./DecorationTab.module.css";
 
-function DecorationTab({
-  containerRef,
-  animationTrigger = 0, 
-  balance = 632.0,
-  balancePercent = 1.29,
-}) {
+function DecorationTab({ containerRef, animationTrigger = 0 }) {
   const tabRef = useRef(null);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const [velocity, setVelocity] = useState({ dx: 0, dy: 0 });
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const mousePosition = useRef({ x: 0, y: 0 });
+  const [startBalance, setStartBalance] = useState(0);
+  const [targetBalance, setTargetBalance] = useState(0);
+  const [balance, setBalance] = useState(0);
 
   const config = {
     baseSpeed: 1.8,
@@ -24,7 +22,36 @@ function DecorationTab({
     minSpeed: 0.3,
   };
 
-  
+  useEffect(() => {
+    const start = Math.floor(Math.random() * (1000 - 300 + 1)) + 250;
+    const target = Math.floor(Math.random() * (20000 - 3000 + 1)) + 1000;
+
+    setStartBalance(start);
+    setTargetBalance(target);
+    setBalance(start);
+  }, [animationTrigger]);
+
+  useEffect(() => {
+    if (balance >= targetBalance) return;
+
+    const duration = 3000;
+    const frameRate = 4 / 60;
+    const steps = duration / frameRate;
+    const increment = (targetBalance - startBalance) / steps;
+
+    let current = startBalance;
+    const interval = setInterval(() => {
+      current += increment;
+      if (current >= targetBalance) {
+        current = targetBalance;
+        clearInterval(interval);
+      }
+      setBalance(current);
+    }, frameRate);
+    return () => clearInterval(interval);
+  }, [startBalance, targetBalance]);
+
+  const balanceComputedPercent = ((balance - startBalance) / startBalance) * 50;
   useEffect(() => {
     if (!containerRef.current || !tabRef.current) return;
 
@@ -47,11 +74,9 @@ function DecorationTab({
       dy: Math.sin(angle) * speed,
     });
 
-    previousTimeRef.current = null; 
+    previousTimeRef.current = null;
+  }, [containerRef, animationTrigger]);
 
-  }, [containerRef, animationTrigger]); 
-
- 
   const animate = (time) => {
     if (!previousTimeRef.current) previousTimeRef.current = time;
     const deltaTime = Math.min(time - previousTimeRef.current, 50);
@@ -111,7 +136,8 @@ function DecorationTab({
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < config.mouseAvoidRadius) {
-        const force = config.mouseAvoidForce * (1 - distance / config.mouseAvoidRadius);
+        const force =
+          config.mouseAvoidForce * (1 - distance / config.mouseAvoidRadius);
         const angle = Math.atan2(dy, dx);
 
         newDx -= Math.cos(angle) * force * speedFactor;
@@ -140,7 +166,6 @@ function DecorationTab({
     return () => cancelAnimationFrame(requestRef.current);
   }, [velocity]);
 
-
   useEffect(() => {
     const handleMouseMove = throttle((e) => {
       if (!containerRef.current) return;
@@ -153,9 +178,9 @@ function DecorationTab({
     }, 50);
 
     const container = containerRef.current;
-    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener("mousemove", handleMouseMove);
     return () => {
-      container.removeEventListener('mousemove', handleMouseMove);
+      container.removeEventListener("mousemove", handleMouseMove);
       handleMouseMove.cancel();
     };
   }, [containerRef]);
@@ -165,14 +190,20 @@ function DecorationTab({
       ref={tabRef}
       className={css.decorationTab}
       style={{
-        position: 'absolute',
+        position: "absolute",
         left: `${position.left}px`,
         top: `${position.top}px`,
-        willChange: 'transform',
+        willChange: "transform",
       }}
     >
       <div className={css.iconBg}>
-        <svg className={css.tabIcon} width="15" height="17" viewBox="0 0 15 17" fill="none">
+        <svg
+          className={css.tabIcon}
+          width="15"
+          height="17"
+          viewBox="0 0 15 17"
+          fill="none"
+        >
           <path
             d="M12.7618 0.856683C12.6826 0.310102 12.1753 -0.0688157 11.6288 0.0103471L2.7217 1.30039C2.17512 1.37955 1.7962 1.88681 1.87536 2.4334C1.95453 2.97998 2.46179 3.3589 3.00837 3.27973L10.9258 2.13303L12.0725 10.0504C12.1516 10.597 12.6589 10.9759 13.2055 10.8968C13.7521 10.8176 14.131 10.3103 14.0518 9.76375L12.7618 0.856683ZM1.80116 16.0193L12.5733 1.59847L10.9709 0.401571L0.19884 14.8224L1.80116 16.0193Z"
             fill="#0C0D0D"
@@ -181,9 +212,15 @@ function DecorationTab({
       </div>
       <div className={css.balanceCard}>
         <p className={css.balanceTitle}>Your balance</p>
-        <p className={css.balanceSum}>${balance.toFixed(3)}</p>
+        <p className={css.balanceSum}>${balance.toFixed(2)}</p>
       </div>
-      <p className={css.balancePercent}>{balancePercent}%</p>
+      <p className={css.balancePercent}>
+        {balanceComputedPercent >= 0 ? (
+          <>+{balanceComputedPercent.toFixed(2)}%</>
+        ) : (
+          <>{balanceComputedPercent.toFixed(2)}%</>
+        )}
+      </p>
     </div>
   );
 }

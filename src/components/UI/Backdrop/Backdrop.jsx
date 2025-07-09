@@ -57,7 +57,7 @@ const Backdrop = ({ children, onClose, zIndex = 1000 }) => {
     };
     window.addEventListener("keydown", handleEsc);
     return () => {
-      removeEventListener("keydown", handleEsc);
+      window.removeEventListener("keydown", handleEsc);
     };
   }, [onClose]);
   return (

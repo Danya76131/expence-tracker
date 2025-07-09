@@ -12,11 +12,9 @@ import {
   ShowErrorToast,
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
-
-// import {selectAuthLoading} from '../redux/auth/selectors'; // для лоадера
+import Loader from "../../components/Loader/Loader";
 
 function LoginPage() {
-  console.log("loginpage mount");
   const dispatch = useDispatch();
   const error = useSelector(selectAuthError);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -48,17 +46,15 @@ function LoginPage() {
   });
 
   const onSubmitAction = async (values) => {
-    console.log("submit", values);
     try {
       await dispatch(login(values)).unwrap();
-      console.log("z will calle toast");
+
       toast.custom(
         <ShowSuccessToast
           msg={`Welcome back, ${values.name || values.email}!`}
         />
       );
     } catch (error) {
-      console.error("Login error:", error);
       toast.custom(
         <ShowErrorToast msg={"Something went wrong! Try again later"} />
       );

@@ -1,8 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import api, { clearAuthHeader, setAuthHeader } from "../../api/authApi.js";
 
-import { selectRefreshToken, selectSid } from "./selectors";
+// const saveTokensToStorage = (data) => {
+//   localStorage.setItem("accessToken", data.accessToken);
+//   localStorage.setItem("refreshToken", data.refreshToken);
+//   localStorage.setItem("sid", data.sid);
+// };
 
-import api, { setAuthHeader } from "../../api/authApi.js";
+// const clearTokensFromStorage = () => {
+//   localStorage.removeItem("accessToken");
+//   localStorage.removeItem("refreshToken");
+//   localStorage.removeItem("sid");
+// };
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -51,6 +60,7 @@ export const login = createAsyncThunk(
       }
 
       setAuthHeader(accessToken);
+      // saveTokensToStorage(response.data);
 
       return response.data;
     } catch (error) {
@@ -71,39 +81,63 @@ export const login = createAsyncThunk(
   }
 );
 
-export const refreshUser = createAsyncThunk(
-  "auth/refresh",
-  async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const refreshToken = selectRefreshToken(state);
-    const sid = selectSid(state);
-
-    if (!refreshToken || !sid) {
-      // showErrorToast("Session expired. Please login again.");
-      return thunkAPI.rejectWithValue("Missing refresh token or session ID");
-    }
-
+export const userLogout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
     try {
-      // axios.defaults.headers.common.Authorization = `Bearer ${refreshToken}`;
-      setAuthHeader(refreshToken);
-      const response = await api.post("/auth/refresh", { sid });
-
-      const {
-        accessToken,
-        refreshToken: newRefreshToken,
-        sid: newSid,
-      } = response.data;
-
-      setAuthHeader(accessToken);
-      return { accessToken, refreshToken: newRefreshToken, sid: newSid };
+      await api.get("/auth/logout");
+      clearAuthHeader();
+      return {};
     } catch (error) {
-      console.error("Refresh error:", error.response?.data || error.message);
-
-      const errorMessage =
-        error.response?.data?.message || "Session refresh failed";
-      // showErrorToast(errorMessage);
-
-      return thunkAPI.rejectWithValue(errorMessage);
+      console.error("Logout error:", error.response?.data || error.message);
+      let errorMessage = "Logout failed";
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      return rejectWithValue({ message: errorMessage });
     }
   }
 );
+
+// export const refreshUser = createAsyncThunk(
+//   "auth/refresh",
+//   async (_, thunkAPI) => {
+//     const state = thunkAPI.getState();
+//     const refreshToken =
+//       state.auth.refreshToken || localStorage.getItem("refreshToken");
+//     const sid = state.auth.sid || localStorage.getItem("sid");
+
+//     if (!refreshToken || !sid) {
+//       return thunkAPI.rejectWithValue("No session info for refresh");
+//     }
+
+//     try {
+//       const res = await api.post(
+//         "https://expense-tracker.b.goit.study/api/auth/refresh",
+//         { sid },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${refreshToken}`,
+//           },
+//         }
+//       );
+
+//       if (res.data.accessToken) {
+//         setAuthHeader(res.data.accessToken);
+//         return res.data;
+//       } else {
+//         throw new Error("No access token received");
+//       }
+//     } catch (error) {
+//       clearAuthHeader();
+//       clearTokensFromStorage();
+//       return thunkAPI.rejectWithValue(error.response?.data || error.message);
+//     }
+//   }
+// );
