@@ -25,7 +25,7 @@ import { TransactionsSearchTools } from "../../components/TransactionsSearchTool
 import Section from "../../components/Section/Section";
 import Container from "../../components/Container/Container";
 import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
-
+import styles from "./TransactionsHistoryPage.module.css";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
@@ -96,11 +96,26 @@ const TransactionsHistoryPage = () => {
   // };
 
   // console.log("selected tr", selectedTransaction);
-
+  let text = "All Expense";
+  let description =
+    "View and manage every transaction seamlessly! Your entire financial landscape, all in one place.";
+  if (transactionsType === "incomes") {
+    text = "All incomes";
+    description =
+      "Track and celebrate every bit of earnings effortlessly! Gain insights into your total revenue in a snap.";
+  }
   return (
     <Section>
       <Container>
-        <TransactionsTotalAmount />
+        <div className={styles.topWrapper}>
+          <div className={styles.textWrapper}>
+            <h2 className={styles.mainTitle}>{text}</h2>
+            <p className={styles.mainText}>{description}</p>
+          </div>
+          <div className={styles.total}>
+            <TransactionsTotalAmount />
+          </div>
+        </div>
         <TransactionsSearchTools
           // handleOpenModal={toggleIsAddModal}
           type={transactionsType}
