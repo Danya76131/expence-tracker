@@ -22,6 +22,8 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 
 import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
 import { selectFilter, selectDate } from "../../redux/filter/selectors";
+import Section from "../../components/Section/Section";
+import Container from "../../components/Container/Container";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
@@ -85,34 +87,36 @@ const TransactionsHistoryPage = () => {
   // console.log("selected tr", selectedTransaction);
 
   return (
-    <div>
-      <TransactionsSearchTools
-        // handleOpenModal={toggleIsAddModal}
-        type={transactionsType}
-      />
-      <TransactionsList
-        transactions={transactions}
-        transactionsType={transactionsType}
-        onDelete={handleDelete}
-        onEdit={handleEditClick}
-      />
+    <Section>
+      <Container>
+        <TransactionsSearchTools
+          // handleOpenModal={toggleIsAddModal}
+          type={transactionsType}
+        />
+        <TransactionsList
+          transactions={transactions}
+          transactionsType={transactionsType}
+          onDelete={handleDelete}
+          onEdit={handleEditClick}
+        />
 
-      {isEditModalOpen && (
-        <Backdrop onClose={() => setIsEditModalOpen(false)}>
-          <TransactionForm
-            editedData={{
-              selectedTransaction,
-              categoryName,
-            }}
-            categoryName={categoryName}
-            // onSubmit={handleFormSubmit}
-            isEditMode={isEditModalOpen}
-            transactionsType={transactionsType}
-            handleCloseEditModal={() => setIsEditModalOpen(false)}
-          />
-        </Backdrop>
-      )}
-    </div>
+        {isEditModalOpen && (
+          <Backdrop onClose={() => setIsEditModalOpen(false)}>
+            <TransactionForm
+              editedData={{
+                selectedTransaction,
+                categoryName,
+              }}
+              categoryName={categoryName}
+              // onSubmit={handleFormSubmit}
+              isEditMode={isEditModalOpen}
+              transactionsType={transactionsType}
+              handleCloseEditModal={() => setIsEditModalOpen(false)}
+            />
+          </Backdrop>
+        )}
+      </Container>
+    </Section>
   );
 };
 
