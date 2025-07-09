@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import css from "./BurgerMenu.module.css";
 import TransactionsHistoryNav from "../TransactionsHistoryNav/TransactionsHistoryNav";
 import UserBarBtn from "../UserBarBtn/UserBarBtn";
 import UserPanel from "../UserPanel/UserPanel";
 import Icon from "../UI/Icon/Icon";
 import Button from "../UI/Button/Button";
+import LogoutModal from "../LogOutModal/LogOutModal";
 
 const BurgerMenu = ({
   isOpen,
@@ -17,6 +18,8 @@ const BurgerMenu = ({
   handleLogout,
   userBarBtnRef,
 }) => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape" && isOpen) {
@@ -33,6 +36,19 @@ const BurgerMenu = ({
 
   const handleCloseByClick = () => {
     onClose();
+  };
+
+  const onOpenLogoutModal = () => {
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(false);
+    handleLogout();
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -56,7 +72,7 @@ const BurgerMenu = ({
           />
           <UserPanel
             openUserSetsModal={openUserSetsModal}
-            handleLogout={handleLogout}
+            onOpenLogoutModal={onOpenLogoutModal}
             isUserPanelOpen={isUserPanelOpen}
             toggleUserPanel={toggleUserPanel}
             userBarBtnRef={userBarBtnRef}
@@ -68,6 +84,10 @@ const BurgerMenu = ({
           <TransactionsHistoryNav />
         </div>
       </nav>
+
+      {showLogoutModal && (
+        <LogoutModal onConfirm={confirmLogout} onCancel={cancelLogout} />
+      )}
     </>
   );
 };

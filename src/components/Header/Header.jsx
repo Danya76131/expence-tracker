@@ -1,13 +1,16 @@
 
+import { useSelector } from "react-redux";
 import Container from "../Container/Container";
 import { useAuth } from "./hooks";
 import Authenticated from "./variants/Authenticated/Authenticated";
 import Unauthenticated from "./variants/Unauthenticated/Unauthenticated";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { useEffect } from "react";
 
 const Header = () => {
-  const { isAuthenticated, user, logOut } = useAuth();
+  const { isLoggedIn, user, logOut } = useAuth();
 
-  if (isAuthenticated) {
+  if (isLoggedIn) {
     return (
       <Container>
         <Authenticated

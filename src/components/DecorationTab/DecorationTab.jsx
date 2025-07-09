@@ -9,8 +9,10 @@ function DecorationTab({ containerRef, animationTrigger = 0 }) {
   const requestRef = useRef();
   const previousTimeRef = useRef();
   const mousePosition = useRef({ x: 0, y: 0 });
+  const [startBalance, setStartBalance] = useState(0);
+  const [targetBalance, setTargetBalance] = useState(0);
   const [balance, setBalance] = useState(0);
-  const [balancePercent, setBalancePercent] = useState(0);
+
   const config = {
     baseSpeed: 1.8,
     damping: 0.92,
@@ -21,14 +23,35 @@ function DecorationTab({ containerRef, animationTrigger = 0 }) {
   };
 
   useEffect(() => {
-    const randomBalance =
-      Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;
-    const randomPercent = (Math.random() * 20 - 10).toFixed(2); // від -10.00 до +10.00
+    const start = Math.floor(Math.random() * (1000 - 300 + 1)) + 250;
+    const target = Math.floor(Math.random() * (20000 - 3000 + 1)) + 1000;
 
-    setBalance(randomBalance);
-    setBalancePercent(parseFloat(randomPercent));
+    setStartBalance(start);
+    setTargetBalance(target);
+    setBalance(start);
   }, [animationTrigger]);
 
+  useEffect(() => {
+    if (balance >= targetBalance) return;
+
+    const duration = 3000;
+    const frameRate = 4 / 60;
+    const steps = duration / frameRate;
+    const increment = (targetBalance - startBalance) / steps;
+
+    let current = startBalance;
+    const interval = setInterval(() => {
+      current += increment;
+      if (current >= targetBalance) {
+        current = targetBalance;
+        clearInterval(interval);
+      }
+      setBalance(current);
+    }, frameRate);
+    return () => clearInterval(interval);
+  }, [startBalance, targetBalance]);
+
+  const balanceComputedPercent = ((balance - startBalance) / startBalance) * 50;
   useEffect(() => {
     if (!containerRef.current || !tabRef.current) return;
 
@@ -189,18 +212,14 @@ function DecorationTab({ containerRef, animationTrigger = 0 }) {
       </div>
       <div className={css.balanceCard}>
         <p className={css.balanceTitle}>Your balance</p>
-        <p className={css.balanceSum}>${balance.toFixed(3)}</p>
+        <p className={css.balanceSum}>${balance.toFixed(2)}</p>
       </div>
-      <p
-        className={css.balancePercent}
-        style={{
-          color: balancePercent >= 0 ? "green" : "red",
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
-        }}
-      >
-        {balancePercent >= 0 ? <>+{balancePercent}%</> : <>{balancePercent}%</>}
+      <p className={css.balancePercent}>
+        {balanceComputedPercent >= 0 ? (
+          <>+{balanceComputedPercent.toFixed(2)}%</>
+        ) : (
+          <>{balanceComputedPercent.toFixed(2)}%</>
+        )}
       </p>
     </div>
   );

@@ -9,63 +9,55 @@
 }
 
 .modal {
+  width: 335px;
+  height: 260px;
   position: relative;
-  width: 90%;
-  max-width: 400px;
-  background-color: #1e1e1e;
+  background: #171719;
   color: #fff;
-  border-radius: 20px;
-  padding: 32px 24px;
   text-align: center;
+  border-radius: 30px;
+  border: 1px solid rgba(250, 250, 250, 0.1);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
 .text {
-  font-size: 18px;
-  margin-bottom: 24px;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 40px;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  gap: 16px;
-}
-
-.logoutBtn {
-  background-color: #00df84;
-  color: #000;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 30px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.logoutBtn:hover {
-  background-color: #00c374;
-}
-
-.cancelBtn {
-  background-color: #2c2c2c;
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 30px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.cancelBtn:hover {
-  background-color: #3d3d3d;
+  gap: 8px;
 }
 
 .closeBtn {
+  width: 20px;
+  height: 20px;
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 20px;
+  right: 20px;
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1440px) {
+  .modal {
+    width: 500px;
+    height: 266px;
+  }
+
+  text {
+    font-size: 16px;
+  }
+
+  .closeBtn {
+    width: 24px;
+    height: 24px;
+  }
 }
