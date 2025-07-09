@@ -35,7 +35,7 @@ function DecorationTab({ containerRef, animationTrigger = 0 }) {
     if (balance >= targetBalance) return;
 
     const duration = 3000;
-    const frameRate = 4 / 60;
+    const frameRate = 60 / 60;
     const steps = duration / frameRate;
     const increment = (targetBalance - startBalance) / steps;
 
