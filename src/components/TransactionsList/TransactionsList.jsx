@@ -7,26 +7,6 @@ import styles from "./TransactionsList.module.css";
 const TransactionsList = ({ transactions, onDelete, onEdit }) => {
   return (
     <div className={styles.wrapper}>
-      {/* Фільтр */}
-      {/* <div className={styles.filter}>
-        <div className={styles.inputWrapper}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search for anything..."
-          />
-          <FiSearch className={styles.icon} />
-        </div>
-        <div className={styles.inputWrapper}>
-          <input
-            type="text"
-            className={styles.dateInput}
-            placeholder="dd/mm/yyyy"
-          />
-          <BsCalendar2Week className={styles.icon} />
-        </div>
-      </div> */}
-
       {/* Таблиця */}
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -41,26 +21,9 @@ const TransactionsList = ({ transactions, onDelete, onEdit }) => {
             </tr>
           </thead>
 
-          <tbody>
-            {/* <tr>
-            <td className={styles.cell}>Cinema</td>
-            <td className={styles.cell}>John Wick: Chapter 3 – Parabellum</td>
-            <td className={styles.cell}>Sn, 3.03.2023</td>
-            <td className={styles.cell}>14:30</td>
-            <td className={styles.cell}>150 / UAH</td>
-            <td className={`${styles.cell} ${styles.actions}`}>
-              <button className={styles.editBtn}>
-                <FiEdit2 />
-                <span className={styles.btnEditText}>Edit</span>
-              </button>
-              <button className={styles.deleteBtn}>
-                <RiDeleteBinLine />
-                <span className={styles.btnDeleteText}>Delete</span>
-              </button>
-            </td>
-          </tr> */}
+          <tbody className={styles.list}>
             {transactions.map((tx) => (
-              <tr key={tx._id}>
+              <tr className={styles.listItem} key={tx._id}>
                 <td className={styles.cell}>{tx.category.categoryName}</td>
                 <td className={styles.cell}>{tx.comment}</td>
                 <td className={styles.cell}>{tx.date}</td>
