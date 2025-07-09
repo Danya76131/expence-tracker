@@ -20,6 +20,7 @@ export const getTransactions = createAsyncThunk(
   "transactions/all",
   async ({ type, filter, date }, { rejectWithValue }) => {
     // const params = { date, search: filter };
+    console.log(date);
     const params = {};
 
     if (date) {
