@@ -78,16 +78,18 @@ const initialValues = {
 };
 
 const TransactionForm = ({
-  // editedData,
+  editedData,
   // categoryName,
   isEditMode,
   transactionsType,
+  handleCloseEditModal,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
-  const [getCategory, setGetCategory] = useState({ categoryName: "" });
-  // console.log("get category", getCategory);
+  const [getCategory, setGetCategory] = useState({
+    categoryName: editedData?.categoryName || "",
+  });
   useEffect(() => {}, [getCategory]);
 
   // const inputRef = useRef();
@@ -101,11 +103,11 @@ const TransactionForm = ({
   const handleSubmit = async (values, { resetForm }) => {
     if (isEditMode) {
       try {
-        console.log("Form -- edit -->", values);
         await dispatch(updateTransactions(values)).unwrap();
 
         resetForm();
         setGetCategory({ categoryName: "" });
+        handleCloseEditModal();
         toast.custom(
           <ShowSuccessToast msg={"Transaction edited successfully"} />
         );
@@ -134,12 +136,13 @@ const TransactionForm = ({
     <div className={s.formikWrapper}>
       <Formik
         initialValues={
-          // editedData  ? editedData :
-          {
-            ...initialValues,
-            type: transactionsType,
-            // category: getCategory._id,
-          }
+          editedData
+            ? editedData.selectedTransaction
+            : {
+                ...initialValues,
+                type: transactionsType,
+                // category: getCategory._id,
+              }
         }
         validationSchema={transactionFormSchema}
         onSubmit={handleSubmit}

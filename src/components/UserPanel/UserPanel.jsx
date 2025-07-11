@@ -1,20 +1,24 @@
-import React, { useEffect, useRef, useState } from "react";
-import css from "./UserPanel.module.css";
+import { useEffect, useRef } from "react";
 import Icon from "../UI/Icon/Icon";
-import LogoutModal from "../LogOutModal/LogOutModal";
+import css from "./UserPanel.module.css";
+import { userLogout } from "../../redux/auth/operations";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
 
 const UserPanel = ({
   openUserSetsModal,
-  handleLogout,
+  onOpenLogoutModal,
   isUserPanelOpen,
   toggleUserPanel,
   userBarBtnRef,
   isBurger = false,
 }) => {
   const panelRef = useRef(null);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Закриваю панель при кліку поза нею (тільки якщо не burger)
   useEffect(() => {
     if (isBurger) return;
 
@@ -44,17 +48,24 @@ const UserPanel = ({
   };
 
   const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
-
-  const confirmLogout = () => {
-    setShowLogoutModal(false);
     toggleUserPanel();
-    handleLogout();
+    setTimeout(() => {
+      onOpenLogoutModal();
+    }, 300);
   };
 
-  const cancelLogout = () => {
-    setShowLogoutModal(false);
+  const handleLogout = async () => {
+    try {
+      await dispatch(userLogout()).unwprap();
+      navigate("/");
+      toast.custom(<ShowSuccessToast msg={"Goodbye my friend!"} />);
+    } catch {
+      toast.custom(
+        <ShowErrorToast
+          msg={"Ups something went wrong. Try logout one more time!"}
+        />
+      );
+    }
   };
 
   const panelClassName = isBurger
@@ -62,41 +73,27 @@ const UserPanel = ({
     : `${css.wrapper} ${isUserPanelOpen ? css.wrapperOpen : css.wrapperClosed}`;
 
   return (
-    <>
-      <div ref={panelRef} className={panelClassName}>
-        <button
-          onClick={handleOpenUserSets}
-          className={css.button}
-          type="button"
-        >
-          <Icon
-            name="user"
-            size={16}
-            stroke="currentColor"
-            className={css.icon}
-          />
-          <span>Profile settings</span>
-        </button>
+    <div ref={panelRef} className={panelClassName}>
+      <button onClick={handleOpenUserSets} className={css.button} type="button">
+        <Icon
+          name="user"
+          size={16}
+          stroke="currentColor"
+          className={css.icon}
+        />
+        <span>Profile settings</span>
+      </button>
 
-        <button
-          onClick={handleLogoutClick}
-          className={css.button}
-          type="button"
-        >
-          <Icon
-            name="log-out"
-            size={16}
-            stroke="currentColor"
-            className={css.icon}
-          />
-          <span>Log out</span>
-        </button>
-      </div>
-
-      {showLogoutModal && (
-        <LogoutModal onLogout={confirmLogout} onCancel={cancelLogout} />
-      )}
-    </>
+      <button onClick={handleLogoutClick} className={css.button} type="button">
+        <Icon
+          name="log-out"
+          size={16}
+          stroke="currentColor"
+          className={css.icon}
+        />
+        <span onClick={handleLogout}>Log out</span>
+      </button>
+    </div>
   );
 };
 

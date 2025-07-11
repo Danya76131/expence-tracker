@@ -13,24 +13,15 @@ export const useInitFinanceData = () => {
 
   const incomes = useSelector((state) => state.transactions.incomes);
   const expenses = useSelector((state) => state.transactions.expenses);
-  const categories = useSelector((state) => state.categories.categories); // містить incomes і expenses
+  const categories = useSelector((state) => state.categories.categories);
 
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn || !expenses || !categories) return;
 
-    // Розрахунок сум
     dispatch(setIncomes(incomes));
     dispatch(setExpenses(expenses));
 
-    // Розрахунок відсотків по категоріях
     dispatch(setIncomesCategories(categories.incomes || []));
     dispatch(setExpensesCategories(categories.expenses || []));
-  }, [
-    isLoggedIn,
-    dispatch,
-    incomes,
-    expenses,
-    categories.incomes,
-    categories.expenses,
-  ]);
+  }, [isLoggedIn, dispatch, incomes, expenses, categories]);
 };

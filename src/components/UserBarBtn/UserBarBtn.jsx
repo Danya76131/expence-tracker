@@ -7,16 +7,11 @@ const UserBarBtn = forwardRef(
     const userInitial = userData.firstName
       ? userData.firstName.charAt(0).toUpperCase()
       : "?";
-
-    // const userName =
-    //   userData.firstName && userData.lastName
-    //     ? `${userData.firstName} ${userData.lastName}`
-    //     : "Unknown User";
-
+      
     const userName = userData.firstName
       ? `${userData.firstName} ${userData.lastName || ""}`.trim()
       : "Unknown User";
-
+  
     const arrowIconId = isUserPanelOpen ? (
       <Icon
         name="chevron-up"

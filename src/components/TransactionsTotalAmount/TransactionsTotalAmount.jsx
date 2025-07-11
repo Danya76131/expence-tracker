@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./TransactionsTotalAmount.module.css";
 import Icon from "../UI/Icon/Icon";
 import { useSelector } from "react-redux";
+import { selectUserTransactionsTotal } from "../../redux/user/selectors";
 
 const Card = ({ type, amount }) => {
   const isIncome = type === "income";
@@ -26,25 +27,27 @@ const Card = ({ type, amount }) => {
 };
 
 const TransactionsTotalAmount = () => {
-  const incomesTotal = useSelector((state) => state.transactions.incomesTotal);
-  const expensesTotal = useSelector(
-    (state) => state.transactions.expensesTotal
-  );
+  // const incomesTotal = useSelector((state) => state.transactions.incomesTotal);
+  // const expensesTotal = useSelector(
+  //   (state) => state.transactions.expensesTotal
+  // );
+
+  const totalAmount = useSelector(selectUserTransactionsTotal);
 
   // ✅ Зберігати у localStorage при зміні
-  useEffect(() => {
-    if (incomesTotal != null) {
-      localStorage.setItem("incomesTotal", JSON.stringify(incomesTotal));
-    }
-    if (expensesTotal != null) {
-      localStorage.setItem("expensesTotal", JSON.stringify(expensesTotal));
-    }
-  }, [incomesTotal, expensesTotal]);
+  // useEffect(() => {
+  //   if (incomesTotal != null) {
+  //     localStorage.setItem("incomesTotal", JSON.stringify(incomesTotal));
+  //   }
+  //   if (expensesTotal != null) {
+  //     localStorage.setItem("expensesTotal", JSON.stringify(expensesTotal));
+  //   }
+  // }, [incomesTotal, expensesTotal]);
 
   return (
     <div className={styles.wrapper}>
-      <Card type="income" amount={incomesTotal} />
-      <Card type="expense" amount={expensesTotal} />
+      <Card type="income" amount={totalAmount.incomes} />
+      <Card type="expense" amount={totalAmount.expenses} />
     </div>
   );
 };

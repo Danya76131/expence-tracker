@@ -1,28 +1,40 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState, useRef } from "react";
+import toast from "react-hot-toast";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
-import css from "./UserSetsModal.module.css";
 import Icon from "../UI/Icon/Icon";
 import Button from "../UI/Button/Button";
 import CloseButton from "./CloseButton";
+import { ShowErrorToast, ShowSuccessToast } from "../CustomToast/CustomToast";
+import {
+  deleteUserAvatar,
+  updateUser,
+  userAvatarChange,
+} from "../../redux/user/operations";
+import { selectUserAvatar } from "../../redux/user/selectors";
+import css from "./UserSetsModal.module.css";
 
 const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
+  const dispatch = useDispatch();
+  const userAvatar = useSelector(selectUserAvatar);
+
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [, /*avatarFile*/ setAvatarFile] = useState(null);
-  const [currency, setCurrency] = useState("");
-  const [name, setName] = useState("");
-  const [, /*isSubmitting*/ setIsSubmitting] = useState(false);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [currencyState, setCurrencyState] = useState("");
+  const [nameState, setNameState] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const modalRef = useRef();
+  const uploadFotoInput = useRef();
+  const selectRef = useRef();
 
   useEffect(() => {
     if (isOpen) {
-      setAvatarPreview(userData.avatarUrl || null);
+      setAvatarPreview(userAvatar || null);
       setAvatarFile(null);
-      setCurrency(userData.currency || "");
-      setName(userData.name || "");
+      setNameState(userData.name || "");
     }
-  }, [isOpen, userData]);
+  }, [isOpen, userData, userAvatar]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -34,55 +46,77 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
     return () => window.removeEventListener("keydown", handleEsc);
   }, [isOpen, onClose]);
 
-  const handleAvatarChange = (e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
       setAvatarPreview(URL.createObjectURL(file));
+
+      setIsSubmitting(true);
+      try {
+        const formData = new FormData();
+        formData.append("avatar", file);
+        const res = await dispatch(userAvatarChange(formData)).unwrap();
+
+        toast.custom(<ShowSuccessToast msg={"Photo uploaded successfully!"} />);
+        onUpdateUser(res);
+      } catch {
+        setAvatarPreview(userAvatar || null);
+        setAvatarFile(null);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
-  // const handleRemoveAvatar = async () => {
-  //   try {
-  //     const response = await fetch("/api/user/avatar", {
-  //       method: "DELETE",
-  //       credentials: "include",
-  //     });
-  //     if (!response.ok) {
-  //       const err = await response.json();
-  //       throw new Error(err.message || "Delete failed");
-  //     }
-  //     toast.success("Avatar removed successfully");
-  //     setAvatarPreview(null);
-  //     setAvatarFile(null);
-  //     onUpdateUser({ avatarUrl: null });
-  //   } catch (error) {
-  //     toast.error(error.message);
-  //   }
-  // };
+  const handleUploadAvatar = (ref) => {
+    const input = ref.current;
+    if (input) input.click();
+  };
+
+  const handleRemoveAvatar = async () => {
+    setIsSubmitting(true);
+    try {
+      await dispatch(deleteUserAvatar()).unwrap();
+      toast.custom(<ShowSuccessToast msg={"Photo succesfuly removed"} />);
+      setAvatarPreview(null);
+      setAvatarFile(null);
+      onUpdateUser({ avatarUrl: null });
+    } catch {
+      toast.custom(<ShowErrorToast msg={"Failed to remove photo"} />);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    try {
-      const response = await fetch("/api/user", {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, currency }),
-      });
+    const updates = {};
+    if (nameState !== userData.name) {
+      updates.name = nameState;
+    }
 
-      if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.message || "Update failed");
-      }
-      const updatedUser = await response.json();
-      toast.success("User data updated");
+    const c = selectRef.current.value;
+
+    updates.currency = c.toLowerCase();
+
+    if (Object.keys(updates).length === 0) {
+      onClose();
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const updatedUser = await dispatch(updateUser(updates)).unwrap();
+      toast.custom(<ShowSuccessToast msg="Changes successfully saved!" />);
       onUpdateUser(updatedUser);
       onClose();
-    } catch (error) {
-      toast.error(error.message);
+    } catch {
+      toast.custom(
+        <ShowErrorToast msg={"Something went wrong. Try again later"} />
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -122,6 +156,7 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
             )}
 
             <input
+              ref={uploadFotoInput}
               type="file"
               accept="image/*"
               id="avatar-upload"
@@ -129,10 +164,22 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               style={{ display: "none" }}
             />
             <div className={css.avatarButtonsWrapper}>
-              <Button variant="dark" className={css.avatarButtons}>
+              <Button
+                type="button"
+                variant="dark"
+                className={css.avatarButtons}
+                onClick={() => handleUploadAvatar(uploadFotoInput)}
+                disabled={isSubmitting}
+              >
                 Upload new photo
               </Button>
-              <Button variant="dark" className={css.avatarButtons}>
+              <Button
+                type="button"
+                variant="dark"
+                className={css.avatarButtons}
+                onClick={handleRemoveAvatar}
+                disabled={!avatarPreview || isSubmitting}
+              >
                 Remove
               </Button>
             </div>
@@ -141,9 +188,11 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
           <div className={css.inputs}>
             <div className={css.field}>
               <select
+                ref={selectRef}
                 id="currency"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
+                value={currencyState}
+                onChange={(e) => setCurrencyState(e.target.value)}
+                disabled={isSubmitting}
               >
                 <option value="UAH">₴ UAH</option>
                 <option value="USD">$ USD</option>
@@ -155,16 +204,23 @@ const UserSetsModal = ({ isOpen, onClose, userData, onUpdateUser }) => {
               <input
                 id="name"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={nameState}
+                onChange={(e) => setNameState(e.target.value)}
                 required
                 minLength={2}
                 maxLength={30}
+                disabled={isSubmitting}
               />
             </div>
           </div>
 
-          <Button className={css.saveButton}>Save</Button>
+          <Button
+            type="submit"
+            className={css.saveButton}
+            disabled={isSubmitting}
+          >
+            Save
+          </Button>
         </form>
       </div>
     </div>

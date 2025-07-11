@@ -55,9 +55,6 @@ const TransactionsChart = ({ transactionsType }) => {
       value: item.sum ?? 0,
       color: COLORS[index % COLORS.length],
     })) || [];
-  // console.log(item);
-  // console.log("rawList:", rawList);
-  // console.log("chartData:", chartData);
 
   return (
     <div className={styles["expenses-chart"]}>

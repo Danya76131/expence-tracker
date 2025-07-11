@@ -1,80 +1,38 @@
 /* === БАЗОВІ СТИЛІ === */
 .wrapper {
   width: 100%;
-  max-width: 335px;
-  height: 516px;
+
   margin: auto;
-  padding: 20px 16px;
+  /* padding: 20px 16px; */
   background: #171719;
-  border-radius: 30px;
+  /* border-radius: 30px; */
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.filter {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.inputWrapper {
-  position: relative;
-  width: 100%;
-}
-
-.icon {
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  color: #0ef387;
-  font-size: 20px;
-  pointer-events: none;
-}
-
-.searchInput,
-.dateInput {
-  width: 100%;
-  height: 50px;
-  padding: 0 20px;
-  padding-right: 50px;
-  border-radius: 30px;
-  border: none;
-  font: 16px/1 "Inter", sans-serif;
-  color: rgba(250, 250, 250, 0.4);
-  background: #171719;
-  box-sizing: border-box;
-}
-
-.searchInput {
-  background: #0c0d0d;
-}
-
-.dateInput {
-  border: 1px solid rgba(250, 250, 250, 0.2);
-}
-
-.searchInput:focus,
-.searchInput:hover,
-.dateInput:focus,
-.dateInput:hover {
-  outline: none;
-  border: 1px solid #0ef387;
 }
 
 /* === ТАБЛИЦЯ === */
 .tableWrapper {
-  flex: 1;
-  overflow-x: auto;
-  overflow-y: hidden;
+  /* flex: 1; */
+  padding-right: 20px;
+  padding-left: 20px;
+  overflow-y: auto;
+  max-height: 500px;
+
+  margin-bottom: 20px;
+}
+.list {
+  height: 500px;
+  overflow-y: auto;
+}
+.listItem {
+  margin-bottom: 20px;
 }
 
 .table {
-  display: inline-table;
-  border-collapse: collapse;
-  width: auto;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
 th,
@@ -93,16 +51,28 @@ thead tr {
   width: 100%;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.2);
-  padding: 20px 30px 18px 6px;
+  padding: 20px 30px 18px 20px;
 }
 
+/* ==== Заголовок (sticky) ==== */
 thead th {
-  flex: 0 0 68px;
-  font: 12px/1 "Inter", sans-serif;
+  position: sticky;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
   color: rgba(250, 250, 250, 0.4);
-  white-space: nowrap;
+  font: 12px/1 "Inter", sans-serif;
   text-align: start;
-  padding-right: 16px;
+  padding: 16px;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* ==== Тіло таблиці зі скролом ==== */
+tbody {
+  display: block;
+  max-height: 340px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 tbody tr {
@@ -110,7 +80,7 @@ tbody tr {
   width: 100%;
   height: 50px;
   box-sizing: border-box;
-  padding: 20px 30px 18px 6px;
+  padding: 18px 30px 18px 20px;
   align-items: center;
 }
 
@@ -178,18 +148,18 @@ tbody .actions {
 }
 
 /* === СКРОЛ === */
-.tableWrapper::-webkit-scrollbar {
-  height: 8px;
+tbody::-webkit-scrollbar {
+  width: 6px;
 }
-.tableWrapper::-webkit-scrollbar-track {
+tbody::-webkit-scrollbar-track {
   background: rgba(250, 250, 250, 0.1);
   border-radius: 12px;
 }
-.tableWrapper::-webkit-scrollbar-thumb {
+tbody::-webkit-scrollbar-thumb {
   background: rgba(250, 250, 250, 0.2);
   border-radius: 12px;
 }
-.tableWrapper::-webkit-scrollbar-thumb:hover {
+tbody::-webkit-scrollbar-thumb:hover {
   background: rgba(250, 250, 250, 0.6);
 }
 
@@ -201,28 +171,14 @@ tbody .actions {
 /* ================= Tablet (≥768px) ================= */
 @media screen and (min-width: 768px) {
   .wrapper {
-    min-width: 704px;
-    height: 544px;
-    padding: 32px;
-    gap: 16px;
+    /* min-width: 704px; */
+    /* height: 544px; */
+    /* padding: 32px; */
+    /* gap: 16px; */
+    padding-left: 32px;
+    padding-right: 34px;
   }
 
-  .filter {
-    flex-direction: row;
-    gap: 13px;
-  }
-
-  .inputWrapper {
-    width: auto;
-  }
-
-  .searchInput {
-    width: 260px;
-  }
-
-  .dateInput {
-    width: 188px;
-  }
   /* =================== vertical scroll ======================== */
   .tableWrapper {
     overflow-x: hidden;
@@ -230,81 +186,89 @@ tbody .actions {
     margin: 0 -5px;
   }
 
-  thead {
+  thead th {
     position: sticky;
     top: 0;
     z-index: 2;
   }
 
-  .tableWrapper::-webkit-scrollbar {
+  tbody::-webkit-scrollbar {
     width: 6px;
   }
-  .tableWrapper::-webkit-scrollbar-track {
+  tbody::-webkit-scrollbar-track {
     background: rgba(250, 250, 250, 0.1);
     border-radius: 12px;
   }
-  .tableWrapper::-webkit-scrollbar-thumb {
+  tbody::-webkit-scrollbar-thumb {
     background: rgba(250, 250, 250, 0.2);
     border-radius: 12px;
   }
-  .tableWrapper::-webkit-scrollbar-thumb:hover {
+  tbody::-webkit-scrollbar-thumb:hover {
     background: rgba(250, 250, 250, 0.6);
   }
-  /* =========================================================== */
-  .table {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
-  }
+}
+/* =========================================================== */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
 
-  thead {
-    height: 60px;
-  }
+thead {
+  height: 60px;
+}
 
-  thead tr {
-    padding: 20px 73px 20px 6px;
-  }
+thead tr {
+  /* padding: 20px 73px 20px 32px; */
+}
+tbody tr {
+  /* padding: 20px 73px 20px 32px; */
+}
 
-  thead th {
-    flex: 1 0 104px;
-    padding-right: 36px;
-    font-size: 16px;
-  }
+thead th {
+  flex: 1 0 104px;
+  padding-right: 36px;
+  font-size: 16px;
+}
 
-  tbody td {
-    flex: 1 0 104px;
-    padding-right: 6px;
-    font-size: 20px;
-  }
+tbody td {
+  flex: 1 0 104px;
+  padding-right: 6px;
+  font-size: 20px;
+}
 
-  thead .actions,
-  tbody .actions {
-    flex: 0 0 104px;
-  }
+thead .actions,
+tbody .actions {
+  flex: 0 0 104px;
+}
 
-  .editBtn,
-  .deleteBtn {
-    width: 44px;
-    height: 44px;
-  }
+.editBtn,
+.deleteBtn {
+  width: 44px;
+  height: 44px;
 }
 
 /* ======================= DESKTOP (≥1440px) ================== */
 @media screen and (min-width: 1440px) {
   .wrapper {
-    min-width: 1240px;
+    /* min-width: 1240px; */
     height: 440px;
-    padding: 20px 40px;
+    /* padding: 20px 40px; */
     gap: 20px;
+    padding-left: 40px;
+    padding-right: 66px;
   }
 
   thead tr {
-    padding: 20px 270px 20px 6px;
+    /* padding: 20px 270px 20px 40px; */
+  }
+
+  tbody tr {
+    /* padding: 20px 270px 20px 40px; */
   }
 
   thead th {
-    flex: 1 0 173px;
+    flex: 1 0 160px;
     padding-right: 0;
   }
 

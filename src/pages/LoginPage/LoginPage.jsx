@@ -4,11 +4,7 @@ import css from "./LoginPage.module.css";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/auth/operations";
-import {
-  selectAuthError,
-  selectAuthLoading,
-  selectIsLoggedIn,
-} from "../../redux/auth/selectors";
+import { selectAuthError, selectIsLoggedIn } from "../../redux/auth/selectors";
 import BgImageWrapper from "../../components/BgImageWrapper/BgImageWrapper";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -19,12 +15,10 @@ import {
 import Loader from "../../components/Loader/Loader";
 
 function LoginPage() {
-  console.log("loginpage mount");
   const dispatch = useDispatch();
   const error = useSelector(selectAuthError);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
-  const isLoading = useSelector(selectAuthLoading);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -52,17 +46,15 @@ function LoginPage() {
   });
 
   const onSubmitAction = async (values) => {
-    console.log("submit", values);
     try {
       await dispatch(login(values)).unwrap();
-      console.log("z will calle toast");
+
       toast.custom(
         <ShowSuccessToast
           msg={`Welcome back, ${values.name || values.email}!`}
         />
       );
     } catch (error) {
-      console.error("Login error:", error);
       toast.custom(
         <ShowErrorToast msg={"Something went wrong! Try again later"} />
       );
@@ -77,34 +69,30 @@ function LoginPage() {
 
   return (
     <div className="login-wrapper">
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className={css.loginPage}>
-          <div className={css.leftSide}>
-            <BgImageWrapper desktopOnly />
-          </div>
-          <div className={css.rightSide}>
-            <h2 className={css.title}>Sign In</h2>
-            <p className={css.aboutApp}>
-              Welcome back to effortless expense tracking! Your financial
-              dashboard awaits.
-            </p>
-            {error && (
-              <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
-            )}
-            <AuthForm
-              fields={fields}
-              submitText="Sign In"
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmitAction={onSubmitAction}
-              navigationData={navigationData}
-              formVariant="login"
-            />
-          </div>
+      <div className={css.loginPage}>
+        <div className={css.leftSide}>
+          <BgImageWrapper desktopOnly />
         </div>
-      )}
+        <div className={css.rightSide}>
+          <h2 className={css.title}>Sign In</h2>
+          <p className={css.aboutApp}>
+            Welcome back to effortless expense tracking! Your financial
+            dashboard awaits.
+          </p>
+          {error && (
+            <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
+          )}
+          <AuthForm
+            fields={fields}
+            submitText="Sign In"
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmitAction={onSubmitAction}
+            navigationData={navigationData}
+            formVariant="login"
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import {
   userAvatarChange,
   deleteUserAvatar,
 } from "./operations";
-// import { userLogout } from "../auth/operations";
+import { userLogout } from "../auth/operations";
 
 const initialState = {
   user: null,
@@ -22,7 +22,6 @@ const slice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.user = payload;
-        // console.log("User", payload);
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
         state.isLoading = false;
@@ -39,9 +38,9 @@ const slice = createSlice({
         state.isError = false;
         state.user = { ...state.user, avatarUrl: null };
       })
-      // .addCase(userLogout.fulfilled, () => {
-      //   return { ...initialState };
-      // })
+      .addCase(userLogout.fulfilled, () => {
+        return { ...initialState };
+      })
 
       .addMatcher(
         isAnyOf(

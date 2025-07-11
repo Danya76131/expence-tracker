@@ -8,7 +8,7 @@ import { selectTransactionByType } from "../../redux/transactions/selectors";
 import {
   getTransactions,
   deleteTransaction,
-  updateTransactions,
+  // updateTransactions,
 } from "../../redux/transactions/operations";
 import TransactionsList from "../../components/TransactionsList/TransactionsList";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
@@ -17,30 +17,51 @@ import {
   ShowSuccessToast,
 } from "../../components/CustomToast/CustomToast";
 import toast from "react-hot-toast";
-// import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import Backdrop from "../../components/UI/Backdrop/Backdrop";
-// import { selectIsLoading } from "../../redux/categories/selectors";
-// import Loader from "../../components/Loader/Loader";
 
+import { TransactionsSearchTools } from "../../components/TransactionsSearchTools/TransactionsSearchTools";
+// import { selectFilter, selectDate } from "../../redux/filter/selectors";
+import Section from "../../components/Section/Section";
+import Container from "../../components/Container/Container";
+import TransactionsTotalAmount from "../../components/TransactionsTotalAmount/TransactionsTotalAmount";
+import styles from "./TransactionsHistoryPage.module.css";
 const TransactionsHistoryPage = () => {
   const { transactionsType } = useParams(); // "incomes" або "expenses"
   const dispatch = useDispatch();
-  // console.log("params", transactionsType);
 
   const transactions = useSelector(selectTransactionByType(transactionsType));
-  // const isLoading = useSelector(selectIsLoading);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [categoryName, setCategoryName] = useState("");
+  ////////
+  const [searchParams] = useSearchParams();
+  const filter = searchParams.get("search") || "";
+  const date = searchParams.get("date") || null;
+  // const filter = useSelector(selectFilter);
+  // const date = useSelector(selectDate);
+  ////////
+  useEffect(() => {
+    if (!transactionsType) return;
+    dispatch(getTransactions({ type: transactionsType }));
+  }, [dispatch, transactionsType]);
 
   useEffect(() => {
+    if (!transactionsType) return;
+
     try {
-      dispatch(getTransactions(transactionsType));
+      // if (filter || date)
+      dispatch(
+        getTransactions({
+          type: transactionsType,
+          filter: filter || null,
+          date: date || null,
+        })
+      );
     } catch (err) {
       console.error(err);
     }
-  }, [transactionsType, dispatch]);
+  }, [transactionsType, dispatch, filter, date]);
 
   const handleDelete = async (id) => {
     dispatch(deleteTransaction(id))
@@ -54,13 +75,11 @@ const TransactionsHistoryPage = () => {
   };
 
   const handleEditClick = (tx) => {
-    console.log("HistoryPage --> handleEditClick: ", tx);
     const { date, time, _id, sum, comment, type } = tx;
     setSelectedTransaction({ comment, date, sum, time, type, _id });
     setIsEditModalOpen(true);
     setCategoryName(tx.category.categoryName);
   };
-  // console.log("HistoryPage --> Edit local state: ", selectedTransaction);
 
   // const handleFormSubmit = (values) => {
   //   dispatch(updateTransactions(values))
@@ -74,36 +93,54 @@ const TransactionsHistoryPage = () => {
   //     );
   // };
 
-  // console.log("selected tr", selectedTransaction);
-
+  let text = "All Expense";
+  let description =
+    "View and manage every transaction seamlessly! Your entire financial landscape, all in one place.";
+  if (transactionsType === "incomes") {
+    text = "All incomes";
+    description =
+      "Track and celebrate every bit of earnings effortlessly! Gain insights into your total revenue in a snap.";
+  }
   return (
-    <div>
-      {/* {isLoading ? (
-        <Loader />
-      ) : ()} */}
-      <>
+    <Section>
+      <Container>
+        <div className={styles.topWrapper}>
+          <div className={styles.textWrapper}>
+            <h2 className={styles.mainTitle}>{text}</h2>
+            <p className={styles.mainText}>{description}</p>
+          </div>
+          <div className={styles.total}>
+            <TransactionsTotalAmount />
+          </div>
+        </div>
+        <TransactionsSearchTools
+          // handleOpenModal={toggleIsAddModal}
+          type={transactionsType}
+        />
         <TransactionsList
           transactions={transactions}
           transactionsType={transactionsType}
           onDelete={handleDelete}
           onEdit={handleEditClick}
         />
+
         {isEditModalOpen && (
           <Backdrop onClose={() => setIsEditModalOpen(false)}>
             <TransactionForm
               editedData={{
-                ...selectedTransaction,
-                category: selectedTransaction._id,
+                selectedTransaction,
+                categoryName,
               }}
               categoryName={categoryName}
               // onSubmit={handleFormSubmit}
               isEditMode={isEditModalOpen}
               transactionsType={transactionsType}
+              handleCloseEditModal={() => setIsEditModalOpen(false)}
             />
           </Backdrop>
         )}
-      </>
-    </div>
+      </Container>
+    </Section>
   );
 };
 
