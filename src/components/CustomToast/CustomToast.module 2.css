@@ -1,0 +1,29 @@
+.toastWrapperSuccess {
+  background: rgba(30, 30, 30, 0.25) !important;
+  backdrop-filter: blur(15px);
+  border-radius: 12px !important;
+  padding: 0 !important;
+  color: #fafafa;
+  padding: 14px 20px !important;
+  color: #fafafa !important;
+  font-weight: 600;
+  font-size: 17px;
+  background: transparent !important;
+  box-shadow: 0 8px 24px rgba(14, 243, 135, 0.3) !important;
+  border: 1px solid rgba(14, 243, 135, 0.4) !important;
+}
+
+.toastWrapperError {
+  background: rgba(30, 30, 30, 0.25) !important;
+  backdrop-filter: blur(15px);
+  border-radius: 12px !important;
+  padding: 0 !important;
+  color: #fafafa;
+  padding: 14px 20px !important;
+  color: #fafafa !important;
+  font-weight: 600;
+  font-size: 17px;
+  background: transparent !important;
+  box-shadow: 0 8px 24px rgba(231, 74, 59, 0.3) !important;
+  border: 1px solid rgba(231, 74, 59, 0.4) !important;
+}
